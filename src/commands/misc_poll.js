@@ -33,12 +33,3 @@ export default {
         msg.react("1020408108998197331");
     },
 };
-
-export const config = {
-    name: "poll",
-    aliases: ["poll"],
-    description: "— Create a poll.",
-    usage: "poll <question>",
-    example: "poll Should I eat pizza?",
-    category: "misc",
-};
