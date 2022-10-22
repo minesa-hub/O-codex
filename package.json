@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "discord.js": "^14.6.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
+  }
+}
