@@ -1,9 +1,25 @@
 {
-  "dependencies": {
-    "discord.js": "^14.6.0"
-  },
-  "type": "module",
-  "scripts": {
-    "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
-  }
+    "name": "neobot",
+    "version": "1.0.0",
+    "description": "Minesa Hub's Bot",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon --experimental-modules --es-module-specifier-resolution=node index.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/minesa-hub/Neobot.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/minesa-hub/Neobot/issues"
+    },
+    "homepage": "https://github.com/minesa-hub/Neobot#readme",
+    "dependencies": {
+        "discord.js": "^14.6.0"
+    }
 }
