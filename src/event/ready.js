@@ -3,7 +3,7 @@ import { ActivityType } from "discord.js";
 export default {
     name: "ready",
     once: true,
-    execute(client) {
+    execute: (client) {
         let activities = [`neodewils`, `${client.user.username}`],
             i = 0;
         setInterval(
