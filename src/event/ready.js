@@ -6,13 +6,9 @@ export default {
     execute: async client => {
         let activities = [`neodewils`, `${client.user.username}`],
             i = 0;
-        setInterval(
-            () =>
-                client.user.setActivity({
-                    name: `${activities[i++ % activities.length]}`,
-                    type: ActivityType.Listening,
-                }),
-            22000,
-        );
+        setInterval(() => client.user.setActivity({
+            name: `${activities[i++ % activities.length]}`,
+            type: ActivityType.Listening,
+        }), 22000, );
     },
 };
