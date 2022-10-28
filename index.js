@@ -3,6 +3,7 @@ import config from "./src/config.js";
 import { readdirSync } from "fs";
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v10";
+import mongoose from 'mongoose';
 
 const client = new Client({
     intents: [
@@ -17,8 +18,18 @@ const client = new Client({
 });
 
 const token = process.env.TOKEN || config.client_token;
+const mongo = process.env.MONGO || config.mongo;
 
 client.commands = new Collection();
+
+mongoose.connect(mongo, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).catch((e) => console.log(e))
+
+        mongoose.connection.once("open", () => {
+    console.log("[DATABASE] Connected to MongoDB!");
+});
 
 const log = l => {
     console.log(`${l}`);
