@@ -1,3 +1,4 @@
+// Handling Events
 const handleEvents = client => {
     client.handleEvents = async eventFiles => {
         for (const file of eventFiles) {

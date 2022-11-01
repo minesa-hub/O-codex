@@ -22,7 +22,7 @@ const giveMeCommand = {
         // Give role to the command executor
         await interaction.member.roles.add(role);
 
-        // Send message
+        // Send interaction reply
         return interaction.reply({ content: "You have taken the key!", ephemeral: true });
     },
 };

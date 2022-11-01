@@ -1,17 +1,15 @@
 export const name = "interactionCreate";
 export async function execute(interaction) {
+    // Defining the client
     let client = interaction.client;
+
+    // Get the command
     const command = client.commands.get(interaction.commandName);
 
+    // If the command is not found, return nothing.
     if (!command) return;
 
-    if (command.guildOnly && interaction.channel.type === "DM") {
-        return interaction.reply({
-            content: "I can't execute that command inside DMs!",
-            ephemeral: true,
-        });
-    }
-
+    // If the command is found, execute the command.
     try {
         await command.execute(interaction, client);
     } catch (error) {

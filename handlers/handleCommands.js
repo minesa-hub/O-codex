@@ -3,6 +3,7 @@ import { Routes } from "discord-api-types/v9";
 import { readdirSync } from "fs";
 import config from "../config.js";
 
+// Create a new REST instance
 const handleCommands = client => {
     client.handleCommands = async (commandFolders, path) => {
         client.commandArray = [];
@@ -20,11 +21,11 @@ const handleCommands = client => {
 
         (async () => {
             try {
-                console.log("Started refreshing Global Application (/) commands.");
+                console.log("[REFRESHING] Global Application (/) commands.");
                 await rest.put(Routes.applicationCommands(config.client_id), {
                     body: client.commandArray,
                 });
-                console.log("Successfully reloaded Global Application (/) commands.");
+                console.log("[RELOADED] Global Application (/) commands.");
             } catch (error) {
                 console.error(error);
             }

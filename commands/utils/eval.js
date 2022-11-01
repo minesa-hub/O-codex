@@ -23,19 +23,23 @@ const evalCommand = {
             option.setName("input").setDescription("• Please input the code.").setRequired(true),
         ),
     async execute(interaction, client) {
+        // Defining the client, guild, channel, member, and user
         let channel = interaction.channel;
         let guild = interaction.guild;
         let member = interaction.member;
         let user = interaction.user;
 
+        // Emojis
         const [debug_emoji, warning_emoji] = ["<:debug:1020403337738334208>", "<:warning:1020401563468058664>"];
 
+        // If the user is not Neo, return nothing.
         if (!"285118390031351809".includes(interaction.member.user.id))
             return interaction.reply({
                 content: `${warning_emoji} You can not use this command.`,
                 ephemeral: true,
             });
 
+        // The input and output
         try {
             let evaluated = eval(interaction.options.getString("input"));
             evaluated = typeof evaluated === "object" ? inspect(evaluated, { depth: 0, showHidden: false }) : evaluated;

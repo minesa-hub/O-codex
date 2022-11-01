@@ -1,5 +1,6 @@
 export const name = "messageCreate";
 export async function execute(message) {
+    // If the message is not a command, return nothing.
     if (message.content.toLowerCase().includes("neo")) return message.react("<:mns_neoWhyTho:1030121682712662088>");
     if (message.content.toLowerCase().includes("mica")) return message.react("<:mns_micaPain:1025347274856992788>");
     if (message.content.toLowerCase().includes("saku") || message.content.toLowerCase().includes("daph"))
