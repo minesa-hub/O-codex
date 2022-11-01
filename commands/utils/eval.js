@@ -6,21 +6,23 @@ import {
     AttachmentBuilder,
     SlashCommandBuilder,
 } from "discord.js";
-import config from "../config.js";
+import fetch from "node-fetch";
+import config from "../../config.js";
+import { inspect } from "util";
+
 const webhook = new WebhookClient({
     id: config.webhook_id,
     token: config.webhook_token,
 });
-import { inspect } from "util";
 
-export default {
+const evalCommand = {
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription("— Developer only.")
         .addStringOption(option =>
             option.setName("input").setDescription("• Please input the code.").setRequired(true),
         ),
-    run: async (client, interaction) => {
+    async execute(interaction, client) {
         const [debug_emoji, warning_emoji] = ["<:debug:1020403337738334208>", "<:warning:1020401563468058664>"];
 
         if (!"285118390031351809".includes(interaction.member.user.id))
@@ -43,3 +45,5 @@ export default {
         }
     },
 };
+
+export default evalCommand;

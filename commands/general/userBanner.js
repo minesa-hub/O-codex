@@ -1,8 +1,8 @@
 import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
 
-export default {
+const userBannerCommand = {
     data: new ContextMenuCommandBuilder().setName("User Banner").setType(ApplicationCommandType.User),
-    run: async (client, interaction) => {
+    async execute(interaction, client) {
         let user = client.users.fetch(interaction.targetId, { force: true });
         user.then(async function (res) {
             var imgURL = res.bannerURL({ size: 4096, dynamic: true });
@@ -20,3 +20,5 @@ export default {
         });
     },
 };
+
+export default userBannerCommand;
