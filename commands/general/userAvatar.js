@@ -1,13 +1,21 @@
 import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
 
-export default {
+const avatarCommand = {
     data: new ContextMenuCommandBuilder().setName("User Avatar").setType(ApplicationCommandType.User),
-    run: async (client, interaction) => {
+    async execute(interaction) {
+        // Getting the user from the context menu
         const target = interaction.guild.members.cache.get(interaction.targetId);
 
+        // Creating the reply
         await interaction.reply({
-            content: `>>> ${target.user.avatarURL({ dynamic: true, extension: "jpg", size: 4096 })}`,
+            content: `>>> ${target.user.avatarURL({
+                dynamic: true,
+                extension: "jpg",
+                size: 4096,
+            })}`,
             ephemeral: true,
         });
     },
 };
+
+export default avatarCommand;
