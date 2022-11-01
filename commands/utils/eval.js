@@ -23,6 +23,11 @@ const evalCommand = {
             option.setName("input").setDescription("• Please input the code.").setRequired(true),
         ),
     async execute(interaction, client) {
+        let channel = interaction.channel;
+        let guild = interaction.guild;
+        let member = interaction.member;
+        let user = interaction.user;
+
         const [debug_emoji, warning_emoji] = ["<:debug:1020403337738334208>", "<:warning:1020401563468058664>"];
 
         if (!"285118390031351809".includes(interaction.member.user.id))

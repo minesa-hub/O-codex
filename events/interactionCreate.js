@@ -1,7 +1,6 @@
 export const name = "interactionCreate";
-export async function execute(interaction, client) {
+export async function execute(interaction) {
     let client = interaction.client;
-
     const command = client.commands.get(interaction.commandName);
 
     if (!command) return;
@@ -14,7 +13,7 @@ export async function execute(interaction, client) {
     }
 
     try {
-        await command.execute(interaction);
+        await command.execute(interaction, client);
     } catch (error) {
         console.error(error);
         await interaction.reply({
