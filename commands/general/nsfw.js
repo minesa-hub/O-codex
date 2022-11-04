@@ -39,15 +39,18 @@ const nsfwCommand = {
                 .setRequired(true),
         ),
     async execute(interaction, client) {
+        // Adding "category" and "ephemeral" options for the slash
         const category = interaction.options.getString("category");
         const ephemeral = interaction.options.getBoolean("ephemeral");
 
         try {
+            // Fetching the url to get an image of the category
             const raw = await fetch(`https://nekobot.xyz/api/image?type=${category}`, {
                 method: "GET",
             });
             const response = await raw.json();
 
+            // Building a button
             const button = new ActionRowBuilder().addComponents(
                 new ButtonBuilder()
                     .setLabel("Display in Browser")
@@ -55,12 +58,14 @@ const nsfwCommand = {
                     .setStyle(ButtonStyle.Link),
             );
 
+            // Sending the response
             return interaction.reply({
                 content: response.message,
                 components: [button],
                 ephemeral,
             });
         } catch (error) {
+            // Sending the error
             return interaction.reply({
                 content: "Nothing found for this search.",
                 ephemeral: true,
