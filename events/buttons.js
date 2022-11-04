@@ -161,7 +161,10 @@ export async function execute(interaction) {
             );
 
             const row2 = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setLabel("Back").setStyle(ButtonStyle.Secondary).setCustomId("GetRoles2"),
+                new ButtonBuilder()
+                    .setLabel("Back")
+                    .setStyle(ButtonStyle.Secondary)
+                    .setCustomId("GetRoles2"),
             );
 
             await interaction.editReply({
@@ -183,9 +186,15 @@ export async function execute(interaction) {
                     .setCustomId("OtherRolesMenu1")
                     .setPlaceholder("Gender")
                     .addOptions([
-                        new SelectMenuOptionBuilder().setLabel("he/him").setValue("801610025558081567"),
-                        new SelectMenuOptionBuilder().setLabel("she/her").setValue("801609422438006794"),
-                        new SelectMenuOptionBuilder().setLabel("they/them").setValue("801610167606706186"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("he/him")
+                            .setValue("801610025558081567"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("she/her")
+                            .setValue("801609422438006794"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("they/them")
+                            .setValue("801610167606706186"),
                     ]),
             );
 
@@ -195,8 +204,12 @@ export async function execute(interaction) {
                     .setCustomId("OtherRolesMenu2")
                     .setPlaceholder("Personality")
                     .addOptions([
-                        new SelectMenuOptionBuilder().setLabel("Introvert").setValue("959009541167648808"),
-                        new SelectMenuOptionBuilder().setLabel("Extrovert").setValue("959009466509049896"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("Introvert")
+                            .setValue("959009541167648808"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("Extrovert")
+                            .setValue("959009466509049896"),
                     ]),
             );
 
@@ -208,7 +221,9 @@ export async function execute(interaction) {
                     .addOptions([
                         new SelectMenuOptionBuilder()
                             .setLabel("Server Updates")
-                            .setDescription("Get notified when a new post is made about the server.")
+                            .setDescription(
+                                "Get notified when a new post is made about the server.",
+                            )
                             .setValue("801618406817136651"),
                         new SelectMenuOptionBuilder()
                             .setLabel("Community Events")
@@ -216,11 +231,15 @@ export async function execute(interaction) {
                             .setValue("801618365231398912"),
                         new SelectMenuOptionBuilder()
                             .setLabel("Dev Updates")
-                            .setDescription("Get notified when a new post is made about the developer.")
+                            .setDescription(
+                                "Get notified when a new post is made about the developer.",
+                            )
                             .setValue("940881871624089600"),
                         new SelectMenuOptionBuilder()
                             .setLabel("Extras")
-                            .setDescription("Get notified when a new post is made about the server extras.")
+                            .setDescription(
+                                "Get notified when a new post is made about the server extras.",
+                            )
                             .setValue("836338427578286111"),
                     ]),
             );
@@ -231,14 +250,21 @@ export async function execute(interaction) {
                     .setCustomId("OtherRolesMenu4")
                     .setPlaceholder("Age")
                     .addOptions([
-                        new SelectMenuOptionBuilder().setLabel("minor").setValue("958997694897082418"),
-                        new SelectMenuOptionBuilder().setLabel("adult").setValue("958997737439911947"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("minor")
+                            .setValue("958997694897082418"),
+                        new SelectMenuOptionBuilder()
+                            .setLabel("adult")
+                            .setValue("958997737439911947"),
                     ]),
             );
 
             // Back Button
             const row5 = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setLabel("Back").setStyle(ButtonStyle.Secondary).setCustomId("GetRoles2"),
+                new ButtonBuilder()
+                    .setLabel("Back")
+                    .setStyle(ButtonStyle.Secondary)
+                    .setCustomId("GetRoles2"),
             );
 
             await interaction.editReply({

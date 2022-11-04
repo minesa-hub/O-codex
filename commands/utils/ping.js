@@ -7,7 +7,10 @@ const pingCommand = {
         const plug = client.emojis.cache.get("1020408001502392432");
 
         // Reply
-        await interaction.reply({ content: `>>> **WebSocket Ping**\n${plug}${client.ws.ping}ms!`, ephemeral: true });
+        await interaction.reply({
+            content: `>>> **WebSocket Ping**\n${plug}${client.ws.ping}ms!`,
+            ephemeral: true,
+        });
     },
     /*
     await new Promise((r) => setTimeout(r, 2500));

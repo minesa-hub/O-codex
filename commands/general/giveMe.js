@@ -23,7 +23,10 @@ const giveMeCommand = {
         await interaction.member.roles.add(role);
 
         // Send interaction reply
-        return interaction.reply({ content: "You have taken the key!", ephemeral: true });
+        return interaction.reply({
+            content: "You have taken the key!",
+            ephemeral: true,
+        });
     },
 };
 

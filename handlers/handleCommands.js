@@ -8,7 +8,9 @@ const handleCommands = client => {
     client.handleCommands = async (commandFolders, path) => {
         client.commandArray = [];
         for (const folder of commandFolders) {
-            const commandFiles = readdirSync(`${path}/${folder}`).filter(file => file.endsWith(".js"));
+            const commandFiles = readdirSync(`${path}/${folder}`).filter(file =>
+                file.endsWith(".js"),
+            );
 
             for (const file of commandFiles) {
                 const command = (await import(`../commands/${folder}/${file}`)).default;

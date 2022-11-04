@@ -1,7 +1,9 @@
 import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
 
 const userBannerCommand = {
-    data: new ContextMenuCommandBuilder().setName("User Banner").setType(ApplicationCommandType.User),
+    data: new ContextMenuCommandBuilder()
+        .setName("User Banner")
+        .setType(ApplicationCommandType.User),
     async execute(interaction, client) {
         // Getting the user from the context menu
         let user = client.users.fetch(interaction.targetId, { force: true });

@@ -20,7 +20,10 @@ const evalCommand = {
         .setName("eval")
         .setDescription("— Developer only.")
         .addStringOption(option =>
-            option.setName("input").setDescription("• Please input the code.").setRequired(true),
+            option
+                .setName("input")
+                .setDescription("• Please input the code.")
+                .setRequired(true),
         ),
     async execute(interaction, client) {
         // Defining the client, guild, channel, member, and user
@@ -30,7 +33,10 @@ const evalCommand = {
         let user = interaction.user;
 
         // Emojis
-        const [debug_emoji, warning_emoji] = ["<:debug:1020403337738334208>", "<:warning:1020401563468058664>"];
+        const [debug_emoji, warning_emoji] = [
+            "<:debug:1020403337738334208>",
+            "<:warning:1020401563468058664>",
+        ];
 
         // If the user is not Neo, return nothing.
         if (!"285118390031351809".includes(interaction.member.user.id))
@@ -42,7 +48,10 @@ const evalCommand = {
         // The input and output
         try {
             let evaluated = eval(interaction.options.getString("input"));
-            evaluated = typeof evaluated === "object" ? inspect(evaluated, { depth: 0, showHidden: false }) : evaluated;
+            evaluated =
+                typeof evaluated === "object"
+                    ? inspect(evaluated, { depth: 0, showHidden: false })
+                    : evaluated;
 
             return interaction.reply({
                 content: `${debug_emoji} **Output**\n\n>>> ***\`\`\`javascript\n${evaluated}\n\`\`\`***`,
