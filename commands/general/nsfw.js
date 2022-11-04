@@ -1,4 +1,4 @@
-import { ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
 
 const nsfwCommand = {
@@ -51,10 +51,12 @@ const nsfwCommand = {
             const response = await raw.json();
 
             // Building a button
-            const button = new ButtonBuilder()
-                .setLabel("Display in Browser")
-                .setURL(response.message)
-                .setStyle(ButtonStyle.Link);
+            const button = new ActionRowBuilder().addComponents(
+                new ButtonBuilder()
+                    .setLabel("Display in Browser")
+                    .setURL(response.message)
+                    .setStyle(ButtonStyle.Link),
+            );
 
             // Sending the response
             return interaction.reply({

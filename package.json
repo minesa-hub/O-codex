@@ -22,6 +22,7 @@
     "dependencies": {
         "better-sqlite3": "^7.6.2",
         "discord.js": "^14.6.0",
+        "node-fetch": "^3.2.10",
         "quick.db": "^9.0.6"
     }
 }
