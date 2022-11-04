@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
+import { ButtonBuilder, ButtonStyle, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
 
 const nsfwCommand = {
@@ -39,28 +39,31 @@ const nsfwCommand = {
                 .setRequired(true),
         ),
     async execute(interaction, client) {
+        // Adding "category" and "ephemeral" options for the slash
         const category = interaction.options.getString("category");
         const ephemeral = interaction.options.getBoolean("ephemeral");
 
         try {
+            // Fetching the url to get an image of the category
             const raw = await fetch(`https://nekobot.xyz/api/image?type=${category}`, {
                 method: "GET",
             });
             const response = await raw.json();
 
-            const button = new ActionRowBuilder().addComponents(
-                new ButtonBuilder()
-                    .setLabel("Display in Browser")
-                    .setURL(response.message)
-                    .setStyle(ButtonStyle.Link),
-            );
+            // Building a button
+            const button = new ButtonBuilder()
+                .setLabel("Display in Browser")
+                .setURL(response.message)
+                .setStyle(ButtonStyle.Link);
 
+            // Sending the response
             return interaction.reply({
                 content: response.message,
                 components: [button],
                 ephemeral,
             });
         } catch (error) {
+            // Sending the error
             return interaction.reply({
                 content: "Nothing found for this search.",
                 ephemeral: true,
