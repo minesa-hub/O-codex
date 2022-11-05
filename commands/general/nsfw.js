@@ -5,11 +5,19 @@ const nsfwCommand = {
     data: new SlashCommandBuilder()
         .setName("nsfw")
         .setDescription("— Access to NSFW images.")
+        .setNameLocalizations({ tr: "nsfw", it: "nsfw", ChineseCN: "nsfw" })
+        .setDescriptionLocalizations({
+            tr: "— NSFW resimlere erişim.",
+            it: "— Accesso alle immagini NSFW.",
+            ChineseCN: "— 访问NSFW图像。",
+        })
         .addStringOption(option =>
             option
                 .setName("category")
-                .setDescription("• The category to toggle.")
+                .setDescription("• The category to see.")
                 .setRequired(true)
+                .setNameLocalizations({ tr: "kategori" })
+                .setDescriptionLocalizations({ tr: "• Seçmek istediğiniz kategori." })
                 .addChoices(
                     { name: "driff", value: "hmidriff" },
                     { name: "porn gif", value: "pgif" },
@@ -36,7 +44,11 @@ const nsfwCommand = {
             option
                 .setName("ephemeral")
                 .setDescription("• Display the response as ephemeral or not?")
-                .setRequired(true),
+                .setRequired(true)
+                .setNameLocalizations({ tr: "kısmı_görünüm" })
+                .setDescriptionLocalizations({
+                    tr: "Resmi kısmi mesaj olarak göster veya gösterme, seçim senin?",
+                }),
         ),
     async execute(interaction, client) {
         // Adding "category" and "ephemeral" options for the slash

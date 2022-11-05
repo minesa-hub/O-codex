@@ -3,7 +3,13 @@ import { SlashCommandBuilder } from "discord.js";
 const giveMeCommand = {
     data: new SlashCommandBuilder()
         .setName("give-me")
-        .setDescription("— Take the key and lock yourself in the top of all roles."),
+        .setDescription("— Take the key and lock yourself in the top of all roles.")
+        .setNameLocalizations({ tr: "bana-ver", it: "dami-mi", ChineseCN: "给我" })
+        .setDescriptionLocalizations({
+            tr: "— Anahtarı al ve tüm rollerin en üstünde kendini kilitle.",
+            it: "— Prendi la chiave e bloccati in cima a tutti i ruoli.",
+            ChineseCN: "— 拿起钥匙，把自己锁在所有角色的顶部。",
+        }),
     async execute(interaction, client) {
         // Declaring the role
         const role = "805451556081500220";

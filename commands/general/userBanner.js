@@ -3,6 +3,11 @@ import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
 const userBannerCommand = {
     data: new ContextMenuCommandBuilder()
         .setName("User Banner")
+        .setNameLocalizations({
+            tr: "Kullanıcı Bannerı",
+            it: "Banner Utente",
+            ChineseCN: "用户横幅",
+        })
         .setType(ApplicationCommandType.User),
     async execute(interaction, client) {
         // Getting the user from the context menu

@@ -4,8 +4,23 @@ const pollCommand = {
     data: new SlashCommandBuilder()
         .setName("poll")
         .setDescription("— Create a poll.")
+        .setNameLocalizations({ tr: "oylama", it: "sondaggio", ChineseCN: "投票" })
+        .setDescriptionLocalizations({
+            tr: "— Bir oylama oluştur.",
+            it: "— Crea un sondaggio.",
+            ChineseCN: "— 创建投票。",
+        })
         .addStringOption(option =>
-            option.setName("question").setDescription("— The question to ask.").setRequired(true),
+            option
+                .setName("question")
+                .setDescription("— The question to ask.")
+                .setRequired(true)
+                .setNameLocalizations({ tr: "soru", it: "domanda", ChineseCN: "问题" })
+                .setDescriptionLocalizations({
+                    tr: "— Sorulacak soru.",
+                    it: "— La domanda da porre.",
+                    ChineseCN: "— 要问的问题。",
+                }),
         ),
     async execute(interaction) {
         // Gettings the question
