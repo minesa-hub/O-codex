@@ -4,11 +4,35 @@ const addEmoji = {
     data: new SlashCommandBuilder()
         .setName("addemoji")
         .setDescription("— Adds an emoji to the server.")
+        .setNameLocalizations({ tr: "emojiekle", it: "aggiungiemoji", ChineseCN: "添加表情" })
+        .setDescriptionLocalizations({
+            tr: "— Sunucuya bir emoji ekler.",
+            it: "— Aggiunge un emoji al server.",
+            ChineseCN: "— 将表情添加到服务器。",
+        })
         .addStringOption(option =>
-            option.setName("name").setDescription("• The name of the emoji.").setRequired(true),
+            option
+                .setName("name")
+                .setDescription("• The name of the emoji.")
+                .setRequired(true)
+                .setNameLocalizations({ tr: "isim", it: "nome", ChineseCN: "名称" })
+                .setDescriptionLocalizations({
+                    tr: "• Emojinin adı.",
+                    it: "• Il nome dell'emoji.",
+                    ChineseCN: "• 表情的名称。",
+                }),
         )
         .addStringOption(option =>
-            option.setName("emoji").setDescription("• The emoji.").setRequired(true),
+            option
+                .setName("emoji")
+                .setDescription("• The emoji.")
+                .setRequired(true)
+                .setNameLocalizations({ tr: "emoji", it: "emoji", ChineseCN: "表情" })
+                .setDescriptionLocalizations({
+                    tr: "• Emoji.",
+                    it: "• Emoji.",
+                    ChineseCN: "• 表情。",
+                }),
         ),
     async execute(interaction) {
         // Adding "name" and "emoji" options for the slash

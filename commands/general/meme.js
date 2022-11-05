@@ -4,7 +4,13 @@ import { fetch } from "undici";
 const memeCommand = {
     data: new SlashCommandBuilder()
         .setName("meme")
-        .setDescription("— Sends a random meme from somewhere."),
+        .setDescription("— Sends a random meme from somewhere.")
+        .setNameLocalizations({ tr: "meme", it: "meme", ChineseCN: "梗图" })
+        .setDescriptionLocalizations({
+            tr: "— Bir yerden rastgele bir meme gönderir.",
+            it: "— Invia un meme casuale da qualche parte.",
+            ChineseCN: "— 从某处发送一个随机梗图。",
+        }),
     async execute(interaction) {
         // Deferring the reply
         await interaction.deferReply();

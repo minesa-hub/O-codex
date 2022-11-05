@@ -19,11 +19,23 @@ const evalCommand = {
     data: new SlashCommandBuilder()
         .setName("eval")
         .setDescription("— Developer only.")
+        .setNameLocalizations({ tr: "değerlendir", it: "valutare", ChineseCN: "评估" })
+        .setDescriptionLocalizations({
+            tr: "— Sadece geliştiriciler için.",
+            it: "— Solo per sviluppatori.",
+            ChineseCN: "— 仅限开发人员。",
+        })
         .addStringOption(option =>
             option
                 .setName("input")
                 .setDescription("• Please input the code.")
-                .setRequired(true),
+                .setRequired(true)
+                .setNameLocalizations({ tr: "girdi", it: "input", ChineseCN: "输入" })
+                .setDescriptionLocalizations({
+                    tr: "• Lütfen kodu girin.",
+                    it: "• Inserisci il codice.",
+                    ChineseCN: "• 请输入代码。",
+                }),
         ),
     async execute(interaction, client) {
         // Defining the client, guild, channel, member, and user
