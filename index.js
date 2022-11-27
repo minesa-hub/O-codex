@@ -2,8 +2,6 @@
 import { Client, Collection, ActivityType } from "discord.js";
 import fs from "fs";
 import config from "./config.js";
-import { DisTube } from "distube";
-import { SpotifyPlugin } from "@distube/spotify";
 
 // Creating a new client
 const client = new Client({
@@ -17,18 +15,6 @@ const client = new Client({
 
 // Creating a new collection for commands
 client.commands = new Collection();
-
-client.distube = new DisTube(client, {
-    leaveOnStop: false,
-    emitNewSongOnly: true,
-    emitAddSongWhenCreatingQueue: false,
-    emitAddListWhenCreatingQueue: false,
-    plugins: [
-        new SpotifyPlugin({
-            emitEventsAfterFetching: true,
-        }),
-    ],
-});
 
 // Creating a new collection for application commands
 const commands = fs.readdirSync("./commands");
