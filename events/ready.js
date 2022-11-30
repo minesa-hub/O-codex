@@ -1,6 +1,8 @@
 export const name = "ready";
 export const once = true;
 export async function execute(client) {
+    // Initiates the manager and connects to all the nodes
+    client.manager.init(client.user.id);
     // The bot starts, and logs in, successfully.
     console.log(`[READY] Logged in as ${client.user.tag}!`);
 
