@@ -1,21 +1,21 @@
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder } from 'discord.js';
 
-const playCommand = {
+const PlayCommand = {
     data: new SlashCommandBuilder()
-        .setName("play")
-        .setDescription("— Play a song.")
-        .addStringOption(option =>
-            option.setName("song").setDescription("The song you want to play.").setRequired(true),
+        .setName('play')
+        .setDescription('— Play a song.')
+        .addStringOption((option) =>
+            option.setName('song').setDescription('The song you want to play.').setRequired(true),
         ),
     async execute(interaction, client) {
         await interaction.deferReply();
 
-        const song_name = interaction.options.getString("song");
+        const song_name = interaction.options.getString('song');
 
         // Check if the user is in a voice channel
         if (!interaction.member.voice.channel) {
             return interaction.reply({
-                content: "You need to be in a voice channel to play music!",
+                content: 'You need to be in a voice channel to play music!',
                 ephemeral: true,
             });
         }
@@ -47,4 +47,4 @@ const playCommand = {
     },
 };
 
-export default playCommand;
+export default PlayCommand;

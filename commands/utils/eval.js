@@ -5,36 +5,44 @@ import {
     ButtonBuilder,
     AttachmentBuilder,
     SlashCommandBuilder,
-} from "discord.js";
-import fetch from "node-fetch";
-import config from "../../config.js";
-import { inspect } from "util";
+} from 'discord.js';
+import fetch from 'node-fetch';
+import config from '../../config.js';
+import { inspect } from 'util';
 
 const webhook = new WebhookClient({
     id: config.webhook_id,
     token: config.webhook_token,
 });
 
-const evalCommand = {
+const EvalCommand = {
     data: new SlashCommandBuilder()
-        .setName("eval")
-        .setDescription("— Developer only.")
-        .setNameLocalizations({ tr: "değerlendir", it: "valutare", ChineseCN: "评估" })
-        .setDescriptionLocalizations({
-            tr: "— Sadece geliştiriciler için.",
-            it: "— Solo per sviluppatori.",
-            ChineseCN: "— 仅限开发人员。",
+        .setName('eval')
+        .setDescription('— Developer only.')
+        .setNameLocalizations({
+            tr: 'değerlendir',
+            it: 'valutare',
+            ChineseCN: '评估',
         })
-        .addStringOption(option =>
+        .setDescriptionLocalizations({
+            tr: '— Sadece geliştiriciler için.',
+            it: '— Solo per sviluppatori.',
+            ChineseCN: '— 仅限开发人员。',
+        })
+        .addStringOption((option) =>
             option
-                .setName("input")
-                .setDescription("• Please input the code.")
+                .setName('input')
+                .setDescription('• Please input the code.')
                 .setRequired(true)
-                .setNameLocalizations({ tr: "girdi", it: "input", ChineseCN: "输入" })
+                .setNameLocalizations({
+                    tr: 'girdi',
+                    it: 'input',
+                    ChineseCN: '输入',
+                })
                 .setDescriptionLocalizations({
-                    tr: "• Lütfen kodu girin.",
-                    it: "• Inserisci il codice.",
-                    ChineseCN: "• 请输入代码。",
+                    tr: '• Lütfen kodu girin.',
+                    it: '• Inserisci il codice.',
+                    ChineseCN: '• 请输入代码。',
                 }),
         ),
     async execute(interaction, client) {
@@ -46,12 +54,12 @@ const evalCommand = {
 
         // Emojis
         const [debug_emoji, warning_emoji] = [
-            "<:debug:1020403337738334208>",
-            "<:warning:1020401563468058664>",
+            '<:debug:1020403337738334208>',
+            '<:warning:1020401563468058664>',
         ];
 
         // If the user is not Neo, return nothing.
-        if (!"285118390031351809".includes(interaction.member.user.id))
+        if (!'285118390031351809'.includes(interaction.member.user.id))
             return interaction.reply({
                 content: `${warning_emoji} You can not use this command.`,
                 ephemeral: true,
@@ -59,9 +67,9 @@ const evalCommand = {
 
         // The input and output
         try {
-            let evaluated = eval(interaction.options.getString("input"));
+            let evaluated = eval(interaction.options.getString('input'));
             evaluated =
-                typeof evaluated === "object"
+                typeof evaluated === 'object'
                     ? inspect(evaluated, { depth: 0, showHidden: false })
                     : evaluated;
 
@@ -76,4 +84,4 @@ const evalCommand = {
     },
 };
 
-export default evalCommand;
+export default EvalCommand;

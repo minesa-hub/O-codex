@@ -1,12 +1,12 @@
-import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
+import { ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
 
-const userBannerCommand = {
+const UserBannerCommand = {
     data: new ContextMenuCommandBuilder()
-        .setName("User Banner")
+        .setName('User Banner')
         .setNameLocalizations({
-            tr: "Kullanıcı Bannerı",
-            it: "Banner Utente",
-            ChineseCN: "用户横幅",
+            tr: 'Kullanıcı Bannerı',
+            it: 'Banner Utente',
+            ChineseCN: '用户横幅',
         })
         .setType(ApplicationCommandType.User),
     async execute(interaction, client) {
@@ -34,4 +34,4 @@ const userBannerCommand = {
     },
 };
 
-export default userBannerCommand;
+export default UserBannerCommand;
