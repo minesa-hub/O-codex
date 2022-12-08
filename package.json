@@ -21,9 +21,8 @@
     "homepage": "https://github.com/minesa-hub/Neobot#readme",
     "dependencies": {
         "@iamtraction/google-translate": "^2.0.0",
-        "better-sqlite3": "^7.6.2",
         "discord.js": "^14.6.0",
-        "node-fetch": "^3.2.10",
-        "quick.db": "^9.0.6"
+        "erela.js": "^2.4.0",
+        "node-fetch": "^3.2.10"
     }
 }

@@ -1,12 +1,12 @@
-import { ContextMenuCommandBuilder, ApplicationCommandType } from "discord.js";
+import { ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
 
-const avatarCommand = {
+const AvatarCommand = {
     data: new ContextMenuCommandBuilder()
-        .setName("User Avatar")
+        .setName('User Avatar')
         .setNameLocalizations({
-            tr: "Kullanıcı Avatarı",
-            it: "Avatar Utente",
-            ChineseCN: "用户头像",
+            tr: 'Kullanıcı Avatarı',
+            it: 'Avatar Utente',
+            ChineseCN: '用户头像',
         })
         .setType(ApplicationCommandType.User),
     async execute(interaction) {
@@ -17,7 +17,7 @@ const avatarCommand = {
         await interaction.reply({
             content: `>>> ${target.user.avatarURL({
                 dynamic: true,
-                extension: "jpg",
+                extension: 'jpg',
                 size: 4096,
             })}`,
             ephemeral: true,
@@ -25,4 +25,4 @@ const avatarCommand = {
     },
 };
 
-export default avatarCommand;
+export default AvatarCommand;
