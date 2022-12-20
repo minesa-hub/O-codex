@@ -1,13 +1,13 @@
-export const name = "interactionCreate";
+export const name = 'interactionCreate';
 export async function execute(interaction) {
-    if (interaction.isSelectMenu()) {
+    if (interaction.isStringSelectMenu()) {
         // Color Roles Button on the Get Color Roles
         if (
-            interaction.customId === "ColorRolesMenu" ||
-            interaction.customId === "OtherRolesMenu1" ||
-            interaction.customId === "OtherRolesMenu2" ||
-            interaction.customId === "OtherRolesMenu3" ||
-            interaction.customId === "OtherRolesMenu4"
+            interaction.customId === 'ColorRolesMenu' ||
+            interaction.customId === 'OtherRolesMenu1' ||
+            interaction.customId === 'OtherRolesMenu2' ||
+            interaction.customId === 'OtherRolesMenu3' ||
+            interaction.customId === 'OtherRolesMenu4'
         ) {
             await interaction.deferUpdate({ ephemeral: true });
 
