@@ -1,4 +1,4 @@
-export const name = "interactionCreate";
+export const name = 'interactionCreate';
 export async function execute(interaction) {
     // Defining the client
     let client = interaction.client;
@@ -14,9 +14,5 @@ export async function execute(interaction) {
         await command.execute(interaction, client);
     } catch (error) {
         console.error(error);
-        await interaction.reply({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
-        });
     }
 }

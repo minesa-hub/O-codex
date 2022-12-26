@@ -7,12 +7,12 @@ import {
     SlashCommandBuilder,
 } from 'discord.js';
 import fetch from 'node-fetch';
-import config from '../../config.js';
+import config from '../../../config.js';
 import { inspect } from 'util';
 
 const webhook = new WebhookClient({
-    id: config.webhook_id,
-    token: config.webhook_token,
+    id: config.webhookId,
+    token: config.webhookToken,
 });
 
 const EvalCommand = {
