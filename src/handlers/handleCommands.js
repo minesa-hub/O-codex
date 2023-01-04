@@ -14,7 +14,7 @@ const handleCommands = (client) => {
             );
 
             for (const file of commandFiles) {
-                const command = (await import(`../commands/${folder}/${file}`)).default;
+                const command = (await import(`../commands/${folder}/${file}`).then(command => command.default));
 
                 console.log(`[COMMAND] ${command.data.name} loaded.`.underline.green);
                 client.commandArray.push(command.data.toJSON());

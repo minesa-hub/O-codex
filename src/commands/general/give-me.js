@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 
-const GiveMeCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('give-me')
         .setDescription('— Take the key and lock yourself in the top of all roles.')
@@ -10,7 +10,7 @@ const GiveMeCommand = {
             it: '— Prendi la chiave e bloccati in cima a tutti i ruoli.',
             ChineseCN: '— 拿起钥匙，把自己锁在所有角色的顶部。',
         }),
-    async execute(interaction, client) {
+    async execute({ interaction, client }) {
         // Declaring the role
         const role = '805451556081500220';
         // Declaring the guild
@@ -35,5 +35,3 @@ const GiveMeCommand = {
         });
     },
 };
-
-export default GiveMeCommand;

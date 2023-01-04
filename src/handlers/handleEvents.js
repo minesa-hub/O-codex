@@ -2,7 +2,7 @@
 const handleEvents = client => {
     client.handleEvents = async eventFiles => {
         for (const file of eventFiles) {
-            const event = await import(`../events/${file}`);
+            const event = await import(`../events/${file}`).then(module => module.default);
             if (event.once) {
                 client.once(event.name, (...args) => event.execute(...args, client));
             } else {

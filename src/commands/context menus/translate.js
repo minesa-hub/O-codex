@@ -1,7 +1,7 @@
 import translate from '@iamtraction/google-translate';
 import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 
-const TranslateCommand = {
+export default {
     data: new ContextMenuCommandBuilder()
         .setName('Translate')
         .setNameLocalizations({
@@ -10,7 +10,7 @@ const TranslateCommand = {
             ChineseCN: '翻译',
         })
         .setType(ApplicationCommandType.Message),
-    async execute(interaction) {
+    async execute({ interaction }) {
         // Getting the message from the context menu
         const message = interaction.options.getMessage('message', true);
         await interaction.deferReply({ ephemeral: true });
@@ -41,5 +41,3 @@ const TranslateCommand = {
         }
     },
 };
-
-export default TranslateCommand;

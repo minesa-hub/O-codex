@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 import { fetch } from 'undici';
 
-const NSFWCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('nsfw')
         .setDescription('— Access to NSFW images.')
@@ -50,7 +50,7 @@ const NSFWCommand = {
                     tr: 'Resmi kısmi mesaj olarak göster veya gösterme, seçim senin?',
                 }),
         ),
-    async execute(interaction, client) {
+    async execute({ interaction }) {
         // Adding "category" and "ephemeral" options for the slash
         const category = interaction.options.getString('category');
         const ephemeral = interaction.options.getBoolean('ephemeral');
@@ -85,5 +85,3 @@ const NSFWCommand = {
         }
     },
 };
-
-export default NSFWCommand;
