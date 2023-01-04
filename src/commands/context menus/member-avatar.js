@@ -1,24 +1,18 @@
-import {
-    ContextMenuCommandBuilder,
-    ApplicationCommandType,
-    ButtonBuilder,
-    ButtonStyle,
-    ActionRowBuilder,
-} from 'discord.js';
+import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 
 export default {
     data: new ContextMenuCommandBuilder()
-        .setName('User Avatar')
+        .setName('Member Avatar')
         .setNameLocalizations({
-            tr: 'Kullanıcı Avatarı',
-            it: 'Avatar Utente',
-            ChineseCN: '用户头像',
+            tr: 'Üye Avatarı',
+            it: 'Avatar Membro',
+            ChineseCN: '成员头像',
         })
         .setType(ApplicationCommandType.User),
     async execute({ interaction }) {
-        // Getting the user from the context menu
+        // Getting the member from the context menu
         const target = interaction.guild.members.cache.get(interaction.targetId);
-        const targetAvatar = target.user.avatarURL({
+        const targetAvatar = target.displayAvatarURL({
             format: target.user.avatar.startsWith('a_') ? 'gif' : 'png',
             dynamic: true,
             size: 4096,
