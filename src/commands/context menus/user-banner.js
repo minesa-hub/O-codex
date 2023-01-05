@@ -1,20 +1,20 @@
 import { ContextMenuCommandBuilder, ApplicationCommandType } from 'discord.js';
 
-const UserBannerCommand = {
+export default {
     data: new ContextMenuCommandBuilder()
         .setName('User Banner')
         .setNameLocalizations({
-            tr: 'Kullanıcı Bannerı',
+            tr: 'Kullanıcı Afişi',
             it: 'Banner Utente',
             ChineseCN: '用户横幅',
         })
         .setType(ApplicationCommandType.User),
-    async execute(interaction, client) {
+    async execute({ interaction, client }) {
         // Getting the user from the context menu
         let user = client.users.fetch(interaction.targetId, { force: true });
 
         // Creating the reply
-        user.then(async function (res) {
+        user.then(async (res) => {
             // Save the banner URL in a variable
             var imgURL = res.bannerURL({ size: 4096, dynamic: true });
 
@@ -33,5 +33,3 @@ const UserBannerCommand = {
         });
     },
 };
-
-export default UserBannerCommand;

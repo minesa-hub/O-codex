@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } from 'discord.js';
 
-const PollCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('poll')
         .setDescription('— Create a poll.')
@@ -22,7 +22,7 @@ const PollCommand = {
                     ChineseCN: '— 要问的问题。',
                 }),
         ),
-    async execute(interaction) {
+    async execute({ interaction }) {
         // Gettings the question
         const question = interaction.options.getString('question');
 
@@ -55,5 +55,3 @@ const PollCommand = {
         msg.react('1020408108998197331');
     },
 };
-
-export default PollCommand;

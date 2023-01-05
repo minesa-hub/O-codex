@@ -15,7 +15,7 @@ const webhook = new WebhookClient({
     token: config.webhookToken,
 });
 
-const EvalCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('eval')
         .setDescription('— Developer only.')
@@ -45,7 +45,7 @@ const EvalCommand = {
                     ChineseCN: '• 请输入代码。',
                 }),
         ),
-    async execute(interaction, client) {
+    async execute({ interaction, client }) {
         // Defining the client, guild, channel, member, and user
         let channel = interaction.channel;
         let guild = interaction.guild;
@@ -83,5 +83,3 @@ const EvalCommand = {
         }
     },
 };
-
-export default EvalCommand;

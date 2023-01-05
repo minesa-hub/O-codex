@@ -1,6 +1,12 @@
-import { ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder } from 'discord.js';
+import {
+    ContextMenuCommandBuilder,
+    ApplicationCommandType,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder,
+} from 'discord.js';
 
-const AvatarCommand = {
+export default {
     data: new ContextMenuCommandBuilder()
         .setName('User Avatar')
         .setNameLocalizations({
@@ -9,26 +15,19 @@ const AvatarCommand = {
             ChineseCN: '用户头像',
         })
         .setType(ApplicationCommandType.User),
-    async execute(interaction) {
+    async execute({ interaction }) {
         // Getting the user from the context menu
         const target = interaction.guild.members.cache.get(interaction.targetId);
         const targetAvatar = target.user.avatarURL({
+            format: target.user.avatar.startsWith('a_') ? 'gif' : 'png',
             dynamic: true,
-            extension: 'jpg',
             size: 4096,
         });
 
-        // Creating Embed
-        const embed = new EmbedBuilder()
-            .setTitle(`**${target.user.tag}**'s avatar:`)
-            .setImage(targetAvatar)
-            .setColor(target.roles.highest.color || 'NotQuiteBlack');
         // Creating the reply
         await interaction.reply({
-            embeds: [embed],
+            content: `${targetAvatar}`,
             ephemeral: true,
         });
     },
 };
-
-export default AvatarCommand;

@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, parseEmoji } from 'discord.js';
 
-const AddEmojiCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('addemoji')
         .setDescription('— Adds an emoji to the server.')
@@ -34,7 +34,7 @@ const AddEmojiCommand = {
                     ChineseCN: '• 表情。',
                 }),
         ),
-    async execute(interaction) {
+    async execute({ interaction }) {
         // Adding "name" and "emoji" options for the slash
         const name = interaction.options.getString('name');
         const emoji = interaction.options.getString('emoji');
@@ -69,5 +69,3 @@ const AddEmojiCommand = {
         }
     },
 };
-
-export default AddEmojiCommand;

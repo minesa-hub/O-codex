@@ -1,13 +1,13 @@
 import { SlashCommandBuilder } from 'discord.js';
 
-const PlayCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('— Play a song.')
         .addStringOption((option) =>
             option.setName('song').setDescription('The song you want to play.').setRequired(true),
         ),
-    async execute(interaction, client) {
+    async execute({ interaction, client }) {
         await interaction.deferReply();
 
         const song_name = interaction.options.getString('song');
@@ -46,5 +46,3 @@ const PlayCommand = {
         });
     },
 };
-
-export default PlayCommand;

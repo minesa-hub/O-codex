@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { fetch } from 'undici';
 
-const MemeCommand = {
+export default {
     data: new SlashCommandBuilder()
         .setName('meme')
         .setDescription('— Sends a random meme from somewhere.')
@@ -11,7 +11,7 @@ const MemeCommand = {
             it: '— Invia un meme casuale da qualche parte.',
             ChineseCN: '— 从某处发送一个随机梗图。',
         }),
-    async execute(interaction) {
+    async execute({ interaction }) {
         // Deferring the reply
         await interaction.deferReply();
 
@@ -31,5 +31,3 @@ const MemeCommand = {
         }
     },
 };
-
-export default MemeCommand;
