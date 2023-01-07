@@ -14,6 +14,45 @@ export default {
     async execute(interaction) {
         if (interaction.isButton()) {
             let client = interaction.client;
+            const args = interaction.customId.split('_');
+
+            // ———————————————[MEMBER AVATAR]——————————————— //
+            if (args[0] === 'ShowMemberAvatar') {
+                await interaction.deferUpdate();
+
+                const member = interaction.guild.members.cache.get(args[1]);
+
+                const memberAvatar = member.avatarURL({
+                    dynamic: true,
+                    size: 4096,
+                });
+
+                const button = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('e')
+                        .setLabel('Displaying Member Avatar')
+                        .setStyle(ButtonStyle.Secondary)
+                        .setEmoji('<:git_eye:992920314172424242>')
+                        .setDisabled(true),
+                );
+
+                const nullButton = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder()
+                        .setCustomId('e')
+                        .setLabel('No Avatar Settled')
+                        .setStyle(ButtonStyle.Secondary)
+                        .setEmoji('<:git_eye:992920314172424242>')
+                        .setDisabled(true),
+                );
+
+                return interaction.update({
+                    content: memberAvatar
+                        ? `${memberAvatar}`
+                        : 'They do not have a profile picture for this server.',
+                    components: [button ? button : nullButton],
+                    ephemeral: true,
+                });
+            }
 
             // ———————————————[POLL BUTTON]——————————————— //
             if (interaction.customId === 'poll-discussion') {
