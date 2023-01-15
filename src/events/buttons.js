@@ -29,7 +29,7 @@ export default {
 
                 const button = new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
-                        .setCustomId('e')
+                        .setCustomId('disabled')
                         .setLabel('Displaying Member Avatar')
                         .setStyle(ButtonStyle.Secondary)
                         .setEmoji('<:git_eye:992920314172424242>')
@@ -38,19 +38,18 @@ export default {
 
                 const nullButton = new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
-                        .setCustomId('e')
+                        .setCustomId('disabled')
                         .setLabel('No Avatar Settled')
                         .setStyle(ButtonStyle.Secondary)
                         .setEmoji('<:git_eye:992920314172424242>')
                         .setDisabled(true),
                 );
 
-                return interaction.update({
+                return interaction.editReply({
                     content: memberAvatar
                         ? `${memberAvatar}`
                         : 'They do not have a profile picture for this server.',
-                    components: [button ? button : nullButton],
-                    ephemeral: true,
+                    components: [memberAvatar ? button : nullButton]
                 });
             }
 

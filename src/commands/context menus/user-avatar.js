@@ -17,7 +17,7 @@ export default {
         .setType(ApplicationCommandType.User),
     async execute({ interaction }) {
         // Deferring the reply
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: true });
 
         // Getting the user from the context menu
         const target = interaction.guild.members.cache.get(interaction.targetId);
@@ -32,14 +32,13 @@ export default {
                 .setCustomId(`ShowMemberAvatar_${target.id}`)
                 .setLabel('See Their Member Avatar!')
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji("<:git_eye:992920314172424242>"),
+                .setEmoji('<:git_eye:992920314172424242>'),
         );
 
         // Creating the reply
-        await interaction.reply({
+        await interaction.followUp({
             content: `${targetAvatar}`,
             components: [button],
-            ephemeral: true,
         });
     },
 };
