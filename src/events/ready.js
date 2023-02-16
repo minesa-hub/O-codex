@@ -10,6 +10,6 @@ export default {
         console.log(`[READY] Logged in as ${client.user.tag}!`.green);
 
         // Fetching the message on rules channel to bot does not die from restart.
-        client.channels.cache.get('889266702620176434').messages.fetch('1030252706696269854');
+        client.channels.cache.get('889266702620176434').messages.fetch('1075866763616604170');
     },
 };
