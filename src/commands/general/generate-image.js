@@ -27,6 +27,8 @@ export default {
                 .setDescriptionLocalizations({ tr: '• Hayal gücünde neler var? 👀' }),
         ),
     async execute({ interaction }) {
+        await interaction.deferReply();
+        
         // Configuration of openai
         const configuration = new Configuration({
             apiKey: config.openai.apiKey,
@@ -35,16 +37,15 @@ export default {
         const openai = new OpenAIApi(configuration);
 
         if (interaction.channel.id === '1071856982748844124') {
-            if (interaction.author.bot) return;
             try {
                 const imageUrl = await openai.createImage({
-                    prompt: interaction.content,
+                    prompt: interaction.options.getString('text'),
                     n: 1,
                     size: '1024x1024',
                 });
-                interaction.reply({ content: `${imageUrl.data.data[0].url}` });
+                interaction.editReply({ content: `${imageUrl.data.data[0].url}` });
             } catch (error) {
-                interaction.reply({ content: 'eh?' });
+                interaction.editReply({ content: 'Cannot make it.' });
                 console.log(error);
             }
         }
