@@ -6,10 +6,10 @@ import config from './config.js';
 
 // Creating a new client
 const client = new Client({
-    intents: ['Guilds', 'GuildMessages', 'MessageContent', 'GuildVoiceStates', 'GuildMembers'],
-    partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'REACTION', 'USER'],
+    intents: ['Guilds', 'GuildVoiceStates', 'GuildMembers'],
+    partials: ['CHANNEL', 'GUILD_MEMBER', 'USER'],
     presence: {
-        activities: [{ name: 'Spotify', type: ActivityType.Listening }],
+        activities: [{ name: 'You', type: ActivityType.Listening }],
         status: 'dnd',
     },
 });
