@@ -4,6 +4,7 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ActionRowBuilder,
+    EmbedBuilder,
 } from 'discord.js';
 
 export default {
@@ -26,6 +27,12 @@ export default {
             size: 4096,
         });
 
+        // Creating an embed
+        const embed = new EmbedBuilder()
+            .setTitle(`${target.user.username}'s Avatar`)
+            .setImage(targetAvatar)
+
+
         // Creating a new button
         const button = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -37,7 +44,7 @@ export default {
 
         // Creating the reply
         await interaction.followUp({
-            content: `${targetAvatar}`,
+            embeds: [embed],
             components: [button],
         });
     },

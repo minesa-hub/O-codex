@@ -364,7 +364,7 @@ export default {
             }
 
             // ———————————————[INFO OF ROLES]——————————————— //
-            if (interaction.customId === 'faq') {
+            if (interaction.customId === 'GetInfo') {
                 await interaction.deferReply({ ephemeral: true });
 
                 const row = new ActionRowBuilder().addComponents(
