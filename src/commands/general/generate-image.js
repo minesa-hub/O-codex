@@ -37,6 +37,9 @@ export default {
         const openai = new OpenAIApi(configuration);
 
         if (interaction.channel.id === '1071856982748844124') {
+
+            if (interaction.author.bot) return;
+            
             try {
                 const imageUrl = await openai.createImage({
                     prompt: interaction.options.getString('text'),
@@ -45,7 +48,11 @@ export default {
                 });
                 interaction.editReply({ content: `${imageUrl.data.data[0].url}` });
             } catch (error) {
-                interaction.editReply({ content: 'Cannot make it.' });
+                interaction.reply({
+                    content:
+                        "Couldn't generate that image... Am I the problem or you? Can't decide...",
+                    ephemeral: true,
+                });
                 console.log(error);
             }
         }
