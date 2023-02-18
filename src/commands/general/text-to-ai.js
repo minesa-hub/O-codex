@@ -9,7 +9,7 @@ export default {
         .setDescription('— Ask to artificial intelligence anything in your mind!')
         .setNameLocalizations({
             tr: 'yapay-zekaya-sor',
-            it: "chiedi-all'intelligenza-artificiale",
+            it: "chiedi-ai",
             'zh-CN': '问人工智能',
         })
         .setDescriptionLocalizations({
