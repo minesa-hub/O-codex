@@ -36,6 +36,7 @@ export default {
 
         if (interaction.channel.id === '1071856982748844124') {
             if (interaction.author.bot) return;
+            
             try {
                 const imageUrl = await openai.createImage({
                     prompt: interaction.content,
@@ -44,7 +45,11 @@ export default {
                 });
                 interaction.reply({ content: `${imageUrl.data.data[0].url}` });
             } catch (error) {
-                interaction.reply({ content: 'eh?' });
+                interaction.reply({
+                    content:
+                        "Couldn't generate that image... Am I the problem or you? Can't decide...",
+                    ephemeral: true,
+                });
                 console.log(error);
             }
         }
