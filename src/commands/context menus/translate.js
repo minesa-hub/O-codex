@@ -1,5 +1,5 @@
 import translate from '@iamtraction/google-translate';
-import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
+import { ApplicationCommandType, ContextMenuCommandBuilder, EmbedBuilder } from 'discord.js';
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -31,8 +31,29 @@ export default {
                 },
             );
 
+            // Creating an embed
+            const embed = new EmbedBuilder()
+                .setAuthor({
+                    name: 'Translation',
+                    iconURL: interaction.user.displayAvatarURL(),
+                    url: 'https://discord.gg/Q8aTPfeNra',
+                })
+                .setThumbnail(
+                    'https://media.discordapp.net/attachments/861208192121569280/1079837970309332992/Community_forum.png?width=473&height=473',
+                )
+                .setColor('#70a2ff')
+                .addFields(
+                    { name: 'Original', value: message.content, inline: true },
+                    { name: 'Translated', value: translated.text, inline: true },
+                )
+                .setFooter({
+                    text: 'Translated!',
+                    iconURL: interaction.client.user.displayAvatarURL(),
+                })
+                .setTimestamp();
+
             // Sending the translated message
-            return interaction.editReply({ content: translated.text });
+            return interaction.editReply({ embeds: [embed] });
         } catch (error) {
             // Sending an error message
             return interaction.editReply({
