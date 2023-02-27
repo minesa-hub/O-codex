@@ -30,16 +30,16 @@ export default {
         // Creating an embed
         const embed = new EmbedBuilder()
             .setTitle(`${target.user.username}'s Avatar`)
-            .setImage(targetAvatar)
-
+            .setColor('#70a2ff')
+            .setImage(targetAvatar);
 
         // Creating a new button
         const button = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId(`ShowMemberAvatar_${target.id}`)
-                .setLabel('See Their Member Avatar!')
+                .setLabel("Let's see the member avatar!")
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji('<:git_eye:992920314172424242>'),
+                .setEmoji('<:magnifying_glass:1079845740446232626>'),
         );
 
         // Creating the reply

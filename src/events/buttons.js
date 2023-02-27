@@ -32,7 +32,7 @@ export default {
                         .setCustomId('disabled')
                         .setLabel('Displaying Member Avatar')
                         .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('<:git_eye:992920314172424242>')
+                        .setEmoji('<:magnifying_glass:1079845740446232626>')
                         .setDisabled(true),
                 );
 
@@ -41,7 +41,7 @@ export default {
                         .setCustomId('disabled')
                         .setLabel('No Avatar Settled')
                         .setStyle(ButtonStyle.Secondary)
-                        .setEmoji('<:git_eye:992920314172424242>')
+                        .setEmoji('<:magnifying_glass:1079845740446232626>')
                         .setDisabled(true),
                 );
 
