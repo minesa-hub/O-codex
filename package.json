@@ -24,6 +24,7 @@
         "colors": "^1.4.0",
         "discord.js": "^14.9.0",
         "erela.js": "^2.4.0",
+        "moment-timezone": "^0.5.43",
         "mongoose": "^6.9.2",
         "node-fetch": "^3.2.10",
         "openai": "^3.1.0"

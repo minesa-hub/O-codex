@@ -17,9 +17,9 @@ const client = new Client({
 // Creating nodes for the manager
 const nodes = [
     {
-        host: config.music.lavalinkHost,
-        password: config.music.lavalinkPassword,
-        port: config.music.lavalinkPort,
+        host: config.music.host,
+        password: config.music.password,
+        port: config.music.port,
         secure: true,
     },
 ];
