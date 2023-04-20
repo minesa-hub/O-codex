@@ -12,7 +12,8 @@ export default {
             it: "Avatar Utente",
             tr: "Kullanıcı Avatarı-",
         })
-        .setType(ApplicationCommandType.User),
+        .setType(ApplicationCommandType.User)
+        .setDMPermission(false),
     execute: async ({ interaction }) => {
         await interaction.deferReply({ ephemeral: true });
 

@@ -19,7 +19,8 @@ export default {
             tr: "Herhangi bir şey hakkında tartışma oluşturun!",
             it: "Crea una discussione su qualsiasi cosa!",
             ChineseCN: "创建关于任何事情的讨论！",
-        }),
+        })
+        .setDMPermission(false),
     execute: async ({ interaction }) => {
         const discussionModal = new ModalBuilder()
             .setCustomId("create-discussion-modal")

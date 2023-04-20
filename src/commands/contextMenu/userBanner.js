@@ -12,7 +12,8 @@ export default {
             it: "Banner Utente",
             tr: "Kullanıcı Afişi",
         })
-        .setType(ApplicationCommandType.User),
+        .setType(ApplicationCommandType.User)
+        .setDMPermission(false),
     execute: async ({ interaction, client }) => {
         await interaction.deferReply({ ephemeral: true });
 
