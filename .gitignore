@@ -1,12 +1,6 @@
 # Dependency dictatory
 node_modules
 
-# Config files
-config.js
-
-# Database files
-json.sqlite
-
 # VSCode
 .vscode
 
