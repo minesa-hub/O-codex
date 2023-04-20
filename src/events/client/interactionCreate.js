@@ -1,4 +1,4 @@
-import { Events, InteractionType } from 'discord.js';
+import { Events, InteractionType } from "discord.js";
 
 export default {
     name: Events.InteractionCreate,
@@ -21,7 +21,7 @@ export default {
             const { customId } = interaction;
             const button = buttons.get(customId);
 
-            if (!button) return new Error('Button not found.');
+            if (!button) return new Error("Button not found.");
 
             try {
                 await button.execute({ interaction, client });
@@ -33,7 +33,7 @@ export default {
             const { customId } = interaction;
             const selectMenu = selectMenus.get(customId);
 
-            if (!selectMenu) return new Error('Select menu not found.');
+            if (!selectMenu) return new Error("Select menu not found.");
 
             try {
                 await selectMenu.execute({ interaction, client });
@@ -45,7 +45,7 @@ export default {
             const { customId } = interaction;
             const modal = modals.get(customId);
 
-            if (!modal) return new Error('Modal not found.');
+            if (!modal) return new Error("Modal not found.");
 
             try {
                 await modal.execute({ interaction, client });
@@ -64,7 +64,9 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-        } else if (interaction.type == InteractionType.ApplicationCommandAutocomplete) {
+        } else if (
+            interaction.type == InteractionType.ApplicationCommandAutocomplete
+        ) {
             const { commands } = client;
             const { commandName } = interaction;
             const autocompleteCommand = commands.get(commandName);

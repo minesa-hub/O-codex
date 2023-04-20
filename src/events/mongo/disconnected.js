@@ -1,8 +1,10 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
 export default {
-    name: 'disconnected',
-    execute() {
-        console.log(chalk.yellowBright('Disconnected from MongoDB!'));
+    name: "disconnected",
+    execute: () => {
+        console.log(
+            chalk.yellowBright("[Mongoose]: Disconnected from MongoDB!"),
+        );
     },
 };

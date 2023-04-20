@@ -1,12 +1,16 @@
-import { ContextMenuCommandBuilder, ApplicationCommandType, EmbedBuilder } from 'discord.js';
+import {
+    ContextMenuCommandBuilder,
+    ApplicationCommandType,
+    EmbedBuilder,
+} from "discord.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
-        .setName('User Banner')
+        .setName("User Banner")
         .setNameLocalizations({
-            ChineseCN: '用户横幅',
-            it: 'Banner Utente',
-            tr: 'Kullanıcı Afişi',
+            ChineseCN: "用户横幅",
+            it: "Banner Utente",
+            tr: "Kullanıcı Afişi",
         })
         .setType(ApplicationCommandType.User),
     execute: async ({ interaction, client }) => {
@@ -23,7 +27,7 @@ export default {
 
             if (imageURI === null) {
                 await interaction.editReply({
-                    content: 'User has no banner set.',
+                    content: "User has no banner set.",
                     ephemeral: true,
                 });
             } else {
