@@ -1,7 +1,13 @@
-import { ActivityType, Client, Collection, GatewayIntentBits, Partials } from 'discord.js';
-import { connect } from 'mongoose';
-import fs from 'fs';
-import { config } from 'dotenv';
+import {
+    ActivityType,
+    Client,
+    Collection,
+    GatewayIntentBits,
+    Partials,
+} from "discord.js";
+import { connect } from "mongoose";
+import fs from "fs";
+import { config } from "dotenv";
 config();
 
 const { TOKEN, DATABASE_URI } = process.env;
@@ -13,10 +19,10 @@ const client = new Client({
     ],
     partials: [Partials.GuildMember, Partials.GuildScheduledEvent],
     presence: {
-        status: 'dnd',
+        status: "dnd",
         activities: [
             {
-                name: 'What is happening? 👀',
+                name: "What is happening? 👀",
                 type: ActivityType.Watching,
             },
         ],
@@ -29,11 +35,11 @@ client.selectMenus = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
 
-const functionFolders = fs.readdirSync('./src/functions');
+const functionFolders = fs.readdirSync("./src/functions");
 for (const folder of functionFolders) {
     const functionFiles = fs
         .readdirSync(`./src/functions/${folder}`)
-        .filter((file) => file.endsWith('.js'));
+        .filter((file) => file.endsWith(".js"));
 
     for (const file of functionFiles) {
         const { default: func } = await import(`./functions/${folder}/${file}`);

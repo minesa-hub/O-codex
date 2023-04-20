@@ -1,8 +1,8 @@
-import chalk from 'chalk';
+import chalk from "chalk";
 
 export default {
-    name: 'connected',
-    execute() {
-        console.log(chalk.green('Connected to MongoDB!'));
+    name: "connected",
+    execute: () => {
+        console.log(chalk.green("[Mongoose]: Connected to MongoDB!"));
     },
 };

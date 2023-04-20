@@ -1,43 +1,69 @@
-import fs from 'fs';
-import chalk from 'chalk';
+import fs from "fs";
+import chalk from "chalk";
 
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 const { connection } = mongoose;
 
 export default async (client) => {
     client.handleEvents = async () => {
-        const eventFolders = fs.readdirSync('./src/events');
+        const eventFolders = fs.readdirSync("./src/events");
 
         for (const folder of eventFolders) {
             const eventFiles = fs
                 .readdirSync(`./src/events/${folder}`)
-                .filter((file) => file.endsWith('.js'));
+                .filter((file) => file.endsWith(".js"));
 
             switch (folder) {
-                case 'client':
+                case "client":
                     for (const file of eventFiles) {
-                        const { default: event } = await import(`../../events/${folder}/${file}`);
+                        const { default: event } = await import(
+                            `../../events/${folder}/${file}`
+                        );
                         if (event.once) {
-                            client.once(event.name, (...args) => event.execute(...args, client));
-                            console.log(chalk.green(`[Events]: Loaded ${event.name} event.`));
+                            client.once(event.name, (...args) =>
+                                event.execute(...args, client),
+                            );
+                            console.log(
+                                chalk.green(
+                                    `[Events]: Loaded ${event.name} event.`,
+                                ),
+                            );
                         } else {
-                            client.on(event.name, (...args) => event.execute(...args, client));
-                            console.log(chalk.green(`[Events]: Loaded ${event.name} event.`));
+                            client.on(event.name, (...args) =>
+                                event.execute(...args, client),
+                            );
+                            console.log(
+                                chalk.green(
+                                    `[Events]: Loaded ${event.name} event.`,
+                                ),
+                            );
                         }
                     }
                     break;
 
-                case 'mongo':
+                case "mongo":
                     for (const file of eventFiles) {
-                        const { default: event } = await import(`../../events/${folder}/${file}`);
+                        const { default: event } = await import(
+                            `../../events/${folder}/${file}`
+                        );
                         if (connection.once) {
                             connection.once(event.name, (...args) =>
                                 event.execute(...args, client),
                             );
-                            console.log(chalk.green(`[Events]: Loaded ${event.name} event.`));
+                            console.log(
+                                chalk.green(
+                                    `[Events]: Loaded ${event.name} event.`,
+                                ),
+                            );
                         } else {
-                            connection.on(event.name, (...args) => event.execute(...args, client));
-                            console.log(chalk.green(`[Events]: Loaded ${event.name} event.`));
+                            connection.on(event.name, (...args) =>
+                                event.execute(...args, client),
+                            );
+                            console.log(
+                                chalk.green(
+                                    `[Events]: Loaded ${event.name} event.`,
+                                ),
+                            );
                         }
                     }
                     break;

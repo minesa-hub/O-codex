@@ -1,19 +1,19 @@
-import fs from 'fs';
-import chalk from 'chalk';
+import fs from "fs";
+import chalk from "chalk";
 
 export default (client) => {
     client.handleComponents = async () => {
-        const componentFolders = fs.readdirSync('./src/components');
+        const componentFolders = fs.readdirSync("./src/components");
 
         for (const folder of componentFolders) {
             const componentFiles = fs
                 .readdirSync(`./src/components/${folder}`)
-                .filter((file) => file.endsWith('.js'));
+                .filter((file) => file.endsWith(".js"));
 
             const { buttons, selectMenus, modals } = client;
 
             switch (folder) {
-                case 'buttons':
+                case "buttons":
                     for (const file of componentFiles) {
                         const { default: button } = await import(
                             `../../components/${folder}/${file}`
@@ -21,11 +21,13 @@ export default (client) => {
                         buttons.set(button.data.customId, button);
 
                         console.log(
-                            chalk.green(`[Buttons]: Loaded ${button.data.customId} button.`),
+                            chalk.green(
+                                `[Buttons]: Loaded ${button.data.customId} button.`,
+                            ),
                         );
                     }
                     break;
-                case 'selectMenus':
+                case "selectMenus":
                     for (const file of componentFiles) {
                         const { default: selectMenu } = await import(
                             `../../components/${folder}/${file}`
@@ -40,14 +42,18 @@ export default (client) => {
                     }
                     break;
 
-                case 'modals':
+                case "modals":
                     for (const file of componentFiles) {
                         const { default: modal } = await import(
                             `../../components/${folder}/${file}`
                         );
                         modals.set(modal.data.customId, modal);
 
-                        console.log(chalk.green(`[Modals]: Loaded ${modal.data.customId} modal.`));
+                        console.log(
+                            chalk.green(
+                                `[Modals]: Loaded ${modal.data.customId} modal.`,
+                            ),
+                        );
                     }
 
                 default:

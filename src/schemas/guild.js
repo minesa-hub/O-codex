@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema } from "mongoose";
 
 const guildSchema = new Schema({
     _id: Schema.Types.ObjectId,
@@ -6,4 +6,4 @@ const guildSchema = new Schema({
     guildName: String,
 });
 
-export default model('Guild', guildSchema, 'guilds');
+export default model("Guild", guildSchema, "guilds");

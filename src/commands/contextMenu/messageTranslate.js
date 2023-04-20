@@ -1,32 +1,32 @@
-import translate from '@iamtraction/google-translate';
-import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
+import translate from "@iamtraction/google-translate";
+import { ApplicationCommandType, ContextMenuCommandBuilder } from "discord.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
-        .setName('Translate Message')
+        .setName("Translate Message")
         .setNameLocalizations({
-            ChineseCN: '翻译消息',
-            it: 'Traduci Messaggio',
-            tr: 'Mesajı Çevir',
+            ChineseCN: "翻译消息",
+            it: "Traduci Messaggio",
+            tr: "Mesajı Çevir",
         })
         .setType(ApplicationCommandType.Message),
     execute: async ({ interaction }) => {
         await interaction.deferReply({ ephemeral: true });
 
-        const message = interaction.options.getMessage('message');
+        const message = interaction.options.getMessage("message");
 
         if (!message.content)
             interaction.editReply({
-                content: 'Message has no content to translate.',
+                content: "Message has no content to translate.",
                 ephemeral: true,
             });
 
         try {
-            const locale = !['zh-CN', 'zh-TW'].includes(interaction.locale)
+            const locale = !["zh-CN", "zh-TW"].includes(interaction.locale)
                 ? new Intl.Locale(interaction.locale).language
                 : interaction.locale;
             const translated = await translate(
-                message.content.replace(/(<a?)?:\w+:(\d{18}>)?/g, ''),
+                message.content.replace(/(<a?)?:\w+:(\d{18}>)?/g, ""),
                 { to: locale },
             );
 
@@ -35,7 +35,7 @@ export default {
             });
         } catch (error) {
             interaction.editReply({
-                content: 'An error occurred while translating the message.',
+                content: "An error occurred while translating the message.",
                 ephemeral: true,
             });
         }
