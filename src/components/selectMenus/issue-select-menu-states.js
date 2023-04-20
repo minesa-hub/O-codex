@@ -16,7 +16,6 @@ export default {
 
         switch (value) {
             case "issue-menu-close":
-                console.log(lockButton);
                 const menu1 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -64,7 +63,6 @@ export default {
                 }
                 break;
             case "issue-menu-duplicate":
-                console.log(lockButton);
                 const menu2 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -95,7 +93,6 @@ export default {
                 );
                 break;
             case "issue-menu-reopen":
-                console.log(lockButton);
                 await interaction.channel.fetch();
                 let threadChannel = interaction.channel;
                 await threadChannel.setArchived(

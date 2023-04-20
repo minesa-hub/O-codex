@@ -71,8 +71,6 @@ export default {
         });
         await pinMessage.pin();
         await thread.members.add(interaction.user);
-
-        console.log(lockButton);
     },
 };
 
