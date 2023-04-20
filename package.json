@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "test": "echo Hi mom!",
-        "start": "npm install && npm update && node src/index.js"
+        "start": "npm install && npm update && node src/index.js",
+        "dev": "node src/index.js"
     },
     "repository": {
         "type": "git",
