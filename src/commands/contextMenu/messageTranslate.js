@@ -3,40 +3,40 @@ import { ApplicationCommandType, ContextMenuCommandBuilder } from 'discord.js';
 
 export default {
     data: new ContextMenuCommandBuilder()
-        .setName('Translate')
+        .setName('Translate Message')
         .setNameLocalizations({
-            tr: 'Çevir',
-            it: 'Tradurre',
-            ChineseCN: '翻译',
+            ChineseCN: '翻译消息',
+            it: 'Traduci Messaggio',
+            tr: 'Mesajı Çevir',
         })
         .setType(ApplicationCommandType.Message),
-    async execute({ interaction }) {
-        // Getting the message from the context menu
-        const message = interaction.options.getMessage('message', true);
+    execute: async ({ interaction }) => {
         await interaction.deferReply({ ephemeral: true });
 
-        // Getting the language from the command arguments
+        const message = interaction.options.getMessage('message');
+
         if (!message.content)
-            return interaction.editReply({ content: 'There is no text in this message.' });
+            interaction.editReply({
+                content: 'Message has no content to translate.',
+                ephemeral: true,
+            });
 
         try {
-            // Translating the message
             const locale = !['zh-CN', 'zh-TW'].includes(interaction.locale)
                 ? new Intl.Locale(interaction.locale).language
                 : interaction.locale;
             const translated = await translate(
                 message.content.replace(/(<a?)?:\w+:(\d{18}>)?/g, ''),
-                {
-                    to: locale,
-                },
+                { to: locale },
             );
 
-            // Sending the translated message
-            return interaction.editReply({ content: translated.text });
+            interaction.editReply({
+                content: translated.text,
+            });
         } catch (error) {
-            // Sending an error message
-            return interaction.editReply({
+            interaction.editReply({
                 content: 'An error occurred while translating the message.',
+                ephemeral: true,
             });
         }
     },
