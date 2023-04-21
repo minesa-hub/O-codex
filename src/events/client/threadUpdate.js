@@ -6,18 +6,25 @@ export default {
     name: Events.ThreadUpdate,
     once: false,
     execute: async (oldThread, newThread) => {
-        if (oldThread.archived && !newThread.archived) {
-            const formattedTime = time(new Date(), "R");
+        if (oldThread.archived && newThread.locked) {
+            return;
+        }
 
-            const auditLogs = await newThread.guild.fetchAuditLogs({
-                type: AuditLogEvent.ThreadUpdate,
+        const formattedTime = time(new Date(), "R");
+        const auditLogs = await newThread.guild.fetchAuditLogs({
+            type: AuditLogEvent.ThreadUpdate,
+        });
+        const auditLog = auditLogs.entries.first();
+
+        if (!auditLog) return;
+
+        const { executor } = auditLog;
+
+        if (oldThread.archived && !newThread.archived && newThread.locked) {
+            await newThread.send({
+                content: `<:key:1098978684523778098> **${executor.username}** __reopened__ this but it is staffs only ${formattedTime}`,
             });
-            const auditLog = auditLogs.entries.first();
-
-            if (!auditLog) return;
-
-            const { executor } = auditLog;
-
+        } else if (oldThread.archived && !newThread.archived) {
             await newThread.send({
                 content: `<:issue_reopen:1097285719577342002> **${executor.username}** __reopened__ this ${formattedTime}`,
             });
@@ -39,6 +46,16 @@ export default {
                     });
                 }
             }
+        }
+
+        if (oldThread.locked && !newThread.locked) {
+            await newThread.send({
+                content: `<:key:1098978684523778098> **${executor.username}** __unlocked__ this ${formattedTime}`,
+            });
+        } else if (!oldThread.locked && newThread.locked) {
+            await newThread.send({
+                content: `<:lock:1098978659890626671> **${executor.username}** __locked__ this ${formattedTime}`,
+            });
         }
     },
 };
