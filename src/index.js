@@ -17,7 +17,11 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildScheduledEvents,
     ],
-    partials: [Partials.GuildMember, Partials.GuildScheduledEvent],
+    partials: [
+        Partials.GuildMember,
+        Partials.GuildScheduledEvent,
+        Partials.ThreadMember,
+    ],
     presence: {
         status: "dnd",
         activities: [

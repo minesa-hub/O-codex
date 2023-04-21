@@ -6,6 +6,27 @@ import {
 } from "discord.js";
 import { lockButton } from "../modals/create-issue-title.js";
 
+const menu3 = new StringSelectMenuBuilder()
+    .setCustomId("issue-select-menu")
+    .setDisabled(false)
+    .setMaxValues(1)
+    .setPlaceholder("Action to close issue")
+    .addOptions(
+        new StringSelectMenuOptionBuilder()
+            .setLabel("Close as completed")
+            .setValue("issue-menu-close")
+            .setDescription("Done, closed, fixed, resolved")
+            .setEmoji("<:issue_closed:1097273507383103631>")
+            .setDefault(false),
+        new StringSelectMenuOptionBuilder()
+            .setLabel("Close as not planned")
+            .setValue("issue-menu-duplicate")
+            .setDescription("Won’t fix, can’t repo, duplicate, stale")
+            .setEmoji("<:skip:1097273560738832437>"),
+    );
+
+export const row3 = new ActionRowBuilder().addComponents(menu3);
+
 export default {
     data: {
         customId: "issue-select-menu",
@@ -93,38 +114,11 @@ export default {
                 );
                 break;
             case "issue-menu-reopen":
-                await interaction.channel.fetch();
                 let threadChannel = interaction.channel;
                 await threadChannel.setArchived(
                     false,
                     `${interaction.user.username} marked as open`,
                 );
-                await interaction.channel.send({
-                    content: `<:issue_reopen:1097285719577342002> **${interaction.user.username}** __reopened__ this ${formattedTime}`,
-                });
-
-                const menu3 = new StringSelectMenuBuilder()
-                    .setCustomId("issue-select-menu")
-                    .setDisabled(false)
-                    .setMaxValues(1)
-                    .setPlaceholder("Action to close issue")
-                    .addOptions(
-                        new StringSelectMenuOptionBuilder()
-                            .setLabel("Close as completed")
-                            .setValue("issue-menu-close")
-                            .setDescription("Done, closed, fixed, resolved")
-                            .setEmoji("<:issue_closed:1097273507383103631>")
-                            .setDefault(false),
-                        new StringSelectMenuOptionBuilder()
-                            .setLabel("Close as not planned")
-                            .setValue("issue-menu-duplicate")
-                            .setDescription(
-                                "Won’t fix, can’t repo, duplicate, stale",
-                            )
-                            .setEmoji("<:skip:1097273560738832437>"),
-                    );
-
-                const row3 = new ActionRowBuilder().addComponents(menu3);
 
                 await interaction.update({ components: [row3, lockButton] });
                 break;

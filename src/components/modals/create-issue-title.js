@@ -8,7 +8,14 @@ import {
     ButtonStyle,
 } from "discord.js";
 
-let lockButton;
+let lockButton = new ActionRowBuilder().addComponents(
+    new ButtonBuilder()
+        .setCustomId("issue-lock-conversation")
+        .setLabel("Lock Issue")
+        .setStyle(ButtonStyle.Secondary)
+        .setDisabled(false)
+        .setEmoji("<:lock_button:1097581058876256347>"),
+);
 
 export default {
     data: {
@@ -46,14 +53,6 @@ export default {
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
-        lockButton = new ActionRowBuilder().addComponents(
-            new ButtonBuilder()
-                .setCustomId("issue-lock-conversation")
-                .setLabel("Lock Issue")
-                .setStyle(ButtonStyle.Secondary)
-                .setDisabled(false)
-                .setEmoji("<:lock_button:1097581058876256347>"),
-        );
 
         let thread = await interaction.channel.threads.create({
             name: `${issueTitle}`,
