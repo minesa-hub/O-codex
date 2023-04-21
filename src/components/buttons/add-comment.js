@@ -41,10 +41,7 @@ export default {
 
         interaction.channel.threads
             .create({
-                name: interaction.message.embeds[0].author.name
-                    .split(" ")
-                    .slice(1)
-                    .join(" "),
+                name: interaction.message.embeds[0].title,
                 autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
                 type: ChannelType.PublicThread,
                 reason: "For discussing",

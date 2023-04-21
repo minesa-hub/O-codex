@@ -24,11 +24,7 @@ export default {
 
         const [discussionEmoji] = ["<:discussion_button:1098366305947635784>"];
         const embed = new EmbedBuilder()
-            .setAuthor({
-                name: `${discussionTitleCapitalized}`,
-                iconURL:
-                    "https://cdn.discordapp.com/emojis/1098366305947635784.webp?size=96&quality=lossless",
-            })
+            .setTitle(discussionTitleCapitalized)
             .setDescription(discussionDescriptionInput)
             .setThumbnail(
                 "https://media.discordapp.net/attachments/861208192121569280/1098398274714599434/8FCA1239-C15C-49CC-B854-EABD299893AF.png?width=473&height=473",

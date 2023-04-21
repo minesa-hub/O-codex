@@ -2,9 +2,6 @@
     "arrowParens": "always",
     "bracketSpacing": true,
     "endOfLine": "lf",
-    "htmlWhitespaceSensitivity": "css",
-    "insertPragma": false,
-    "singleAttributePerLine": false,
     "bracketSameLine": false,
     "printWidth": 80,
     "proseWrap": "preserve",
@@ -14,6 +11,5 @@
     "tabWidth": 4,
     "trailingComma": "all",
     "useTabs": false,
-    "vueIndentScriptAndStyle": false,
     "parser": "typescript"
 }

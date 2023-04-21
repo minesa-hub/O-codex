@@ -1,6 +1,7 @@
 import {
     ActionRowBuilder,
     ModalBuilder,
+    PermissionFlagsBits,
     SlashCommandBuilder,
     TextInputBuilder,
     TextInputStyle,
@@ -22,6 +23,25 @@ export default {
         })
         .setDMPermission(false),
     execute: async ({ interaction }) => {
+        const [discussionEmoji] = ["<:discussion_button:1098366305947635784>"];
+        let member = interaction.member;
+        let channel = interaction.channel;
+
+        if (!member.permissions.has(PermissionFlagsBits.CreatePublicThreads)) {
+            const channelPermissions = channel.permissionsFor(member);
+            if (
+                !channelPermissions.has(
+                    PermissionFlagsBits.CreatePublicThreads,
+                    true,
+                )
+            ) {
+                return interaction.reply({
+                    content: `${discussionEmoji} You **cannot** create a discussion in this channel, cause you do not have the permission to do so.`,
+                    ephemeral: true,
+                });
+            }
+        }
+
         const discussionModal = new ModalBuilder()
             .setCustomId("create-discussion-modal")
             .setTitle("Discussion Creation");

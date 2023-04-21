@@ -1,30 +1,22 @@
-import { time } from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
+import { setLockedAndUpdateMessage } from "../../shorthand/setLockedAndUpdateMessage.js";
 
 export default {
     data: {
         customId: "issue-lock-reason",
     },
     execute: async ({ interaction }) => {
+        if (
+            !interaction.member.permissions.has(
+                PermissionFlagsBits.ManageThreads,
+            )
+        )
+            return interaction.reply({
+                content: "You don't have permission to lock this issue.",
+                ephemeral: true,
+            });
+
         let value = interaction.values[0];
-        const formattedTime = time(new Date(), "R");
-
-        async function setLockedAndUpdateMessage(interaction, reason = "") {
-            interaction.channel.setLocked(true);
-
-            await interaction.update({
-                content: `<:lock:1098978659890626671> Locked this issue successfully. To unlock this issue, please enable it manually on "unlock" button.`,
-                embeds: [],
-                components: [],
-            });
-
-            await interaction.channel.send({
-                content: `<:lock:1098978659890626671> **${
-                    interaction.user.username
-                }** locked${
-                    reason ? ` ${reason}` : ""
-                } and limited conversation to staffs ${formattedTime}`,
-            });
-        }
 
         switch (value) {
             case "issue-lock-reason-other":

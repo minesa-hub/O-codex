@@ -60,8 +60,7 @@ export default {
     async execute({ interaction, client }) {
         if (
             !interaction.member.permissions.has(
-                PermissionFlagsBits.ManageThreads ||
-                    PermissionFlagsBits.ManageChannels ||
+                PermissionFlagsBits.ManageGuild ||
                     PermissionFlagsBits.Administrator,
             )
         )
@@ -115,7 +114,7 @@ Thank you for helping us improve our product/service and Discord server!`,
             .setEmoji(`${createIssueEmoji}`);
 
         const row = new ActionRowBuilder().addComponents(createIssueButton);
-        
+
         interaction.reply({
             content: "Created the system succesfully!",
             ephemeral: true,
