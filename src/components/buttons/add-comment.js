@@ -5,20 +5,23 @@ import {
     ChannelType,
     ThreadAutoArchiveDuration,
 } from "discord.js";
+import {
+    alertEmoji,
+    discussionButtonEmoji,
+    infoEmoji,
+} from "../../shortcuts/emojis.js";
 
 export default {
     data: {
         customId: "add-comment",
     },
     execute: async ({ interaction }) => {
-        const [discussionEmoji] = ["<:discussion_button:1098366305947635784>"];
-
         const disabledButton = new ButtonBuilder()
             .setCustomId("disabled-button")
             .setLabel("Created the Discussion")
             .setStyle(ButtonStyle.Success)
             .setDisabled(true)
-            .setEmoji(discussionEmoji);
+            .setEmoji(discussionButtonEmoji);
 
         const row = new ActionRowBuilder().addComponents(disabledButton);
 
@@ -28,23 +31,20 @@ export default {
             });
 
             return interaction.followUp({
-                content: `${discussionEmoji} Discussion already created by <@${interaction.message.thread.ownerId}>.`,
+                content: `${infoEmoji} Discussion already created by <@${interaction.message.thread.ownerId}>.`,
                 ephemeral: true,
             });
         }
 
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
-                content: `${discussionEmoji} You **can not** create a discussion in this channel.`,
+                content: `${alertEmoji} You **can not** create a discussion in this channel <@${interaction.user.id}>.`,
                 ephemeral: true,
             });
 
         interaction.channel.threads
             .create({
-                name: interaction.message.embeds[0].author.name
-                    .split(" ")
-                    .slice(1)
-                    .join(" "),
+                name: interaction.message.embeds[0].title,
                 autoArchiveDuration: ThreadAutoArchiveDuration.OneDay,
                 type: ChannelType.PublicThread,
                 reason: "For discussing",

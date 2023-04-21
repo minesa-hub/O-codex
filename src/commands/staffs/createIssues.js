@@ -6,7 +6,13 @@ import {
     ButtonStyle,
     ChannelType,
     PermissionFlagsBits,
+    inlineCode,
 } from "discord.js";
+import {
+    alertEmoji,
+    issueOpenButtonEmoji,
+    shieldLockEmoji,
+} from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -60,31 +66,30 @@ export default {
     async execute({ interaction, client }) {
         if (
             !interaction.member.permissions.has(
-                PermissionFlagsBits.ManageThreads ||
-                    PermissionFlagsBits.ManageChannels ||
+                PermissionFlagsBits.ManageGuild ||
                     PermissionFlagsBits.Administrator,
             )
         )
             return interaction.reply({
-                content:
-                    "You **can not** setup this system. You need `Manage Threads`, `Manage Channels` or `Administrator` permission to setup this system.",
+                content: `${alertEmoji} You **can not** setup this system <@${
+                    interaction.user.id
+                }>. You need ${inlineCode("Manage Threads")}, ${inlineCode(
+                    "Manage Channels",
+                )} or ${inlineCode(
+                    "Administrator",
+                )} permission to setup this system.`,
                 ephemeral: true,
             });
 
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
-                content:
-                    "You **can not** setup this system in this channel. Please try again in __Text Channel__ type channel.",
+                content: `${alertEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
                 ephemeral: true,
             });
 
         const embedTitle = interaction.options.getString("title");
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
-
-        const createIssueEmoji = client.emojis.cache.find(
-            (emoji) => emoji.name === "issue_open_button",
-        );
 
         const embed = new EmbedBuilder()
             .setTitle(
@@ -112,12 +117,12 @@ Thank you for helping us improve our product/service and Discord server!`,
             .setCustomId("create-issue")
             .setLabel("Create Issue")
             .setStyle(ButtonStyle.Success)
-            .setEmoji(`${createIssueEmoji}`);
+            .setEmoji(issueOpenButtonEmoji);
 
         const row = new ActionRowBuilder().addComponents(createIssueButton);
-        
+
         interaction.reply({
-            content: "Created the system succesfully!",
+            content: `${shieldLockEmoji} Created the issue system succesfully!`,
             ephemeral: true,
         });
 

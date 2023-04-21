@@ -3,6 +3,7 @@ import {
     ApplicationCommandType,
     EmbedBuilder,
 } from "discord.js";
+import { infoEmoji } from "../../shorthand/emojis.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -28,7 +29,7 @@ export default {
 
             if (imageURI === null) {
                 await interaction.editReply({
-                    content: "User has no banner set.",
+                    content: `${infoEmoji} User has no banner set.`,
                     ephemeral: true,
                 });
             } else {

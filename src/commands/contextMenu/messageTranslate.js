@@ -1,5 +1,6 @@
 import translate from "@iamtraction/google-translate";
 import { ApplicationCommandType, ContextMenuCommandBuilder } from "discord.js";
+import { alertEmoji, infoEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -17,7 +18,7 @@ export default {
 
         if (!message.content)
             interaction.editReply({
-                content: "Message has no content to translate.",
+                content: `${infoEmoji} Message has no content to translate.`,
                 ephemeral: true,
             });
 
@@ -35,7 +36,7 @@ export default {
             });
         } catch (error) {
             interaction.editReply({
-                content: "An error occurred while translating the message.",
+                content: `${alertEmoji} An error occurred while translating the message.`,
                 ephemeral: true,
             });
         }

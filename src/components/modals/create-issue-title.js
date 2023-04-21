@@ -7,6 +7,12 @@ import {
     ButtonBuilder,
     ButtonStyle,
 } from "discord.js";
+import {
+    issueClosedEmoji,
+    lockButtonEmoji,
+    shieldLockEmoji,
+    skipEmoji,
+} from "../../shortcuts/emojis.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -14,7 +20,7 @@ let lockButton = new ActionRowBuilder().addComponents(
         .setLabel("Lock Issue")
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(false)
-        .setEmoji("<:lock_button:1097581058876256347>"),
+        .setEmoji(lockButtonEmoji),
 );
 
 export default {
@@ -28,9 +34,9 @@ export default {
             .setDescription(
                 "Our staff member(s) will take care of this issue sooner. While they are on their way, why don’t you talk about your issue?",
             )
-            .setColor("NotQuiteBlack")
+            .setColor(0x1e1e1e)
             .setThumbnail(
-                "https://media.discordapp.net/attachments/861208192121569280/1097266882521878608/B7609F62-85F1-4C84-B58F-FE66AFBB1519.png",
+                "https://media.discordapp.net/attachments/861208192121569280/1098929101504532550/EAED28F1-A235-4E67-8F44-BABDD5FB14DB.png?width=473&height=473",
             );
 
         const menu = new StringSelectMenuBuilder()
@@ -43,13 +49,13 @@ export default {
                     .setLabel("Close as completed")
                     .setValue("issue-menu-close")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji("<:issue_closed:1097273507383103631>")
+                    .setEmoji(issueClosedEmoji)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("issue-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji("<:skip:1097273560738832437>"),
+                    .setEmoji(skipEmoji),
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -62,7 +68,7 @@ export default {
             invitable: false,
         });
         await interaction.reply({
-            content: `Created an issue: <#${thread.id}>`,
+            content: `${shieldLockEmoji} Created <#${thread.id}>. You can now talk about your issue with our staff member(s).`,
             ephemeral: true,
         });
         let pinMessage = await thread.send({
