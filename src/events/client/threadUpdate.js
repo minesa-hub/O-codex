@@ -6,6 +6,9 @@ export default {
     name: Events.ThreadUpdate,
     once: false,
     execute: async (oldThread, newThread) => {
+        // If the thread is not created by the bot do nothing
+        if (newThread.ownerId !== newThread.client.user.id) return;
+
         if (oldThread.archived && newThread.locked) {
             return;
         }
@@ -56,6 +59,7 @@ export default {
             });
         } else if (!oldThread.locked && newThread.locked) {
             if (executor.id === newThread.client.user.id) return;
+            if (oldThread.archived && !newThread.archived) return;
 
             await newThread.send({
                 content: `<:lock:1098978659890626671> **${executor.username}** __locked__ this ${formattedTime}`,
