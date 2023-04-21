@@ -21,10 +21,12 @@ export default {
         const { executor } = auditLog;
 
         if (oldThread.archived && !newThread.archived && newThread.locked) {
+            if (executor.id === newThread.client.user.id) return;
             await newThread.send({
                 content: `<:key:1098978684523778098> **${executor.username}** __reopened__ this but it is staffs only ${formattedTime}`,
             });
         } else if (oldThread.archived && !newThread.archived) {
+            if (executor.id === newThread.client.user.id) return;
             await newThread.send({
                 content: `<:issue_reopen:1097285719577342002> **${executor.username}** __reopened__ this ${formattedTime}`,
             });
@@ -53,6 +55,8 @@ export default {
                 content: `<:key:1098978684523778098> **${executor.username}** __unlocked__ this ${formattedTime}`,
             });
         } else if (!oldThread.locked && newThread.locked) {
+            if (executor.id === newThread.client.user.id) return;
+
             await newThread.send({
                 content: `<:lock:1098978659890626671> **${executor.username}** __locked__ this ${formattedTime}`,
             });
