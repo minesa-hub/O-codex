@@ -7,6 +7,12 @@ import {
     ButtonBuilder,
     ButtonStyle,
 } from "discord.js";
+import {
+    issueClosedEmoji,
+    lockButtonEmoji,
+    shieldLockEmoji,
+    skipEmoji,
+} from "../../shortcuts/emojis.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -14,7 +20,7 @@ let lockButton = new ActionRowBuilder().addComponents(
         .setLabel("Lock Issue")
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(false)
-        .setEmoji("<:lock_button:1097581058876256347>"),
+        .setEmoji(lockButtonEmoji),
 );
 
 export default {
@@ -43,13 +49,13 @@ export default {
                     .setLabel("Close as completed")
                     .setValue("issue-menu-close")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji("<:issue_closed:1097273507383103631>")
+                    .setEmoji(issueClosedEmoji)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("issue-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji("<:skip:1097273560738832437>"),
+                    .setEmoji(skipEmoji),
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -62,7 +68,7 @@ export default {
             invitable: false,
         });
         await interaction.reply({
-            content: `Created an issue: <#${thread.id}>`,
+            content: `${shieldLockEmoji} Created <#${thread.id}>. You can now talk about your issue with our staff member(s).`,
             ephemeral: true,
         });
         let pinMessage = await thread.send({

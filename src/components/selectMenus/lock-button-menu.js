@@ -1,5 +1,6 @@
 import { PermissionFlagsBits } from "discord.js";
 import { setLockedAndUpdateMessage } from "../../shorthand/setLockedAndUpdateMessage.js";
+import { infoEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -12,7 +13,7 @@ export default {
             )
         )
             return interaction.reply({
-                content: "You don't have permission to lock this issue.",
+                content: `${infoEmoji} You don't have permission to lock this issue.`,
                 ephemeral: true,
             });
 

@@ -5,6 +5,11 @@ import {
     time,
 } from "discord.js";
 import { lockButton } from "../modals/create-issue-title.js";
+import {
+    issueClosedEmoji,
+    issueReopenEmoji,
+    skipEmoji,
+} from "../../shortcuts/emojis.js";
 
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("issue-select-menu")
@@ -16,13 +21,13 @@ const menu3 = new StringSelectMenuBuilder()
             .setLabel("Close as completed")
             .setValue("issue-menu-close")
             .setDescription("Done, closed, fixed, resolved")
-            .setEmoji("<:issue_closed:1097273507383103631>")
+            .setEmoji(issueClosedEmoji)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as not planned")
             .setValue("issue-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
-            .setEmoji("<:skip:1097273560738832437>"),
+            .setEmoji(skipEmoji),
     );
 
 export const row3 = new ActionRowBuilder().addComponents(menu3);
@@ -46,7 +51,7 @@ export default {
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Reopen Issue")
                             .setValue("issue-menu-reopen")
-                            .setEmoji("<:issue_reopen:1097285719577342002>")
+                            .setEmoji(issueReopenEmoji)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as not planned")
@@ -54,7 +59,7 @@ export default {
                             .setDescription(
                                 "Won’t fix, can’t repo, duplicate, stale",
                             )
-                            .setEmoji("<:skip:1097273560738832437>"),
+                            .setEmoji(skipEmoji),
                     );
 
                 const row1 = new ActionRowBuilder().addComponents(menu1);
@@ -64,7 +69,7 @@ export default {
                         components: [row1, lockButton],
                     });
                     await interaction.channel.send({
-                        content: `<:issue_closed:1097273507383103631> **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${issueClosedEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
                     await interaction.channel.setArchived(
                         true,
@@ -75,7 +80,7 @@ export default {
                         components: [row1, lockButton],
                     });
                     await interaction.channel.send({
-                        content: `<:issue_closed:1097273507383103631> **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${issueClosedEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
                     await interaction.channel.setArchived(
                         true,
@@ -93,12 +98,12 @@ export default {
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Reopen Issue")
                             .setValue("issue-menu-reopen")
-                            .setEmoji("<:issue_reopen:1097285719577342002>"),
+                            .setEmoji(issueReopenEmoji),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as completed")
                             .setValue("issue-menu-close")
                             .setDescription("Done, closed, fixed, resolved")
-                            .setEmoji("<:issue_closed:1097273507383103631>")
+                            .setEmoji(issueClosedEmoji)
                             .setDefault(false),
                     );
 
@@ -106,7 +111,7 @@ export default {
 
                 await interaction.update({ components: [row2, lockButton] });
                 await interaction.channel.send({
-                    content: `<:skip:1097273560738832437> **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
+                    content: `${skipEmoji} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
                 });
                 await interaction.channel.setArchived(
                     true,

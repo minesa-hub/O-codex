@@ -4,6 +4,10 @@ import {
     ButtonStyle,
     EmbedBuilder,
 } from "discord.js";
+import {
+    arrowUpEmoji,
+    discussionButtonEmoji,
+} from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -22,7 +26,6 @@ export default {
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" ");
 
-        const [discussionEmoji] = ["<:discussion_button:1098366305947635784>"];
         const embed = new EmbedBuilder()
             .setTitle(discussionTitleCapitalized)
             .setDescription(discussionDescriptionInput)
@@ -38,7 +41,7 @@ export default {
             .setCustomId("add-comment")
             .setLabel("Create Discussion")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji(discussionEmoji);
+            .setEmoji(discussionButtonEmoji);
 
         const row = new ActionRowBuilder().addComponents(button);
 
@@ -48,7 +51,6 @@ export default {
             fetchReply: true,
         });
 
-        await pollMessage.react("👍");
-        await pollMessage.react("👎");
+        await pollMessage.react(arrowUpEmoji);
     },
 };

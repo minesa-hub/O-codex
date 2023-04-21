@@ -6,6 +6,7 @@ import {
     TextInputBuilder,
     TextInputStyle,
 } from "discord.js";
+import { shieldLockEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -23,7 +24,6 @@ export default {
         })
         .setDMPermission(false),
     execute: async ({ interaction }) => {
-        const [discussionEmoji] = ["<:discussion_button:1098366305947635784>"];
         let member = interaction.member;
         let channel = interaction.channel;
 
@@ -36,7 +36,7 @@ export default {
                 )
             ) {
                 return interaction.reply({
-                    content: `${discussionEmoji} You **cannot** create a discussion in this channel, cause you do not have the permission to do so.`,
+                    content: `${shieldLockEmoji} You **cannot** create a discussion in this channel, cause you do not have the permission to do so.`,
                     ephemeral: true,
                 });
             }

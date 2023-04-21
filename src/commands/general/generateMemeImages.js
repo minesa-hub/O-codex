@@ -1,5 +1,6 @@
 import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
+import { alertEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -49,7 +50,7 @@ export default {
         } catch (error) {
             console.error(error);
             return interaction.editReply({
-                content: "An error occurred while trying to fetch the meme!",
+                content: `${alertEmoji} An error occurred while trying to fetch the meme. Try again in some time later.`,
                 ephemeral: true,
             });
         }
