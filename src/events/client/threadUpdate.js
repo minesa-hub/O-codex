@@ -22,7 +22,6 @@ export default {
                 content: `<:issue_reopen:1097285719577342002> **${executor.username}** __reopened__ this ${formattedTime}`,
             });
 
-            // Look for pinned message or first message in thread and update it
             const pinnedMessages = await newThread.messages.fetchPinned();
             const pinnedMessage = pinnedMessages.first();
 
