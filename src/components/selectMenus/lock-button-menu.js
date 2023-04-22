@@ -1,5 +1,5 @@
 import { PermissionFlagsBits } from "discord.js";
-import { setLockedAndUpdateMessage } from "../../shorthand/setLockedAndUpdateMessage.js";
+import { setLockedAndUpdateMessage } from "../../shortcuts/setLockedAndUpdateMessage.js";
 import { infoEmoji } from "../../shortcuts/emojis.js";
 
 export default {

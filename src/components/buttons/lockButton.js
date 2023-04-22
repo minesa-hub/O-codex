@@ -37,8 +37,7 @@ export default {
                         .setValue("issue-lock-reason-other"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Off-topic")
-                        .setValue("issue-lock-reason-off-topic")
-                        .setDefault(false),
+                        .setValue("issue-lock-reason-off-topic"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Too heated")
                         .setValue("issue-lock-reason-too-heated"),
