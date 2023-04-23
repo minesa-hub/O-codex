@@ -1,5 +1,6 @@
 import {
     ActionRowBuilder,
+    PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     time,
@@ -10,6 +11,10 @@ import {
     issueReopenEmoji,
     skipEmoji,
 } from "../../shortcuts/emojis.js";
+import {
+    defaultBotPermError,
+    defaultUserPermError,
+} from "../../shortcuts/defaultPermissionsErrors.js";
 
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("issue-select-menu")
@@ -42,6 +47,21 @@ export default {
 
         switch (value) {
             case "issue-menu-close":
+                if (
+                    defaultBotPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+                if (
+                    defaultUserPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+
                 const menu1 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -89,6 +109,21 @@ export default {
                 }
                 break;
             case "issue-menu-duplicate":
+                if (
+                    defaultBotPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+                if (
+                    defaultUserPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+
                 const menu2 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -119,6 +154,21 @@ export default {
                 );
                 break;
             case "issue-menu-reopen":
+                if (
+                    defaultBotPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+                if (
+                    defaultUserPermError(
+                        interaction,
+                        PermissionFlagsBits.ManageThreads,
+                    )
+                )
+                    return;
+
                 let threadChannel = interaction.channel;
                 await threadChannel.setArchived(
                     false,

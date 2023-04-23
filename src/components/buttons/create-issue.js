@@ -1,15 +1,25 @@
 import {
     ActionRowBuilder,
     ModalBuilder,
+    PermissionFlagsBits,
     TextInputBuilder,
     TextInputStyle,
 } from "discord.js";
+import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: {
         customId: "create-issue",
     },
     execute: async ({ interaction }) => {
+        if (
+            defaultBotPermError(
+                interaction,
+                PermissionFlagsBits.CreatePrivateThreads,
+            )
+        )
+            return;
+
         const modal = new ModalBuilder()
             .setCustomId("create-issue-modal")
             .setTitle("Issue Creation");
