@@ -3,6 +3,7 @@ import {
     ButtonBuilder,
     ButtonStyle,
     ChannelType,
+    PermissionFlagsBits,
     ThreadAutoArchiveDuration,
 } from "discord.js";
 import {
@@ -10,12 +11,31 @@ import {
     discussionButtonEmoji,
     infoEmoji,
 } from "../../shortcuts/emojis.js";
+import {
+    defaultBotPermError,
+    defaultUserPermError,
+} from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: {
         customId: "add-comment",
     },
     execute: async ({ interaction }) => {
+        if (
+            defaultBotPermError(
+                interaction,
+                PermissionFlagsBits.CreatePublicThreads,
+            )
+        )
+            return;
+        if (
+            defaultUserPermError(
+                interaction,
+                PermissionFlagsBits.CreatePublicThreads,
+            )
+        )
+            return;
+
         const disabledButton = new ButtonBuilder()
             .setCustomId("disabled-button")
             .setLabel("Created the Discussion")
@@ -30,14 +50,14 @@ export default {
                 components: [row],
             });
 
-            return interaction.followUp({
+            await interaction.followUp({
                 content: `${infoEmoji} Discussion already created by <@${interaction.message.thread.ownerId}>.`,
                 ephemeral: true,
             });
         }
 
         if (interaction.channel.type !== ChannelType.GuildText)
-            return interaction.reply({
+            await interaction.reply({
                 content: `${alertEmoji} You **can not** create a discussion in this channel <@${interaction.user.id}>.`,
                 ephemeral: true,
             });

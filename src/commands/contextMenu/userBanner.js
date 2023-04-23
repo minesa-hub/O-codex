@@ -3,7 +3,7 @@ import {
     ApplicationCommandType,
     EmbedBuilder,
 } from "discord.js";
-import { infoEmoji } from "../../shorthand/emojis.js";
+import { infoEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: new ContextMenuCommandBuilder()

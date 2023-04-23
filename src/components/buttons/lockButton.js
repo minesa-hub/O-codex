@@ -1,15 +1,26 @@
 import {
     ActionRowBuilder,
     EmbedBuilder,
+    PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
 } from "discord.js";
+import {
+    defaultBotPermError,
+    defaultUserPermError,
+} from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: {
         customId: "issue-lock-conversation",
     },
     execute: async ({ interaction }) => {
+        if (defaultBotPermError(interaction, PermissionFlagsBits.ManageThreads))
+            return;
+        if (
+            defaultUserPermError(interaction, PermissionFlagsBits.ManageThreads)
+        )
+            return;
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this issue")
             .setThumbnail(
@@ -37,8 +48,7 @@ export default {
                         .setValue("issue-lock-reason-other"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Off-topic")
-                        .setValue("issue-lock-reason-off-topic")
-                        .setDefault(false),
+                        .setValue("issue-lock-reason-off-topic"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Too heated")
                         .setValue("issue-lock-reason-too-heated"),

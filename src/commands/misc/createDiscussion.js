@@ -24,24 +24,9 @@ export default {
         })
         .setDMPermission(false),
     execute: async ({ interaction }) => {
-        let member = interaction.member;
-        let channel = interaction.channel;
-
-        if (!member.permissions.has(PermissionFlagsBits.CreatePublicThreads)) {
-            const channelPermissions = channel.permissionsFor(member);
-            if (
-                !channelPermissions.has(
-                    PermissionFlagsBits.CreatePublicThreads,
-                    true,
-                )
-            ) {
-                return interaction.reply({
-                    content: `${shieldLockEmoji} You **cannot** create a discussion in this channel, cause you do not have the permission to do so.`,
-                    ephemeral: true,
-                });
-            }
-        }
-
+        if (defaultBotPermError(interaction, PermissionFlagsBits.AddReactions))
+            return;
+        
         const discussionModal = new ModalBuilder()
             .setCustomId("create-discussion-modal")
             .setTitle("Discussion Creation");

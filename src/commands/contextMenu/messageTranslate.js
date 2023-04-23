@@ -12,17 +12,15 @@ export default {
         })
         .setType(ApplicationCommandType.Message),
     execute: async ({ interaction }) => {
-        await interaction.deferReply({ ephemeral: true });
-
         const message = interaction.options.getMessage("message");
 
-        if (!message.content)
-            interaction.editReply({
-                content: `${infoEmoji} Message has no content to translate.`,
-                ephemeral: true,
-            });
-
         try {
+            if (!message.content)
+                return interaction.reply({
+                    content: `${infoEmoji} Message has no content to translate.`,
+                    ephemeral: true,
+                });
+
             const locale = !["zh-CN", "zh-TW"].includes(interaction.locale)
                 ? new Intl.Locale(interaction.locale).language
                 : interaction.locale;
@@ -31,11 +29,11 @@ export default {
                 { to: locale },
             );
 
-            interaction.editReply({
+            await interaction.reply({
                 content: translated.text,
             });
         } catch (error) {
-            interaction.editReply({
+            await interaction.reply({
                 content: `${alertEmoji} An error occurred while translating the message.`,
                 ephemeral: true,
             });

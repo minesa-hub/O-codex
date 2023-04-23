@@ -1,21 +1,22 @@
 import { PermissionFlagsBits } from "discord.js";
-import { setLockedAndUpdateMessage } from "../../shorthand/setLockedAndUpdateMessage.js";
+import { setLockedAndUpdateMessage } from "../../shortcuts/setLockedAndUpdateMessage.js";
 import { infoEmoji } from "../../shortcuts/emojis.js";
+import {
+    defaultBotPermError,
+    defaultUserPermError,
+} from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: {
         customId: "issue-lock-reason",
     },
     execute: async ({ interaction }) => {
+        if (defaultBotPermError(interaction, PermissionFlagsBits.ManageThreads))
+            return;
         if (
-            !interaction.member.permissions.has(
-                PermissionFlagsBits.ManageThreads,
-            )
+            defaultUserPermError(interaction, PermissionFlagsBits.ManageThreads)
         )
-            return interaction.reply({
-                content: `${infoEmoji} You don't have permission to lock this issue.`,
-                ephemeral: true,
-            });
+            return;
 
         let value = interaction.values[0];
 
