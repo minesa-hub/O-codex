@@ -15,10 +15,18 @@ export default {
         customId: "issue-lock-conversation",
     },
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.ManageThreads))
+        if (
+            await defaultBotPermError(
+                interaction,
+                PermissionFlagsBits.ManageThreads,
+            )
+        )
             return;
         if (
-            defaultUserPermError(interaction, PermissionFlagsBits.ManageThreads)
+            await defaultUserPermError(
+                interaction,
+                PermissionFlagsBits.ManageThreads,
+            )
         )
             return;
         const lockButtonExplanation = new EmbedBuilder()

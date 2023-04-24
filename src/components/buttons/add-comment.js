@@ -22,14 +22,14 @@ export default {
     },
     execute: async ({ interaction }) => {
         if (
-            defaultBotPermError(
+            await defaultBotPermError(
                 interaction,
                 PermissionFlagsBits.CreatePublicThreads,
             )
         )
             return;
         if (
-            defaultUserPermError(
+            await defaultUserPermError(
                 interaction,
                 PermissionFlagsBits.CreatePublicThreads,
             )

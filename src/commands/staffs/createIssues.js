@@ -63,15 +63,16 @@ export default {
                     { name: "White", value: "#FFFFFF" },
                 ),
         ),
-    async execute({ interaction, client }) {
+    async execute({ interaction }) {
         if (
             !interaction.member.permissions.has(
-                PermissionFlagsBits.ManageGuild ||
+                PermissionFlagsBits.ManageThreads ||
+                    PermissionFlagsBits.ManageGuild ||
                     PermissionFlagsBits.Administrator,
             )
         )
             return interaction.reply({
-                content: `${alertEmoji} You **can not** setup this system <@${
+                content: `${shieldLockEmoji} You **can not** setup this system <@${
                     interaction.user.id
                 }>. You need ${inlineCode("Manage Threads")}, ${inlineCode(
                     "Manage Channels",

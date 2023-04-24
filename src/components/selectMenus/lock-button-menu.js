@@ -11,10 +11,18 @@ export default {
         customId: "issue-lock-reason",
     },
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.ManageThreads))
+        if (
+            await defaultBotPermError(
+                interaction,
+                PermissionFlagsBits.ManageThreads,
+            )
+        )
             return;
         if (
-            defaultUserPermError(interaction, PermissionFlagsBits.ManageThreads)
+            await defaultUserPermError(
+                interaction,
+                PermissionFlagsBits.ManageThreads,
+            )
         )
             return;
 

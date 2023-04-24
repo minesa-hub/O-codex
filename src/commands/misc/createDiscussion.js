@@ -6,7 +6,7 @@ import {
     TextInputBuilder,
     TextInputStyle,
 } from "discord.js";
-import { shieldLockEmoji } from "../../shortcuts/emojis.js";
+import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -24,9 +24,14 @@ export default {
         })
         .setDMPermission(false),
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.AddReactions))
+        if (
+            await defaultBotPermError(
+                interaction,
+                PermissionFlagsBits.AddReactions,
+            )
+        )
             return;
-        
+
         const discussionModal = new ModalBuilder()
             .setCustomId("create-discussion-modal")
             .setTitle("Discussion Creation");

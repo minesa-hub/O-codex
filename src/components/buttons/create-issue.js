@@ -13,7 +13,7 @@ export default {
     },
     execute: async ({ interaction }) => {
         if (
-            defaultBotPermError(
+            await defaultBotPermError(
                 interaction,
                 PermissionFlagsBits.CreatePrivateThreads,
             )

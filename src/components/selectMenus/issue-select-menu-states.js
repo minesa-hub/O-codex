@@ -48,14 +48,14 @@ export default {
         switch (value) {
             case "issue-menu-close":
                 if (
-                    defaultBotPermError(
+                    await defaultBotPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
                 )
                     return;
                 if (
-                    defaultUserPermError(
+                    await defaultUserPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
@@ -110,14 +110,14 @@ export default {
                 break;
             case "issue-menu-duplicate":
                 if (
-                    defaultBotPermError(
+                    await defaultBotPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
                 )
                     return;
                 if (
-                    defaultUserPermError(
+                    await defaultUserPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
@@ -155,14 +155,14 @@ export default {
                 break;
             case "issue-menu-reopen":
                 if (
-                    defaultBotPermError(
+                    await defaultBotPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
                 )
                     return;
                 if (
-                    defaultUserPermError(
+                    await defaultUserPermError(
                         interaction,
                         PermissionFlagsBits.ManageThreads,
                     )
