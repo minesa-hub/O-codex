@@ -1,31 +1,35 @@
+// Importing the required modules
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
     EmbedBuilder,
 } from "discord.js";
-import {
-    arrowUpEmoji,
-    discussionButtonEmoji,
-} from "../../shortcuts/emojis.js";
+import { arrowUpEmoji, discussionButtonEmoji } from "../../shortcuts/emojis.js";
 
+// Exporting the command
 export default {
+    // The command data contains customID
     data: {
         customId: "create-discussion-modal",
     },
+    // The command
     execute: async ({ interaction }) => {
+        // Awaiting the reply
         await interaction.deferReply();
 
+        // Getting the values from the inputs
         const discussionTitleInput =
             interaction.fields.getTextInputValue("discussion-title");
         const discussionDescriptionInput = interaction.fields.getTextInputValue(
             "discussion-description",
         );
+        // Capitalizing the title
         const discussionTitleCapitalized = discussionTitleInput
             .split(" ")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" ");
-
+        // Creating the embed
         const embed = new EmbedBuilder()
             .setTitle(discussionTitleCapitalized)
             .setDescription(discussionDescriptionInput)
@@ -37,20 +41,21 @@ export default {
                 text: `Created by: ${interaction.user.tag}`,
                 iconURL: interaction.user.avatarURL(),
             });
+        // Creating the button
         const button = new ButtonBuilder()
             .setCustomId("add-comment")
             .setLabel("Create Discussion")
             .setStyle(ButtonStyle.Secondary)
             .setEmoji(discussionButtonEmoji);
-
+        // Creating the row
         const row = new ActionRowBuilder().addComponents(button);
-
+        // Editing the reply
         const pollMessage = await interaction.editReply({
             embeds: [embed],
             components: [row],
             fetchReply: true,
         });
-
+        // Awaiting the reaction
         await pollMessage.react(arrowUpEmoji);
     },
 };
