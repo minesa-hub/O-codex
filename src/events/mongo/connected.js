@@ -1,6 +1,5 @@
 // Import the chalk package
 import chalk from "chalk";
-import { MongooseEvents } from "mongoose";
 
 // Export the event
 export default {
