@@ -1,3 +1,4 @@
+// Importing the all required modules
 import {
     ActionRowBuilder,
     EmbedBuilder,
@@ -10,11 +11,15 @@ import {
     defaultUserPermError,
 } from "../../shortcuts/defaultPermissionsErrors.js";
 
+// Exporting the command
 export default {
+    // The command data contains customID
     data: {
         customId: "issue-lock-conversation",
     },
+    // The command
     execute: async ({ interaction }) => {
+        // Checking if the bot has the required permissions
         if (
             await defaultBotPermError(
                 interaction,
@@ -22,6 +27,7 @@ export default {
             )
         )
             return;
+        // Checking if the user has the required permissions
         if (
             await defaultUserPermError(
                 interaction,
@@ -29,6 +35,8 @@ export default {
             )
         )
             return;
+
+        // Creating the embed
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this issue")
             .setThumbnail(
@@ -43,7 +51,7 @@ export default {
             .setFooter({
                 text: "Optionally, choose a reason for locking that others can see.",
             });
-
+        // Creating the menu
         const lockReasonsMenu = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId("issue-lock-reason")
@@ -68,6 +76,8 @@ export default {
                         .setValue("issue-lock-reason-spam"),
                 ),
         );
+
+        // Sending the message
         await interaction.reply({
             embeds: [lockButtonExplanation],
             components: [lockReasonsMenu],

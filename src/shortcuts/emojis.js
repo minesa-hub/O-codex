@@ -10,7 +10,7 @@ export const megaphoneEmoji = "<:megaphone:1099056980150206574>";
 export const shieldLockEmoji = "<:shield_lock:1099059160659795999>";
 export const skipEmoji = "<:skip:1097273560738832437>";
 
-// Button Emojis
+// Button Emojis (White)
 export const discussionButtonEmoji = "<:discussion_button:1098366305947635784>";
 export const issueOpenButtonEmoji = "<:issue_open_button:1097159806634168382>";
 export const lockButtonEmoji = "<:lock_button:1097581058876256347>";

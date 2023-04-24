@@ -1,2 +1,3 @@
 # O-codex
-Minesa Hub's bot
+
+Probably most unique bot ever! 👀

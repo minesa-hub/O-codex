@@ -1,3 +1,4 @@
+// Importing the required modules
 import {
     SlashCommandBuilder,
     ButtonBuilder,
@@ -14,7 +15,9 @@ import {
     shieldLockEmoji,
 } from "../../shortcuts/emojis.js";
 
+// Exporting the command
 export default {
+    // The command data
     data: new SlashCommandBuilder()
         .setName("setup-ticket")
         .setDescription("Setup ticket system with threads.")
@@ -63,7 +66,9 @@ export default {
                     { name: "White", value: "#FFFFFF" },
                 ),
         ),
-    async execute({ interaction }) {
+    // The command output
+    execute: async ({ interaction }) => {
+        // Checking if the user has the required permissions
         if (
             !interaction.member.permissions.has(
                 PermissionFlagsBits.ManageThreads ||
@@ -82,16 +87,18 @@ export default {
                 ephemeral: true,
             });
 
+        // Checking if the channel is a text channel
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
                 content: `${alertEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
                 ephemeral: true,
             });
 
+        // Getting the options
         const embedTitle = interaction.options.getString("title");
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
-
+        // Creating the embed
         const embed = new EmbedBuilder()
             .setTitle(
                 embedTitle ? embedTitle : "Welcome to our support portal!",
@@ -113,20 +120,22 @@ Thank you for helping us improve our product/service and Discord server!`,
                 text: interaction.guild.name,
                 iconURL: interaction.guild.iconURL(),
             });
-
+        // Creating the button
         const createIssueButton = new ButtonBuilder()
             .setCustomId("create-issue")
             .setLabel("Create Issue")
             .setStyle(ButtonStyle.Success)
             .setEmoji(issueOpenButtonEmoji);
-
+        // Creating the row
         const row = new ActionRowBuilder().addComponents(createIssueButton);
 
-        interaction.reply({
+        // Sending the message
+        await interaction.reply({
             content: `${shieldLockEmoji} Created the issue system succesfully!`,
             ephemeral: true,
         });
 
-        interaction.channel.send({ embeds: [embed], components: [row] });
+        // Sending the embed
+        await interaction.channel.send({ embeds: [embed], components: [row] });
     },
 };

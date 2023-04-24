@@ -1,3 +1,4 @@
+// Importing the required modules
 import {
     ActionRowBuilder,
     ButtonBuilder,
@@ -7,6 +8,7 @@ import {
 } from "discord.js";
 import { fetch } from "undici";
 
+// Exporting the command
 export default {
     data: new SlashCommandBuilder()
         .setName("show")
@@ -93,19 +95,24 @@ export default {
                         .setRequired(true),
                 ),
         ),
+    // The command's code
     execute: async ({ interaction }) => {
+        // Getting the options
         const type = interaction.options.getString("type");
         const onlyMe = interaction.options.getBoolean("only-me");
 
+        // Trying to fetch the image
         try {
+            // Fetching the image
             const raw = await fetch(
                 `https://nekobot.xyz/api/image?type=${type}`,
                 {
                     method: "GET",
                 },
             );
+            // Getting the response
             const response = await raw.json();
-
+            // Creating the embed
             const NSFWEmbed = new EmbedBuilder()
                 .setTitle("NSFW Image")
                 .setDescription(
@@ -117,20 +124,23 @@ export default {
                     text: `Requested by ${interaction.user.tag}`,
                     iconURL: interaction.user.displayAvatarURL(),
                 });
-
+            // Creating the button
             const displayOnBrowser = new ButtonBuilder()
                 .setLabel("Display on Browser")
                 .setURL(response.message)
                 .setStyle(ButtonStyle.Link);
-
+            // Creating the row
             const row = new ActionRowBuilder().addComponents(displayOnBrowser);
 
+            // Sending the embed
             await interaction.reply({
                 embeds: [NSFWEmbed],
                 components: [row],
                 ephemeral: onlyMe,
             });
+            // Catching the error
         } catch (error) {
+            // Sending the error message
             await interaction.reply({
                 content: "An error occurred while fetching the image.",
                 ephemeral: true,
