@@ -43,6 +43,6 @@ export default {
         modal.addComponents(firstActionRow);
 
         // sending the modal
-        await interaction.showModal(modal).catch((e) => console.log(e));
+        interaction.showModal(modal).catch((e) => console.log(e));
     },
 };

@@ -29,12 +29,7 @@ export default {
     // The command is output
     execute: async ({ interaction }) => {
         // if the bot doesn't have the permission to add reactions
-        if (
-            await defaultBotPermError(
-                interaction,
-                PermissionFlagsBits.AddReactions,
-            )
-        )
+        if (defaultBotPermError(interaction, PermissionFlagsBits.AddReactions))
             return;
 
         // creating the modal
@@ -69,8 +64,6 @@ export default {
         discussionModal.addComponents(row, row2);
 
         // sending the modal
-        await interaction
-            .showModal(discussionModal)
-            .catch((e) => console.log(e));
+        interaction.showModal(discussionModal).catch((e) => console.log(e));
     },
 };

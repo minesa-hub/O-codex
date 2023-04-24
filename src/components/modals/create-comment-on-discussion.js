@@ -15,9 +15,6 @@ export default {
     },
     // The command
     execute: async ({ interaction }) => {
-        // Awaiting the reply
-        await interaction.deferReply();
-
         // Getting the values from the inputs
         const discussionTitleInput =
             interaction.fields.getTextInputValue("discussion-title");
@@ -50,7 +47,7 @@ export default {
         // Creating the row
         const row = new ActionRowBuilder().addComponents(button);
         // Editing the reply
-        const pollMessage = await interaction.editReply({
+        const pollMessage = await interaction.reply({
             embeds: [embed],
             components: [row],
             fetchReply: true,

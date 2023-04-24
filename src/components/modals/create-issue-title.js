@@ -77,7 +77,7 @@ export default {
         });
 
         // Awaiting the reply
-        await interaction.reply({
+        await interaction.followUp({
             content: `${shieldLockEmoji} Created <#${thread.id}>. You can now talk about your issue with our staff member(s).`,
             ephemeral: true,
         });
