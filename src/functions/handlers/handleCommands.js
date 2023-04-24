@@ -1,4 +1,4 @@
-// const commandFolders = `${__dirname}/../../commands`; for panels
+// const commandFolders = `${__dirname}../../../commands`; for non-panels
 
 // Importing the modules
 import { REST, Routes } from "discord.js";
@@ -18,14 +18,14 @@ export default async (client) => {
     client.handleCommands = async () => {
         // Getting all the folders in the commands folder
         const commandFolders = await fs.readdir(
-            `${__dirname}../../../commands`,
+            `${__dirname}/../../commands`,
         );
 
         // Looping through all the folders
         for (const folder of commandFolders) {
             // Getting all the files in the folder
             const commandFiles = (
-                await fs.readdir(`${__dirname}../../../commands/${folder}`)
+                await fs.readdir(`${__dirname}/../../commands/${folder}`)
             ).filter((file) => file.endsWith(".js"));
             // Defining the commands and commandArray variables
             const { commands, commandArray } = client;
