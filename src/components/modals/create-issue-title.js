@@ -1,3 +1,4 @@
+// Importing all the required modules
 import {
     ChannelType,
     ActionRowBuilder,
@@ -14,6 +15,7 @@ import {
     skipEmoji,
 } from "../../shortcuts/emojis.js";
 
+// Defining the lock button
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
         .setCustomId("issue-lock-conversation")
@@ -23,12 +25,17 @@ let lockButton = new ActionRowBuilder().addComponents(
         .setEmoji(lockButtonEmoji),
 );
 
+// Exporting the command
 export default {
+    // The command data contains customID
     data: {
         customId: "create-issue-modal",
     },
+    // The command
     execute: async ({ interaction }) => {
+        // getting the issue title
         const issueTitle = interaction.fields.getTextInputValue("issue-title");
+        // Creating the embed
         const embed = new EmbedBuilder()
             .setTitle("Now, we are here…")
             .setDescription(
@@ -38,7 +45,7 @@ export default {
             .setThumbnail(
                 "https://media.discordapp.net/attachments/861208192121569280/1098929101504532550/EAED28F1-A235-4E67-8F44-BABDD5FB14DB.png?width=473&height=473",
             );
-
+        // Creating the menu
         const menu = new StringSelectMenuBuilder()
             .setCustomId("issue-select-menu")
             .setDisabled(false)
@@ -57,9 +64,10 @@ export default {
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
                     .setEmoji(skipEmoji),
             );
-
+        // Creating the row
         const menuRow = new ActionRowBuilder().addComponents(menu);
 
+        // Creating the thread
         let thread = await interaction.channel.threads.create({
             name: `${issueTitle}`,
             autoArchiveDuration: 60,
@@ -67,17 +75,24 @@ export default {
             reason: `${interaction.user.username} opened an issue`,
             invitable: false,
         });
+
+        // Awaiting the reply
         await interaction.reply({
             content: `${shieldLockEmoji} Created <#${thread.id}>. You can now talk about your issue with our staff member(s).`,
             ephemeral: true,
         });
+
+        // Sending the message
         let pinMessage = await thread.send({
             embeds: [embed],
             components: [menuRow, lockButton],
         });
+
+        // Awaiting the pin
         await pinMessage.pin();
+        // Awaiting the thread members add the user who opened the issue
         await thread.members.add(interaction.user);
     },
 };
-
+// Exporting the lock button
 export { lockButton };
