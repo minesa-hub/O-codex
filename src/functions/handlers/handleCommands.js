@@ -1,3 +1,4 @@
+// const commandFolders = `${__dirname}/../../commands`; for panels
 import { REST, Routes } from "discord.js";
 import { promises as fs } from "fs";
 import { dirname } from "path";
