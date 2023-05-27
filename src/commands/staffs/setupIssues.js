@@ -6,8 +6,8 @@ import {
     EmbedBuilder,
     ButtonStyle,
     ChannelType,
-    PermissionFlagsBits,
     inlineCode,
+    PermissionFlagsBits,
 } from "discord.js";
 import {
     alertEmoji,
@@ -21,6 +21,7 @@ export default {
     data: new SlashCommandBuilder()
         .setName("setup-ticket")
         .setDescription("Setup ticket system with threads.")
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageThreads)
         .addStringOption((option) =>
             option
                 .setName("title")
