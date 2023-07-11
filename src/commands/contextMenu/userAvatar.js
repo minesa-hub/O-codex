@@ -17,7 +17,7 @@ export default {
         .setNameLocalizations({
             ChineseCN: "用户头像",
             it: "Avatar Utente",
-            tr: "Kullanıcı Avatarı-",
+            tr: "Kullanıcı Avatarı",
         })
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),
