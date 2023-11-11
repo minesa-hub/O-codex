@@ -1,3 +1,3 @@
-# Ita "Bluefire" Sun
+# O-codex
 
 Probably most unique bot ever! 👀
