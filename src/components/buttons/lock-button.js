@@ -1,4 +1,3 @@
-// Importing the all required modules
 import {
     ActionRowBuilder,
     EmbedBuilder,
@@ -11,15 +10,11 @@ import {
     defaultUserPermError,
 } from "../../shortcuts/defaultPermissionsErrors.js";
 
-// Exporting the command
 export default {
-    // The command data contains customID
     data: {
         customId: "issue-lock-conversation",
     },
-    // The command
     execute: async ({ interaction }) => {
-        // Checking if the bot has the required permissions
         if (
             await defaultBotPermError(
                 interaction,
@@ -27,7 +22,7 @@ export default {
             )
         )
             return;
-        // Checking if the user has the required permissions
+
         if (
             await defaultUserPermError(
                 interaction,
@@ -36,22 +31,19 @@ export default {
         )
             return;
 
-        // Creating the embed
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this issue")
             .setThumbnail(
                 "https://media.discordapp.net/attachments/861208192121569280/1098926903575986317/B7BA836F-E892-48DE-92B2-AA1FB5558DCF.png?width=473&height=473",
             )
             .setDescription(
-                `・Other user(s) can’t add new comments to this issue.
-・You and other staffs with access to this channel can still leave comments that others can see.
-・You can always unlock this issue again in the future.`,
+                `* Other user(s) can’t add new comments to this issue.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this issue again in the future.`,
             )
             .setColor(0x1e1e1e)
             .setFooter({
                 text: "Optionally, choose a reason for locking that others can see.",
             });
-        // Creating the menu
+
         const lockReasonsMenu = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId("issue-lock-reason")
@@ -77,7 +69,6 @@ export default {
                 ),
         );
 
-        // Sending the message
         await interaction.reply({
             embeds: [lockButtonExplanation],
             components: [lockReasonsMenu],

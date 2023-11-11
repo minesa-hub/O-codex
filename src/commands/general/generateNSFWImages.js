@@ -1,14 +1,15 @@
-// Importing the required modules
 import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    EmbedBuilder,
     SlashCommandBuilder,
 } from "discord.js";
-import { fetch } from "undici";
+import fetch from "node-fetch";
+import {
+    exclamationmark_triangleEmoji,
+    senstive_contentEmoji,
+} from "../../shortcuts/emojis.js";
 
-// Exporting the command
 export default {
     data: new SlashCommandBuilder()
         .setName("show")
@@ -95,54 +96,38 @@ export default {
                         .setRequired(true),
                 ),
         ),
-    // The command's code
     execute: async ({ interaction }) => {
-        // Getting the options
         const type = interaction.options.getString("type");
         const onlyMe = interaction.options.getBoolean("only-me");
 
-        // Trying to fetch the image
+        await interaction.deferReply({ ephemeral: onlyMe });
         try {
-            // Fetching the image
             const raw = await fetch(
                 `https://nekobot.xyz/api/image?type=${type}`,
                 {
                     method: "GET",
                 },
             );
-            // Getting the response
             const response = await raw.json();
-            // Creating the embed
-            const NSFWEmbed = new EmbedBuilder()
-                .setTitle("NSFW Image")
-                .setDescription(
-                    `Here is your NSFW image. If you can't see it, click the button below.`,
-                )
-                .setColor(0x1e1e1e)
-                .setImage(response.message)
-                .setFooter({
-                    text: `Requested by ${interaction.user.tag}`,
-                    iconURL: interaction.user.displayAvatarURL(),
-                });
-            // Creating the button
+
+            const imageUrl = response.message;
+            const NSFWMessage = `# ${senstive_contentEmoji} Sensitive Content\nIf you are a young person who attempts to see nsfw images, I recommend you to stop it for your sake.`;
+
             const displayOnBrowser = new ButtonBuilder()
                 .setLabel("Display on Browser")
-                .setURL(response.message)
+                .setURL(imageUrl)
                 .setStyle(ButtonStyle.Link);
-            // Creating the row
             const row = new ActionRowBuilder().addComponents(displayOnBrowser);
 
-            // Sending the embed
-            await interaction.reply({
-                embeds: [NSFWEmbed],
+            return interaction.editReply({
+                content: NSFWMessage + "\n\n> Source: " + imageUrl,
                 components: [row],
-                ephemeral: onlyMe,
             });
-            // Catching the error
         } catch (error) {
-            // Sending the error message
-            await interaction.reply({
-                content: "An error occurred while fetching the image.",
+            console.error(error);
+
+            return interaction.editReply({
+                content: `${exclamationmark_triangleEmoji} An error occurred while fetching the image.`,
                 ephemeral: true,
             });
         }

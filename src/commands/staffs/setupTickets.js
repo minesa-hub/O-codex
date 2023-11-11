@@ -1,4 +1,3 @@
-// Importing the required modules
 import {
     SlashCommandBuilder,
     ButtonBuilder,
@@ -8,36 +7,51 @@ import {
     ChannelType,
     inlineCode,
     PermissionFlagsBits,
+    underscore,
+    bold,
 } from "discord.js";
 import {
-    alertEmoji,
-    issueOpenButtonEmoji,
-    shieldLockEmoji,
+    exclamationmark_circleEmoji,
+    plus_messageEmoji,
+    lock_shieldEmoji,
+    exclamationmark_triangleEmoji,
 } from "../../shortcuts/emojis.js";
 
-// Exporting the command
 export default {
-    // The command data
     data: new SlashCommandBuilder()
         .setName("setup-ticket")
+        .setNameLocalizations({
+            ChineseCN: "设置票",
+            it: "configura-i-biglietti",
+            tr: "bilet-kurulumu",
+        })
         .setDescription("Setup ticket system with threads.")
+        .setDescriptionLocalizations({
+            ChineseCN: "使用线程设置票证系统。",
+            it: "Configurazione del sistema di ticket con thread.",
+            tr: "Alt başlıklarla bilet sistemi kurulumunu yap.",
+        })
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageThreads)
         .addStringOption((option) =>
             option
-                .setName("title")
-                .setDescription("Set title of embed message")
-                .setRequired(false),
-        )
-        .addStringOption((option) =>
-            option
                 .setName("description")
+                .setNameLocalizations({
+                    ChineseCN: "描述",
+                    it: "descrizione",
+                    tr: "açıklama",
+                })
                 .setDescription("Set description of embed message")
+                .setDescriptionLocalizations({
+                    ChineseCN: "设置嵌入消息的描述",
+                    it: "Imposta la descrizione del messaggio incorporato",
+                    tr: "Zengin mesajının açıklamasını ayarlayın",
+                })
                 .setRequired(false),
         )
         .addStringOption((option) =>
             option
                 .setName("color")
-                .setDescription("Set color of embed message")
+                .setDescription("🔴🟠🟡🟢🔵🟣⚫️⚪️")
                 .setRequired(false)
                 .addChoices(
                     { name: "Lilac", value: "#D9B2FF" },
@@ -67,9 +81,8 @@ export default {
                     { name: "White", value: "#FFFFFF" },
                 ),
         ),
-    // The command output
+
     execute: async ({ interaction }) => {
-        // Checking if the user has the required permissions
         if (
             !interaction.member.permissions.has(
                 PermissionFlagsBits.ManageThreads ||
@@ -78,7 +91,7 @@ export default {
             )
         )
             return interaction.reply({
-                content: `${shieldLockEmoji} You **can not** setup this system <@${
+                content: `${lock_shieldEmoji} You **can not** setup this system <@${
                     interaction.user.id
                 }>. You need ${inlineCode("Manage Threads")}, ${inlineCode(
                     "Manage Channels",
@@ -88,22 +101,16 @@ export default {
                 ephemeral: true,
             });
 
-        // Checking if the channel is a text channel
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
-                content: `${alertEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
+                content: `${exclamationmark_circleEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
                 ephemeral: true,
             });
 
-        // Getting the options
-        const embedTitle = interaction.options.getString("title");
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
-        // Creating the embed
+
         const embed = new EmbedBuilder()
-            .setTitle(
-                embedTitle ? embedTitle : "Welcome to our support portal!",
-            )
             .setDescription(
                 embedDescription
                     ? embedDescription
@@ -114,29 +121,44 @@ When creating a new issue, please provide a clear summary of the problem and any
 Thank you for helping us improve our product/service and Discord server!`,
             )
             .setColor(embedColor ? embedColor : "Random")
-            .setThumbnail(
-                "https://media.discordapp.net/attachments/861208192121569280/1097190943528067122/C540848F-771D-4676-835C-6F65B6A54FF4.png",
+            .setImage(
+                "https://media.discordapp.net/attachments/736571695170584576/1149996512798064670/9C4D1E43-452E-4625-9A75-E8CAF8F99421.png",
             )
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: interaction.guild.iconURL(),
             });
-        // Creating the button
+
         const createIssueButton = new ButtonBuilder()
             .setCustomId("create-issue")
             .setLabel("Create Issue")
-            .setStyle(ButtonStyle.Success)
-            .setEmoji(issueOpenButtonEmoji);
-        // Creating the row
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji(plus_messageEmoji);
+
         const row = new ActionRowBuilder().addComponents(createIssueButton);
 
-        // Sending the message
         await interaction.reply({
-            content: `${shieldLockEmoji} Created the issue system succesfully!`,
+            content: `${lock_shieldEmoji} Created the issue system succesfully!`,
             ephemeral: true,
         });
 
-        // Sending the embed
         await interaction.channel.send({ embeds: [embed], components: [row] });
+
+        if (
+            interaction.guild.members.me.permissions.has(
+                PermissionFlagsBits.ManageMessages,
+            )
+        ) {
+            return;
+        } else {
+            return interaction.followUp({
+                content: `${exclamationmark_triangleEmoji} ${underscore(
+                    "Recommending",
+                )}: If Ita has ${bold(
+                    "Manage Messages",
+                )} permission, it will be very easy to reach at first message with pinned messages.`,
+                ephemeral: true,
+            });
+        }
     },
 };
