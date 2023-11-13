@@ -1,9 +1,6 @@
 import fs from "fs";
 import chalk from "chalk";
 
-import mongoose from "mongoose";
-const { connection } = mongoose;
-
 export default async (client) => {
     client.handleEvents = async () => {
         const eventFolders = fs.readdirSync("./src/events");
@@ -32,36 +29,6 @@ export default async (client) => {
                             );
                         } else {
                             client.on(event.name, (...args) =>
-                                event.execute(...args, client),
-                            );
-
-                            console.log(
-                                chalk.green(
-                                    `[Events]: Loaded ${event.name} event.`,
-                                ),
-                            );
-                        }
-                    }
-                    break;
-
-                case "mongo":
-                    for (const file of eventFiles) {
-                        const { default: event } = await import(
-                            `../../events/${folder}/${file}`
-                        );
-
-                        if (connection.once) {
-                            connection.once(event.name, (...args) =>
-                                event.execute(...args, client),
-                            );
-
-                            console.log(
-                                chalk.green(
-                                    `[Events]: Loaded ${event.name} event.`,
-                                ),
-                            );
-                        } else {
-                            connection.on(event.name, (...args) =>
                                 event.execute(...args, client),
                             );
 
