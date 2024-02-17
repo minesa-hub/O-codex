@@ -5,6 +5,6 @@ export default {
     name: Events.ClientReady,
     once: true,
     execute: async (client) => {
-        console.log(chalk.greenBright(`Logged in as ${client.user.tag}!`));
+        console.log(chalk.green(`[READY] Logged in as ${client.user.tag}!`));
     },
 };

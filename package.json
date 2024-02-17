@@ -13,16 +13,17 @@
         "type": "git",
         "url": "git+https://github.com/minesa-time/Ita.git"
     },
-    "keywords": [ ],
+    "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/minesa-hub/O-codex/issues"
+        "url": "https://github.com/minesa-time/Ita/issues"
     },
-    "homepage": "https://github.com/minesa-hub/O-codex#readme",
+    "homepage": "https://github.com/minesa-hub/Ita#readme",
     "dependencies": {
         "@iamtraction/google-translate": "^2.0.1",
         "chalk": "^5.2.0",
+        "discord-rpc": "^4.0.1",
         "discord.js": "^14.14.1",
         "dotenv": "^16.0.3",
         "moment-timezone": "^0.5.43",

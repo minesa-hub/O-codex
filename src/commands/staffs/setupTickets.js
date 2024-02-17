@@ -116,13 +116,13 @@ export default {
                     ? embedDescription
                     : `If you're experiencing an issue with our product or service, please use the "Issue Creation" button to report it. This includes any server-related issues you may be encountering in our Discord server.
 
-When creating a new issue, please provide a clear summary of the problem and any steps you took before encountering it. This information will help us resolve the issue as quickly as possible.
+                    When creating a new issue, please provide a clear summary of the problem and any steps you took before encountering it. This information will help us resolve the issue as quickly as possible.
 
-Thank you for helping us improve our product/service and Discord server!`,
+                    Thank you for helping us improve our product/service and Discord server!`,
             )
             .setColor(embedColor ? embedColor : "Random")
             .setImage(
-                "https://media.discordapp.net/attachments/736571695170584576/1149996512798064670/9C4D1E43-452E-4625-9A75-E8CAF8F99421.png",
+                "https://media.discordapp.net/attachments/736571695170584576/1208117619165757570/Bluefire_Support_Card-ai-brush-removebg-zogyn14l.png?ex=65e21e36&is=65cfa936&hm=7da084b5a1d1854883afe8deba9f6f7319a1183b9350bafaeb452d7f462e9c98&=&format=webp&quality=lossless&width=1100&height=430",
             )
             .setFooter({
                 text: interaction.guild.name,

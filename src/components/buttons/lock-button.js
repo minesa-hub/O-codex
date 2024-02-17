@@ -34,7 +34,7 @@ export default {
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this issue")
             .setThumbnail(
-                "https://media.discordapp.net/attachments/861208192121569280/1098926903575986317/B7BA836F-E892-48DE-92B2-AA1FB5558DCF.png?width=473&height=473",
+                "https://media.discordapp.net/attachments/736571695170584576/1208128307166449664/d59654a9-100a-432d-8e9b-d6a026dffa7a.png?ex=65e2282a&is=65cfb32a&hm=e616682b0279995500c428b2cfd17b3dd890ab2f2a55838aefa211e9970dc6b9&=&format=webp&quality=lossless&width=1032&height=1032",
             )
             .setDescription(
                 `* Other user(s) can’t add new comments to this issue.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this issue again in the future.`,
