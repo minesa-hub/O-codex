@@ -17,18 +17,18 @@ import {
 
 export default {
     data: new SlashCommandBuilder()
-        .setName("create-event")
-        .setDescription("Create an event")
+        .setName("create-giveaway")
+        .setDescription("Create a giveaway")
         .addStringOption((option) =>
             option
-                .setName("name")
-                .setDescription("Event name.")
+                .setName("prize")
+                .setDescription("What will be the prize?")
                 .setRequired(true),
         )
         .addStringOption((option) =>
             option
                 .setName("description")
-                .setDescription("Event description.")
+                .setDescription("Giveaway description.")
                 .setRequired(true),
         )
         .addStringOption((option) =>
@@ -43,6 +43,7 @@ export default {
                 .setDescription("The duration of event")
                 .setRequired(true)
                 .addChoices(
+                    { name: "1 minutes", value: "1m" },
                     { name: "10 minutes", value: "10m" },
                     { name: "30 minutes", value: "30m" },
                     { name: "1 hour", value: "1h" },
@@ -55,10 +56,10 @@ export default {
         .addAttachmentOption((option) =>
             option
                 .setName("image")
-                .setDescription("Event image.")
+                .setDescription("Giveaway image.")
                 .setRequired(false),
         ),
-    async execute({ interaction }) {
+    async execute({ client, interaction }) {
         // If permission is missing
         if (
             (await defaultBotPermError(
@@ -75,10 +76,10 @@ export default {
 
         await interaction.deferReply({ ephemeral: true });
 
-        const eventName = interaction.options.getString("name"),
-            eventDescription = interaction.options.getString("description"),
-            eventImage = interaction.options.getAttachment("image"),
-            eventLocation = interaction.options.getString("location"),
+        const giveawayName = interaction.options.getString("prize"),
+            giveawayDescription = interaction.options.getString("description"),
+            giveawayImage = interaction.options.getAttachment("image"),
+            giveawayLocation = interaction.options.getString("location"),
             duration = interaction.options.getString("duration");
 
         let seconds;
@@ -90,23 +91,48 @@ export default {
         let scheduledStartTime = moment().tz(timezone).add(seconds, "seconds"),
             scheduledEndTime = moment(scheduledStartTime).add(30, "minutes");
 
-        await interaction.guild.scheduledEvents.create({
-            name: eventName,
-            description: eventDescription,
-            image: eventImage ? eventImage.url : null,
+        const giveaway = await interaction.guild.scheduledEvents.create({
+            name: giveawayName,
+            description: giveawayDescription,
+            image: giveawayImage ? giveawayImage.url : null,
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: {
-                location: eventLocation,
+                location: giveawayLocation,
             },
-            reason: `Giveaway created by ${interaction.user.tag} for ${eventName}.`,
+            reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });
+
+        // After the giveaway ends, update the event with the winner's name
+        setTimeout(async () => {
+            try {
+                // Fetch all subscribers of the event directly from Discord
+                const subscribers = await client.guilds.cache
+                    .get(interaction.guild.id)
+                    .scheduledEvents.cache.get(giveaway.id)
+                    .fetchSubscribers();
+
+                // Get the first subscriber's username
+                const winnerUsername = subscribers.values().next().value
+                    .user.username;
+                console.log(
+                    `The event ${giveawayName} has been updated with the winner's name: ${winnerUsername}`,
+                );
+
+                // Update the event with the winner's name
+                await giveaway.edit({
+                    name: `${giveawayName}\nWinner: ${winnerUsername}`,
+                });
+            } catch (error) {
+                console.error("Error fetching subscribers:", error);
+            }
+        }, scheduledStartTime.diff(moment(), "milliseconds"));
 
         return interaction.editReply({
             content: `# Giveaway has been created: ${underscore(
-                eventName,
+                giveawayName,
             )}\nGiveaway's winners will be shown after the giveaway is on ${underscore(
                 "happening",
             )} state.`,
