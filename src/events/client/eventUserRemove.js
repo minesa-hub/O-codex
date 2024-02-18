@@ -1,6 +1,6 @@
 import { Events } from "discord.js";
 import chalk from "chalk";
-import UserForScheduledEvents from "../../schemas/User.js";
+import UserForScheduledEvents from "../../schemas/UserForScheduledEvents.js";
 
 export default {
     name: Events.GuildScheduledEventUserRemove,
@@ -12,7 +12,7 @@ export default {
                 guildScheduledEventId: guildScheduledEvent.id,
             });
             console.log(
-                chalk.greenBright(
+                chalk.redBright(
                     `${user.tag} has left the event ${guildScheduledEvent.name}`,
                 ),
             );

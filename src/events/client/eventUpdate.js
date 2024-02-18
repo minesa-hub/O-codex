@@ -1,66 +1,72 @@
 import { Events, GuildScheduledEventStatus } from "discord.js";
 import chalk from "chalk";
-import UserForScheduledEvents from "../../schemas/User.js";
+import UserForScheduledEvents from "../../schemas/UserForScheduledEvents.js";
 
 export default {
     name: Events.GuildScheduledEventUpdate,
     once: false,
     execute: async (oldGuildScheduledEvent, newGuildScheduledEvent) => {
-        // Checking if the event made by the bot
+        // Checking if the event was initiated by the bot
         if (
-            newGuildScheduledEvent.guild.client.user.id !==
+            newGuildScheduledEvent.guild.client.user.id ===
             process.env.CLIENT_ID
         ) {
             return;
         }
 
-        // if the event is now active, we need to add all the users to the database
+        // If the event is now active, we need to add all the users to the database
         if (
             oldGuildScheduledEvent.status ===
                 GuildScheduledEventStatus.Scheduled &&
             newGuildScheduledEvent.status === GuildScheduledEventStatus.Active
         ) {
-            const users = newGuildScheduledEvent.guild.members.cache;
-            for (const user of users) {
-                const newUser = new UserForScheduledEvents({
-                    userId: user.id,
+            try {
+                const users = newGuildScheduledEvent.guild.members.cache;
+                const eventUsers = await UserForScheduledEvents.find({
                     guildScheduledEventId: newGuildScheduledEvent.id,
                 });
-                try {
-                    await newUser.save();
-                    console.log(
-                        chalk.greenBright(
-                            `${user.tag} has joined the event ${newGuildScheduledEvent.name}`,
-                        ),
+
+                for (const [, user] of users) {
+                    // Check if the user is already in the eventUsers array
+                    const isUserInEvent = eventUsers.some(
+                        (eventUser) => eventUser.userId === user.id,
                     );
-                } catch (error) {
-                    console.error(error);
+                    if (!isUserInEvent) {
+                        const newUser = new UserForScheduledEvents({
+                            userId: user.id,
+                            guildScheduledEventId: newGuildScheduledEvent.id,
+                        });
+                        await newUser.save();
+                        console.log(
+                            chalk.greenBright(
+                                `${user.tag} has joined the event ${newGuildScheduledEvent.name}`,
+                            ),
+                        );
+                    }
                 }
+            } catch (error) {
+                console.error(error);
             }
         }
 
-        // if the event is over and the status is completed, we need to remove all the users from the database
+        // If the event is over and the status is completed, we need to remove all the users from the database
         if (
             oldGuildScheduledEvent.status ===
                 GuildScheduledEventStatus.Active &&
             newGuildScheduledEvent.status ===
                 GuildScheduledEventStatus.Completed
         ) {
-            const users = newGuildScheduledEvent.guild.members.cache;
-            for (const user of users) {
-                try {
-                    await UserForScheduledEvents.findOneAndDelete({
-                        userId: user.id,
-                        guildScheduledEventId: newGuildScheduledEvent.id,
-                    });
-                    console.log(
-                        chalk.greenBright(
-                            `${user.tag} has left the event ${newGuildScheduledEvent.name}`,
-                        ),
-                    );
-                } catch (error) {
-                    console.error(error);
-                }
+            try {
+                await UserForScheduledEvents.deleteMany({
+                    guildScheduledEventId: newGuildScheduledEvent.id,
+                });
+                console.log(
+                    chalk.greenBright(
+                        `All users have left the event ${newGuildScheduledEvent.name}`,
+                    ),
+                );
+            } catch (error) {
+                console.error(error);
             }
         }
     },
