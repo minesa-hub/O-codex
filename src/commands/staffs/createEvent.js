@@ -105,23 +105,33 @@ export default {
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });
 
-        // After the giveaway ends, update the event with the winner's name
+        function shuffleSubscribers(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
         setTimeout(async () => {
             try {
-                // Fetch all subscribers of the event directly from Discord
                 const subscribers = await client.guilds.cache
                     .get(interaction.guild.id)
                     .scheduledEvents.cache.get(giveaway.id)
                     .fetchSubscribers();
 
-                // Get the first subscriber's username
-                const winnerUsername = subscribers.values().next().value
-                    .user.username;
+                // Convert subscribers Map to an array of usernames
+                const subscriberUsernames = shuffleSubscribers(
+                    Array.from(subscribers.values()),
+                ).map((subscriber) => subscriber.user.username);
+
+                // Pick the first username as the winner
+                const winnerUsername = subscriberUsernames[0];
+
                 console.log(
                     `The event ${giveawayName} has been updated with the winner's name: ${winnerUsername}`,
                 );
 
-                // Update the event with the winner's name
                 await giveaway.edit({
                     name: `${giveawayName}\nWinner: ${winnerUsername}`,
                 });
