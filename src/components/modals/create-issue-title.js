@@ -37,9 +37,8 @@ export default {
             .setDescription(
                 "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your issue?",
             )
-            .setColor(0x1e1e1e)
             .setThumbnail(
-                "https://media.discordapp.net/attachments/861208192121569280/1098929101504532550/EAED28F1-A235-4E67-8F44-BABDD5FB14DB.png?width=473&height=473",
+                "https://media.discordapp.net/attachments/736571695170584576/1208124842159898646/ede80f82-f591-47bd-8e13-536ff2f5c3d1.png?ex=65e224f0&is=65cfaff0&hm=fe6aef4a967e330da7c3cef3a5e4cf3807f561cd8eafbd90bc117fee5efff72f&=&format=webp&quality=lossless&width=1032&height=1032",
             );
 
         const menu = new StringSelectMenuBuilder()

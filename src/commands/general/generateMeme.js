@@ -1,12 +1,14 @@
-import { SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
 import {
     exclamationmark_triangleEmoji,
     face_smilingEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
+        .setDMPermission(false)
         .setName("send")
         .setNameLocalizations({
             ChineseCN: "显示",
@@ -33,10 +35,11 @@ export default {
                     it: "Invia un meme casuale da qualche parte!",
                     tr: "Rastgele bir mim gönder!",
                 }),
-        )
-        .setDMPermission(false),
-
+        ),
     execute: async ({ interaction }) => {
+        if (defaultBotPermError(interaction, PermissionFlagsBits.EmbedLinks))
+            return;
+
         await interaction.deferReply();
 
         try {

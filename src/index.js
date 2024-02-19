@@ -5,12 +5,14 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
+import { connect } from "mongoose";
 import fs from "fs";
 import { config } from "dotenv";
+import { setRPC } from "./rpc.js";
 
 config();
 
-const { TOKEN } = process.env;
+const { TOKEN, DATABASE_URI } = process.env;
 
 const client = new Client({
     intents: [
@@ -56,8 +58,13 @@ for (const folder of functionFolders) {
     }
 }
 
+setRPC();
+
 client.handleCommands();
 client.handleEvents();
 client.handleComponents();
 
 client.login(TOKEN);
+(async () => {
+    await connect(DATABASE_URI).catch(console.error);
+})();
