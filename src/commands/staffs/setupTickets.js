@@ -19,6 +19,8 @@ import {
 
 export default {
     data: new SlashCommandBuilder()
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+        .setDMPermission(false)
         .setName("setup-ticket")
         .setNameLocalizations({
             ChineseCN: "设置票",
@@ -31,7 +33,6 @@ export default {
             it: "Configurazione del sistema di ticket con thread.",
             tr: "Alt başlıklarla bilet sistemi kurulumunu yap.",
         })
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageThreads)
         .addStringOption((option) =>
             option
                 .setName("description")
@@ -83,24 +84,6 @@ export default {
         ),
 
     execute: async ({ interaction }) => {
-        if (
-            !interaction.member.permissions.has(
-                PermissionFlagsBits.ManageThreads ||
-                    PermissionFlagsBits.ManageGuild ||
-                    PermissionFlagsBits.Administrator,
-            )
-        )
-            return interaction.reply({
-                content: `${lock_shieldEmoji} You **can not** setup this system <@${
-                    interaction.user.id
-                }>. You need ${inlineCode("Manage Threads")}, ${inlineCode(
-                    "Manage Channels",
-                )} or ${inlineCode(
-                    "Administrator",
-                )} permission to setup this system.`,
-                ephemeral: true,
-            });
-
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
                 content: `${exclamationmark_circleEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,

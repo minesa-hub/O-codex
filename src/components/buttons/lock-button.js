@@ -39,7 +39,6 @@ export default {
             .setDescription(
                 `* Other user(s) can’t add new comments to this issue.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this issue again in the future.`,
             )
-            .setColor(0x1e1e1e)
             .setFooter({
                 text: "Optionally, choose a reason for locking that others can see.",
             });
