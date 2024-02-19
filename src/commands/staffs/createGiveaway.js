@@ -4,7 +4,9 @@ import {
     GuildScheduledEventPrivacyLevel,
     PermissionFlagsBits,
     SlashCommandBuilder,
+    bold,
     underscore,
+    userMention,
 } from "discord.js";
 import {
     timezoneChecking,
@@ -41,38 +43,6 @@ export default {
                     tr: "Ödül nedir?",
                     it: "Qual è il premio?",
                     "zh-CN": "奖品是什么？",
-                })
-                .setRequired(true),
-        )
-        .addStringOption((option) =>
-            option
-                .setName("description")
-                .setNameLocalizations({
-                    tr: "açıklama",
-                    it: "descrizione",
-                    "zh-CN": "描述",
-                })
-                .setDescription("Giveaway description.")
-                .setDescriptionLocalizations({
-                    tr: "Çekiliş açıklaması.",
-                    it: "Descrizione del concorso.",
-                    "zh-CN": "抽奖描述。",
-                })
-                .setRequired(true),
-        )
-        .addStringOption((option) =>
-            option
-                .setName("location")
-                .setNameLocalizations({
-                    tr: "yer",
-                    it: "posizione",
-                    "zh-CN": "位置",
-                })
-                .setDescription("Write down the location.")
-                .setDescriptionLocalizations({
-                    tr: "Yeri yazın.",
-                    it: "Scrivi la posizione.",
-                    "zh-CN": "写下位置。",
                 })
                 .setRequired(true),
         )
@@ -166,6 +136,22 @@ export default {
                     },
                 ),
         )
+        .addStringOption((option) =>
+            option
+                .setName("description")
+                .setNameLocalizations({
+                    tr: "açıklama",
+                    it: "descrizione",
+                    "zh-CN": "描述",
+                })
+                .setDescription("Giveaway description.")
+                .setDescriptionLocalizations({
+                    tr: "Çekiliş açıklaması.",
+                    it: "Descrizione del concorso.",
+                    "zh-CN": "抽奖描述。",
+                })
+                .setRequired(false),
+        )
         .addAttachmentOption((option) =>
             option
                 .setName("image")
@@ -185,7 +171,6 @@ export default {
 
     async execute({ client, interaction }) {
         await interaction.deferReply({ ephemeral: true });
-        // If permission is missing
         if (
             await defaultBotPermError(
                 interaction,
@@ -195,9 +180,10 @@ export default {
             return;
 
         const giveawayName = interaction.options.getString("prize"),
-            giveawayDescription = interaction.options.getString("description"),
+            giveawayDescription =
+                interaction.options.getString("description") ||
+                "Feel free to join <:ita_happy:1170847735008739408>",
             giveawayImage = interaction.options.getAttachment("image"),
-            giveawayLocation = interaction.options.getString("location"),
             duration = interaction.options.getString("duration");
 
         let seconds;
@@ -211,14 +197,20 @@ export default {
 
         const giveaway = await interaction.guild.scheduledEvents.create({
             name: giveawayName,
-            description: giveawayDescription,
-            image: giveawayImage ? giveawayImage.url : null,
+            description:
+                giveawayDescription +
+                `\n${bold("Giveaway created by:")} ${userMention(
+                    interaction.user.id,
+                )}`,
+            image: giveawayImage
+                ? giveawayImage.url
+                : "https://i.ibb.co/yPc75Qs/Giveaway-Card.jpg",
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: {
-                location: giveawayLocation,
+                location: interaction.guild.name,
             },
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });
@@ -230,20 +222,29 @@ export default {
                     .scheduledEvents.cache.get(giveaway.id)
                     .fetchSubscribers();
 
-                // Convert subscribers Map to an array of usernames
-                const subscriberUsernames = shuffleSubscribers(
-                    Array.from(subscribers.values()),
-                ).map((subscriber) => subscriber.user.username);
+                let winner = "";
+                let description = "";
+                if (subscribers.size > 0) {
+                    const subscriberUsernames = Array.from(
+                        subscribers.values(),
+                    ).map((subscriber) => subscriber.user);
 
-                // Pick the first username as the winner
-                const winnerUsername = subscriberUsernames[0];
+                    const shuffledUsernames =
+                        shuffleSubscribers(subscriberUsernames);
 
-                console.log(
-                    `The event ${giveawayName} has been updated with the winner's name: ${winnerUsername}`,
-                );
+                    winner = shuffledUsernames[0];
+                    description = `a winner!\n${userMention(
+                        winner.id,
+                    )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
+                } else {
+                    winner =
+                        "no winner is chosen since no one joined. <:ita_happy:1170847735008739408>";
+                    description = winner;
+                }
 
                 await giveaway.edit({
-                    name: `${giveawayName}\nWinner: ${winnerUsername}`,
+                    name: `Giveaway Ended! — ${giveawayName}`,
+                    description: `**${giveawayName}** giveaway has ${description}`,
                 });
             } catch (error) {
                 console.error("Error fetching subscribers:", error);
