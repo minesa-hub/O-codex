@@ -29,6 +29,6 @@
         "moment-timezone": "^0.5.43",
         "mongoose": "^7.0.4",
         "node-fetch": "^3.3.2",
-        "undici": "^5.28.3"
+        "undici": "^6.6.1"
     }
 }
