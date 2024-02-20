@@ -13,6 +13,7 @@ import {
     timeChecking,
 } from "../../shortcuts/timeChecking.js";
 import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
+import { gift_card } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -108,6 +109,42 @@ export default {
                         },
                     },
                     {
+                        name: "3 hours",
+                        value: "3h",
+                        name_localizations: {
+                            tr: "3 saat",
+                            it: "3 ore",
+                            "zh-CN": "3小时",
+                        },
+                    },
+                    {
+                        name: "4 hours",
+                        value: "4h",
+                        name_localizations: {
+                            tr: "4 saat",
+                            it: "4 ore",
+                            "zh-CN": "4小时",
+                        },
+                    },
+                    {
+                        name: "5 hours",
+                        value: "5h",
+                        name_localizations: {
+                            tr: "5 saat",
+                            it: "5 ore",
+                            "zh-CN": "5小时",
+                        },
+                    },
+                    {
+                        name: "6 hours",
+                        value: "6h",
+                        name_localizations: {
+                            tr: "6 saat",
+                            it: "6 ore",
+                            "zh-CN": "6小时",
+                        },
+                    },
+                    {
                         name: "1 day",
                         value: "1d",
                         name_localizations: {
@@ -199,7 +236,7 @@ export default {
             name: giveawayName,
             description:
                 giveawayDescription +
-                `\n${bold("Giveaway created by:")} ${userMention(
+                ` ${gift_card} \n${bold("Giveaway created by:")} ${userMention(
                     interaction.user.id,
                 )}`,
             image: giveawayImage
@@ -215,49 +252,68 @@ export default {
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });
 
-        setTimeout(async () => {
-            try {
-                const subscribers = await client.guilds.cache
-                    .get(interaction.guild.id)
-                    .scheduledEvents.cache.get(giveaway.id)
-                    .fetchSubscribers();
+        let inviteLink;
 
-                let winner = "";
-                let description = "";
-                if (subscribers.size > 0) {
-                    const subscriberUsernames = Array.from(
-                        subscribers.values(),
-                    ).map((subscriber) => subscriber.user);
+        client.guilds.cache
+            .get(interaction.guild.id)
+            .scheduledEvents.cache.get(giveaway.id)
+            .createInviteURL({ channel: interaction.channel.id })
+            .then((url) => {
+                inviteLink = url;
 
-                    const shuffledUsernames =
-                        shuffleSubscribers(subscriberUsernames);
+                setTimeout(async () => {
+                    try {
+                        const subscribers = await client.guilds.cache
+                            .get(interaction.guild.id)
+                            .scheduledEvents.cache.get(giveaway.id)
+                            .fetchSubscribers();
 
-                    winner = shuffledUsernames[0];
-                    description = `a winner!\n${userMention(
-                        winner.id,
-                    )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
-                } else {
-                    winner =
-                        "no winner is chosen since no one joined. <:ita_happy:1170847735008739408>";
-                    description = winner;
-                }
+                        let winner = "";
+                        let description = "";
+                        if (subscribers.size > 0) {
+                            const subscriberUsernames = Array.from(
+                                subscribers.values(),
+                            ).map((subscriber) => subscriber.user);
 
-                await giveaway.edit({
-                    name: `Giveaway Ended! — ${giveawayName}`,
-                    description: `**${giveawayName}** giveaway has ${description}`,
+                            const shuffledUsernames =
+                                shuffleSubscribers(subscriberUsernames);
+
+                            winner = shuffledUsernames[0];
+                            description = `a winner! ${gift_card}\n${userMention(
+                                winner.id,
+                            )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
+                        } else {
+                            winner =
+                                "no winner is chosen since no one joined. <:ita_happy:1170847735008739408>";
+                            description = winner;
+                        }
+
+                        await giveaway.edit({
+                            name: `Giveaway Ended! — ${giveawayName}`,
+                            description: `**${giveawayName}** giveaway has ${description}`,
+                        });
+                    } catch (error) {
+                        console.error("Error fetching subscribers:", error);
+                    }
+                }, scheduledStartTime.diff(moment(), "milliseconds"));
+
+                interaction.editReply({
+                    content: gift_card + " Creating the giveaway...",
                 });
-            } catch (error) {
-                console.error("Error fetching subscribers:", error);
-            }
-        }, scheduledStartTime.diff(moment(), "milliseconds"));
-
-        return interaction.editReply({
-            content: `# Giveaway has been created: ${underscore(
-                giveawayName,
-            )}\nGiveaway's winners will be shown after the giveaway is on ${underscore(
-                "happening",
-            )} state.`,
-        });
+                interaction.editReply({
+                    content: `# ${gift_card} Giveaway has been created: ${underscore(
+                        giveawayName,
+                    )}\nGiveaway's winner ${bold(
+                        "will be shown",
+                    )} after the giveaway is on ${underscore(
+                        "happening",
+                    )} state!
+                    \n${inviteLink}`,
+                });
+            })
+            .catch((error) => {
+                console.error("Error creating invite link:", error);
+            });
     },
 };
 
