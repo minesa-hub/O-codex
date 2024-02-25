@@ -5,10 +5,10 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
+import { Player } from "discord-player";
 import { connect } from "mongoose";
 import fs from "fs";
 import { config } from "dotenv";
-import { setRPC } from "./rpc.js";
 
 config();
 
@@ -18,7 +18,10 @@ const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildScheduledEvents,
+        GatewayIntentBits.GuildVoiceStates,
     ],
 
     partials: [
@@ -43,6 +46,14 @@ client.buttons = new Collection();
 client.selectMenus = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
+client.player = new Player(client, {
+    ytdlOptions: {
+        quality: "highestaudio",
+        highWaterMark: 1 << 25,
+    },
+});
+
+client.player.extractors.loadDefault();
 
 const functionFolders = fs.readdirSync("./src/functions");
 
@@ -57,8 +68,6 @@ for (const folder of functionFolders) {
         func(client);
     }
 }
-
-setRPC();
 
 client.handleCommands();
 client.handleEvents();
