@@ -1,3 +1,3 @@
-# O-codex
+# Ita
 
 Probably most unique bot ever! 👀
