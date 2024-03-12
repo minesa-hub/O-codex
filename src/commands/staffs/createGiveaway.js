@@ -206,7 +206,7 @@ export default {
                 .setRequired(false),
         ),
 
-    async execute({ client, interaction }) {
+    execute: async ({ client, interaction }) => {
         await interaction.deferReply({ ephemeral: true });
         if (
             await defaultBotPermError(

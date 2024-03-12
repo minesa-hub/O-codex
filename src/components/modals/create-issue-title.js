@@ -64,7 +64,7 @@ export default {
 
         let thread = await interaction.channel.threads.create({
             name: `${issueTitle}`,
-            autoArchiveDuration: 60,
+            autoArchiveDuration: 1440,
             type: ChannelType.PrivateThread,
             reason: `${interaction.user.username} opened a thread for support`,
             invitable: false,
