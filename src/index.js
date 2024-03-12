@@ -1,3 +1,5 @@
+import { DisTube } from "distube";
+import { SpotifyPlugin } from "@distube/spotify";
 import {
     ActivityType,
     Client,
@@ -5,12 +7,14 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
-import { Player } from "discord-player";
 import { connect } from "mongoose";
 import fs from "fs";
 import { config } from "dotenv";
+import { setRPC } from "./rpc.js";
+import { music_note } from "./shortcuts/emojis.js";
 
 config();
+setRPC();
 
 const { TOKEN, DATABASE_URI } = process.env;
 
@@ -31,7 +35,7 @@ const client = new Client({
     ],
 
     presence: {
-        status: "dnd",
+        status: "idle",
         activities: [
             {
                 name: "What is happening? 👀",
@@ -46,14 +50,31 @@ client.buttons = new Collection();
 client.selectMenus = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
-client.player = new Player(client, {
-    ytdlOptions: {
-        quality: "highestaudio",
-        highWaterMark: 1 << 25,
-    },
+
+// music starts
+const player = new DisTube(client, {
+    emitNewSongOnly: true,
+    leaveOnFinish: false,
+    leaveOnEmpty: false,
+    emptyCooldown: 0,
+    emitAddSongWhenCreatingQueue: true,
+    plugins: [new SpotifyPlugin()],
 });
 
-client.player.extractors.loadDefault();
+let queueVarCallback;
+player.on("addSong", (queue, song) => {
+    let message = `## ${music_note} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
+
+    if (queueVarCallback) {
+        queueVarCallback(message);
+    }
+});
+
+export function waitForQueueVar(callback) {
+    queueVarCallback = callback;
+}
+export default player;
+// music finished
 
 const functionFolders = fs.readdirSync("./src/functions");
 

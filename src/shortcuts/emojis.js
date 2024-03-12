@@ -23,3 +23,4 @@ export const arrow_triangle_swapEmoji =
     "<:arrow_triangle_swap:1160702528330145843>";
 export const face_smilingEmoji = "<:face_smiling:1172956677436354692>";
 export const gift_card = "<:gift_card:1209197347716857926>";
+export const music_note = "<:music_note:1212857301136842772>";
