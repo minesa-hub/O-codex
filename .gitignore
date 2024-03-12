@@ -9,4 +9,4 @@ node_modules
 .DS_Store
 
 # config
-src/config.js
+config.js

@@ -95,6 +95,6 @@ client.handleEvents();
 client.handleComponents();
 
 client.login(TOKEN);
-(async () => {
-    await connect(DATABASE_URI).catch(console.error);
-})();
+// (async () => {
+//     await connect(DATABASE_URI).catch(console.error);
+// })();
