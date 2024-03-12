@@ -7,3 +7,6 @@ node_modules
 # Environment variables
 .env
 .DS_Store
+
+# config
+src/config.js
