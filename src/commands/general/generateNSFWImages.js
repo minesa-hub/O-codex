@@ -2,6 +2,7 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
+    PermissionFlagsBits,
     SlashCommandBuilder,
 } from "discord.js";
 import fetch from "node-fetch";
@@ -9,6 +10,7 @@ import {
     exclamationmark_triangleEmoji,
     senstive_contentEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -80,11 +82,18 @@ export default {
                 .setRequired(true)
         ),
     execute: async ({ interaction }) => {
-        const type = interaction.options.getString("type");
-        const onlyMe = interaction.options.getBoolean("only-me");
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
 
-        await interaction.deferReply({ ephemeral: onlyMe });
         try {
+            const type = interaction.options.getString("type");
+            const onlyMe = interaction.options.getBoolean("only-me");
+            await interaction.deferReply({ ephemeral: onlyMe });
             const raw = await fetch(
                 `https://nekobot.xyz/api/image?type=${type}`,
                 {

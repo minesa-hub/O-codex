@@ -4,6 +4,7 @@ import {
     exclamationmark_triangleEmoji,
     face_smilingEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -36,15 +37,23 @@ export default {
                 })
         ),
     execute: async ({ interaction }) => {
-        await interaction.deferReply();
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
 
         try {
+            await interaction.deferReply();
+
             const raw = await fetch("https://apis.duncte123.me/meme", {
                 method: "GET",
             });
             const response = await raw.json();
 
-            return interaction.editReply({
+            await interaction.editReply({
                 content: `# ${face_smilingEmoji + " Meme"}\n> ${
                     response.data.image
                 }`,
@@ -52,7 +61,7 @@ export default {
         } catch (error) {
             console.error(error);
 
-            return interaction.editReply({
+            await interaction.reply({
                 content: `${exclamationmark_triangleEmoji} An error occurred while trying to fetch the meme. Try again in some time later.`,
                 ephemeral: true,
             });
