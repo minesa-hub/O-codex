@@ -93,7 +93,9 @@ export default {
         try {
             const type = interaction.options.getString("type");
             const onlyMe = interaction.options.getBoolean("only-me");
+
             await interaction.deferReply({ ephemeral: onlyMe });
+
             const raw = await fetch(
                 `https://nekobot.xyz/api/image?type=${type}`,
                 {
