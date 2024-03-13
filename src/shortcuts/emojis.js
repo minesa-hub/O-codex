@@ -1,3 +1,9 @@
+// remake emojis
+export const ticket_emoji = "<:ticket:1217210477839384576>";
+export const ticket_created = "<:ticket_created:1217233269607763989>";
+export const button_emoji = "<:button:1217223582828986560>";
+
+// old emojis
 export const person_crop_squareEmoji =
     "<:person_crop_square:1149721658291138691>";
 export const photoEmoji = "<:photo:1149758125738573966>";

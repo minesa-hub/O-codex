@@ -11,10 +11,6 @@ import {
     returnEmoji,
     circle_slashEmoji,
 } from "../../shortcuts/emojis.js";
-import {
-    defaultBotPermError,
-    defaultUserPermError,
-} from "../../shortcuts/defaultPermissionsErrors.js";
 
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("issue-select-menu")
@@ -32,7 +28,7 @@ const menu3 = new StringSelectMenuBuilder()
             .setLabel("Close as not planned")
             .setValue("issue-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
-            .setEmoji(circle_slashEmoji),
+            .setEmoji(circle_slashEmoji)
     );
 
 export const row3 = new ActionRowBuilder().addComponents(menu3);
@@ -49,31 +45,6 @@ export default {
 
         switch (value) {
             case "issue-menu-close":
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ViewAuditLog,
-                        "I need this permission to get thread's last state.",
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultUserPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
                 const menu1 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -89,9 +60,9 @@ export default {
                             .setLabel("Close as not planned")
                             .setValue("issue-menu-duplicate")
                             .setDescription(
-                                "Won’t fix, can’t repo, duplicate, stale",
+                                "Won’t fix, can’t repo, duplicate, stale"
                             )
-                            .setEmoji(circle_slashEmoji),
+                            .setEmoji(circle_slashEmoji)
                     );
 
                 const row1 = new ActionRowBuilder().addComponents(menu1);
@@ -109,7 +80,7 @@ export default {
 
                     await interaction.channel.setArchived(
                         true,
-                        `${interaction.user.username} marked as completed`,
+                        `${interaction.user.username} marked as completed`
                     );
                 } else {
                     await interaction.update({
@@ -122,37 +93,12 @@ export default {
 
                     await interaction.channel.setArchived(
                         true,
-                        `${interaction.user.username} marked as completed`,
+                        `${interaction.user.username} marked as completed`
                     );
                 }
                 break;
 
             case "issue-menu-duplicate":
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ViewAuditLog,
-                        "I need this permission to get thread's last state.",
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultUserPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
                 const menu2 = new StringSelectMenuBuilder()
                     .setCustomId("issue-select-menu")
                     .setDisabled(false)
@@ -168,7 +114,7 @@ export default {
                             .setValue("issue-menu-close")
                             .setDescription("Done, closed, fixed, resolved")
                             .setEmoji(checkmark_circleEmoji)
-                            .setDefault(false),
+                            .setDefault(false)
                     );
 
                 const row2 = new ActionRowBuilder().addComponents(menu2);
@@ -181,41 +127,16 @@ export default {
 
                 await interaction.channel.setArchived(
                     true,
-                    `${interaction.user.username} marked as not planned`,
+                    `${interaction.user.username} marked as not planned`
                 );
                 break;
 
             case "issue-menu-reopen":
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultBotPermError(
-                        interaction,
-                        PermissionFlagsBits.ViewAuditLog,
-                        "I need this permission to get thread's last state.",
-                    )
-                )
-                    return;
-
-                if (
-                    await defaultUserPermError(
-                        interaction,
-                        PermissionFlagsBits.ManageThreads,
-                    )
-                )
-                    return;
-
                 let threadChannel = interaction.channel;
 
                 await threadChannel.setArchived(
                     false,
-                    `${interaction.user.username} marked as open`,
+                    `${interaction.user.username} marked as open`
                 );
 
                 await interaction.update({ components: [row3, lockButton] });

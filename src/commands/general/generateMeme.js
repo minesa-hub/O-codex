@@ -4,7 +4,6 @@ import {
     exclamationmark_triangleEmoji,
     face_smilingEmoji,
 } from "../../shortcuts/emojis.js";
-import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -34,12 +33,9 @@ export default {
                     ChineseCN: "从某处发送一个随机梗图!",
                     it: "Invia un meme casuale da qualche parte!",
                     tr: "Rastgele bir mim gönder!",
-                }),
+                })
         ),
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.EmbedLinks))
-            return;
-
         await interaction.deferReply();
 
         try {

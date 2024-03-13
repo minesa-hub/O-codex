@@ -1,39 +1,11 @@
 import { PermissionFlagsBits } from "discord.js";
 import { setLockedAndUpdateMessage } from "../../shortcuts/setLockedAndUpdateMessage.js";
-import {
-    defaultBotPermError,
-    defaultUserPermError,
-} from "../../shortcuts/defaultPermissionsErrors.js";
 
 export default {
     data: {
         customId: "issue-lock-reason",
     },
     execute: async ({ interaction }) => {
-        if (
-            await defaultBotPermError(
-                interaction,
-                PermissionFlagsBits.ManageThreads,
-            )
-        )
-            return;
-
-        if (
-            await defaultBotPermError(
-                interaction,
-                PermissionFlagsBits.ViewAuditLog,
-                "I need this permission to get thread's last state.",
-            )
-        )
-            return;
-        if (
-            await defaultUserPermError(
-                interaction,
-                PermissionFlagsBits.ManageThreads,
-            )
-        )
-            return;
-
         let value = interaction.values[0];
 
         switch (value) {

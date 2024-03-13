@@ -2,7 +2,6 @@ import {
     ActionRowBuilder,
     ButtonBuilder,
     ButtonStyle,
-    PermissionFlagsBits,
     SlashCommandBuilder,
 } from "discord.js";
 import fetch from "node-fetch";
@@ -61,8 +60,8 @@ export default {
                     { name: "pussy", value: "pussy" },
                     { name: "thigh", value: "thigh" },
                     { name: "tentacle", value: "tentacle" },
-                    { name: "yaoi", value: "yaoi" },
-                ),
+                    { name: "yaoi", value: "yaoi" }
+                )
         )
         .addBooleanOption((option) =>
             option
@@ -78,12 +77,9 @@ export default {
                     it: "Visualizzare la risposta come epimerale o no?",
                     tr: "Görünümü geçici olarak görüntülemek mi yoksa değil mi?",
                 })
-                .setRequired(true),
+                .setRequired(true)
         ),
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.EmbedLinks))
-            return;
-
         const type = interaction.options.getString("type");
         const onlyMe = interaction.options.getBoolean("only-me");
 
@@ -93,7 +89,7 @@ export default {
                 `https://nekobot.xyz/api/image?type=${type}`,
                 {
                     method: "GET",
-                },
+                }
             );
             const response = await raw.json();
 

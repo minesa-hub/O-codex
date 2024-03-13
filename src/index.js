@@ -7,7 +7,7 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
-import { connect } from "mongoose";
+// import { connect } from "mongoose";
 import fs from "fs";
 import { config } from "dotenv";
 import { setRPC } from "./rpc.js";
@@ -16,7 +16,10 @@ import { music_note } from "./shortcuts/emojis.js";
 config();
 setRPC();
 
-const { TOKEN, DATABASE_URI } = process.env;
+const {
+    TOKEN,
+    // DATABASE_URI
+} = process.env;
 
 const client = new Client({
     intents: [
