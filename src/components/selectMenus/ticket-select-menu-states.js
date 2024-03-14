@@ -7,9 +7,9 @@ import {
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
 import {
-    checkmark_circleEmoji,
-    returnEmoji,
-    circle_slashEmoji,
+    checkmark_emoji,
+    return_emoji,
+    slash_emoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -23,13 +23,13 @@ const menu3 = new StringSelectMenuBuilder()
             .setLabel("Close as completed")
             .setValue("ticket-menu-close")
             .setDescription("Done, closed, fixed, resolved")
-            .setEmoji(checkmark_circleEmoji)
+            .setEmoji(checkmark_emoji)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as not planned")
             .setValue("ticket-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
-            .setEmoji(circle_slashEmoji)
+            .setEmoji(slash_emoji)
     );
 
 export const row3 = new ActionRowBuilder().addComponents(menu3);
@@ -80,7 +80,7 @@ export default {
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Reopen ticket")
                             .setValue("ticket-menu-reopen")
-                            .setEmoji(returnEmoji)
+                            .setEmoji(return_emoji)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as not planned")
@@ -88,7 +88,7 @@ export default {
                             .setDescription(
                                 "Won’t fix, can’t repo, duplicate, stale"
                             )
-                            .setEmoji(circle_slashEmoji)
+                            .setEmoji(slash_emoji)
                     );
 
                 const row1 = new ActionRowBuilder().addComponents(menu1);
@@ -101,7 +101,7 @@ export default {
                     });
 
                     await interaction.channel.send({
-                        content: `${checkmark_circleEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${checkmark_emoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
                     await interaction.channel.setLocked(true);
@@ -115,7 +115,7 @@ export default {
                     });
 
                     await interaction.channel.send({
-                        content: `${checkmark_circleEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${checkmark_emoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
                     await interaction.channel.setLocked(true);
@@ -136,12 +136,12 @@ export default {
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Reopen ticket")
                             .setValue("ticket-menu-reopen")
-                            .setEmoji(returnEmoji),
+                            .setEmoji(return_emoji),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as completed")
                             .setValue("ticket-menu-close")
                             .setDescription("Done, closed, fixed, resolved")
-                            .setEmoji(checkmark_circleEmoji)
+                            .setEmoji(checkmark_emoji)
                             .setDefault(false)
                     );
 
@@ -150,7 +150,7 @@ export default {
                 await interaction.update({ components: [row2, lockButton] });
 
                 await interaction.channel.send({
-                    content: `${circle_slashEmoji} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
+                    content: `${slash_emoji} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
                 });
 
                 await interaction.channel.setArchived(

@@ -6,9 +6,10 @@ import {
 } from "discord.js";
 import {
     exclamationmark_triangleEmoji,
-    person_crop_squareEmoji,
+    person_profile,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -45,10 +46,10 @@ export default {
 
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `# ${person_crop_squareEmoji} @${target.user.username}\nYou are viewing their profile picture now.`
+                    `# ${person_profile} @${target.user.username}\nYou are viewing their profile picture now.`
                 )
                 .setImage(avatar)
-                .setColor(0x3b81f5);
+                .setColor(EMBED_COLOR);
 
             await interaction.editReply({
                 embeds: [embed],

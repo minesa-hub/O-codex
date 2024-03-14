@@ -14,6 +14,7 @@ import {
     button_emoji,
     ticket_created,
     ticket_emoji,
+    exclamationmark_triangleEmoji,
 } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
@@ -149,7 +150,11 @@ export default {
             )
         )
             return interaction.followUp({
-                content: `${underscore("Recommending")}\nIf Kaeru has ${bold(
+                content: `## ${
+                    exclamationmark_triangleEmoji +
+                    " " +
+                    underscore("Recommending")
+                }\nIf Kaeru has ${bold(
                     "Manage Messages"
                 )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                 ephemeral: true,

@@ -23,6 +23,10 @@ export default {
             defaultPermissionErrorForBot(
                 interaction,
                 PermissionFlagsBits.ManageThreads
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewAuditLog
             )
         )
             return;

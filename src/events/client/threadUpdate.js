@@ -4,7 +4,7 @@ import { lockButton } from "../../components/modals/create-ticket-title.js";
 import {
     lockEmoji,
     lock_openEmoji,
-    returnEmoji,
+    return_emoji,
 } from "../../shortcuts/emojis.js";
 
 export default {
@@ -34,7 +34,7 @@ export default {
             if (executor.id === newThread.client.user.id) return;
 
             await newThread.send({
-                content: `${returnEmoji} **${executor.username}** __re-opened__ this thread ${formattedTime}`,
+                content: `${return_emoji} **${executor.username}** __re-opened__ this thread ${formattedTime}`,
             });
 
             const pinnedMessages = await newThread.messages.fetchPinned();
@@ -45,9 +45,10 @@ export default {
                     components: [row3, lockButton],
                 });
             } else {
-                const messages = await newThread.messages.fetch();
-                const message = messages.first();
-
+                return;
+                // const messages = await newThread.messages.fetch();
+                // const message = messages.first();
+                //
                 // if (message) {
                 //     await message.edit({
                 //         components: [row3, lockButton],

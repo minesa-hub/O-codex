@@ -7,9 +7,10 @@ import {
 import {
     exclamationmark_circleEmoji,
     exclamationmark_triangleEmoji,
-    photoEmoji,
+    person_banner,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -46,10 +47,10 @@ export default {
 
                 const embed = new EmbedBuilder()
                     .setDescription(
-                        `# ${photoEmoji} ${resolved.tag}\nYou're viewing ${resolved.tag}'s user banner.`
+                        `# ${person_banner} ${resolved.tag}\nYou're viewing ${resolved.tag}'s user banner.`
                     )
                     .setImage(imageURI)
-                    .setColor(0x3b81f5);
+                    .setColor(EMBED_COLOR);
 
                 if (imageURI === null) {
                     await interaction.editReply({

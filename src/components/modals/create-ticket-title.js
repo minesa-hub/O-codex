@@ -9,11 +9,11 @@ import {
     PermissionFlagsBits,
 } from "discord.js";
 import {
-    checkmark_circleEmoji,
     lockEmoji,
-    lock_shieldEmoji,
-    circle_slashEmoji,
     exclamationmark_circleEmoji,
+    ticket_created,
+    checkmark_emoji,
+    slash_emoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -71,7 +71,7 @@ export default {
                 "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your ticket?"
             )
             .setThumbnail(
-                "https://media.discordapp.net/attachments/736571695170584576/1208124842159898646/ede80f82-f591-47bd-8e13-536ff2f5c3d1.png?ex=65e224f0&is=65cfaff0&hm=fe6aef4a967e330da7c3cef3a5e4cf3807f561cd8eafbd90bc117fee5efff72f&=&format=webp&quality=lossless&width=1032&height=1032"
+                "https://cdn.discordapp.com/attachments/736571695170584576/1217884073305964564/support.png?ex=6605a5ee&is=65f330ee&hm=479e2ab6d7143e563d2b6bc279de30562b4e70d8944df151e6354138361b24a7&"
             );
 
         const menu = new StringSelectMenuBuilder()
@@ -84,13 +84,13 @@ export default {
                     .setLabel("Close as completed")
                     .setValue("ticket-menu-close")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji(checkmark_circleEmoji)
+                    .setEmoji(checkmark_emoji)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(circle_slashEmoji)
+                    .setEmoji(slash_emoji)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -104,7 +104,7 @@ export default {
         });
 
         await interaction.reply({
-            content: `# ${lock_shieldEmoji} Created <#${thread.id}>\nYou can now talk about your ticket with our staff member(s).`,
+            content: `# ${ticket_created} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
             ephemeral: true,
         });
 

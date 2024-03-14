@@ -5,9 +5,9 @@ import {
     PermissionFlagsBits,
 } from "discord.js";
 import {
-    arrow_triangle_swapEmoji,
     exclamationmark_circleEmoji,
     exclamationmark_triangleEmoji,
+    swap_emoji,
 } from "../../shortcuts/emojis.js";
 
 export default {
@@ -55,7 +55,7 @@ export default {
             );
 
             await interaction.reply({
-                content: `# ${arrow_triangle_swapEmoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
             });
         } catch (error) {
             await interaction.reply({
