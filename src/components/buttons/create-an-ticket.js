@@ -12,7 +12,7 @@ export default {
     execute: async ({ interaction }) => {
         const modal = new ModalBuilder()
             .setCustomId("create-ticket-modal")
-            .setTitle("ticket Creation");
+            .setTitle("Ticket creation");
 
         const input = new TextInputBuilder()
             .setCustomId("ticket-title")

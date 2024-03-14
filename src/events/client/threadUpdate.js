@@ -28,13 +28,13 @@ export default {
             if (executor.id === newThread.client.user.id) return;
 
             await newThread.send({
-                content: `${lock_openEmoji} **${executor.username}** have __unlocked__ the thread, but it is **staffs only** ${formattedTime}`,
+                content: `${lock_openEmoji} **${executor.username}** have __unlocked__ the ticket, but it is **staffs only** ${formattedTime}`,
             });
         } else if (oldThread.archived && !newThread.archived) {
             if (executor.id === newThread.client.user.id) return;
 
             await newThread.send({
-                content: `${return_emoji} **${executor.username}** __re-opened__ this thread ${formattedTime}`,
+                content: `${return_emoji} **${executor.username}** __re-opened__ this ticket ${formattedTime}`,
             });
 
             const pinnedMessages = await newThread.messages.fetchPinned();
@@ -59,14 +59,14 @@ export default {
 
         if (oldThread.locked && !newThread.locked) {
             await newThread.send({
-                content: `${lock_openEmoji} **${executor.username}** __unlocked__ this thread ${formattedTime}`,
+                content: `${lock_openEmoji} **${executor.username}** __unlocked__ this ticket ${formattedTime}`,
             });
         } else if (!oldThread.locked && newThread.locked) {
             if (executor.id === newThread.client.user.id) return;
             if (oldThread.archived && !newThread.archived) return;
 
             await newThread.send({
-                content: `${lockEmoji} **${executor.username}** __locked__ this thread ${formattedTime}`,
+                content: `${lockEmoji} **${executor.username}** __locked__ this ticket ${formattedTime}`,
             });
         }
     },

@@ -18,6 +18,7 @@ import {
 } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { saveStaffRoleId } from "../../shortcuts/saveStaffRole.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -35,6 +36,24 @@ export default {
             it: "Configurazione del sistema di ticket con thread.",
             tr: "Alt başlıklarla bilet sistemi kurulumunu yap.",
         })
+        .addRoleOption((option) =>
+            option
+                .setName("staff_role")
+                .setNameLocalizations({
+                    ChineseCN: "员工角色",
+                    it: "ruolo_del_personale",
+                    tr: "personel_rolü",
+                })
+                .setDescription(
+                    "Role to be tagged when ticket channel is created"
+                )
+                .setDescriptionLocalizations({
+                    ChineseCN: "创建工单通道时要标记的角色",
+                    it: "Ruolo da taggare quando viene creato il canale ticket",
+                    tr: "Bilet kanalı oluşturulduğunda etiketlenecek rol",
+                })
+                .setRequired(true)
+        )
         .addStringOption((option) =>
             option
                 .setName("description")
@@ -111,6 +130,7 @@ export default {
                 ephemeral: true,
             });
 
+        const staffRole = interaction.options.getRole("staff_role").id;
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
 
@@ -130,7 +150,7 @@ export default {
             });
 
         const createticketButton = new ButtonBuilder()
-            .setCustomId("create-ticket")
+            .setCustomId(`create-ticket`)
             .setLabel("Create ticket")
             .setStyle(ButtonStyle.Secondary)
             .setEmoji(ticket_emoji);
@@ -141,6 +161,10 @@ export default {
             content: `${ticket_created} Created the ticket system succesfully!`,
             ephemeral: true,
         });
+
+        const guild = interaction.guild.id;
+
+        saveStaffRoleId(guild, staffRole);
 
         await interaction.channel.send({ embeds: [embed], components: [row] });
 

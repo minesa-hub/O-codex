@@ -4,14 +4,31 @@ import {
     PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
+    bold,
 } from "discord.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import {
+    defaultPermissionErrorForBot,
+    defaultPermissionErrorForMember,
+} from "../../shortcuts/permissionErrors.js";
+import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
         customId: "ticket-lock-conversation",
     },
     execute: async ({ interaction }) => {
+        if (
+            !interaction.member.permissions.has(
+                PermissionFlagsBits.ManageThreads
+            )
+        )
+            return interaction.reply({
+                content: `${exclamationmark_triangleEmoji} You don't have ${bold(
+                    "Manage Threads"
+                )} permission to do this action, <@${interaction.user.id}>.`,
+                ephemeral: true,
+            });
+
         if (
             defaultPermissionErrorForBot(
                 interaction,
@@ -31,6 +48,7 @@ export default {
             )
         )
             return;
+
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this ticket")
             .setThumbnail(

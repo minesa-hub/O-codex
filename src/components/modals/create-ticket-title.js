@@ -7,6 +7,7 @@ import {
     ButtonBuilder,
     ButtonStyle,
     PermissionFlagsBits,
+    roleMention,
 } from "discord.js";
 import {
     lockEmoji,
@@ -16,6 +17,7 @@ import {
     slash_emoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { getStaffRoleId } from "../../shortcuts/saveStaffRole.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -108,7 +110,10 @@ export default {
             ephemeral: true,
         });
 
+        const staffRoleId = await getStaffRoleId(interaction.guild.id);
+
         let pinMessage = await thread.send({
+            content: `${roleMention(staffRoleId)}`,
             embeds: [embed],
             components: [menuRow, lockButton],
         });
