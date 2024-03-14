@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
@@ -9,6 +9,25 @@ import {
 export default {
     data: new SlashCommandBuilder().setName("skip").setDescription("skip it!"),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
         const { member, guild } = interaction;
 
         const vc = member.voice.channel;

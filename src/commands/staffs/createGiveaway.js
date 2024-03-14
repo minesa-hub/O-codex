@@ -206,6 +206,30 @@ export default {
         ),
 
     execute: async ({ client, interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ManageEvents
+            )
+        )
+            return;
+
         await interaction.deferReply({ ephemeral: true });
 
         const giveawayName = interaction.options.getString("prize"),

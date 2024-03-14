@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
@@ -10,6 +10,25 @@ export default {
         .setName("autoplay")
         .setDescription("Toggle autoplay!"),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
         const { member, guild } = interaction;
 
         const vc = member.voice.channel;

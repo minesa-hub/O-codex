@@ -1,4 +1,8 @@
-import { AttachmentBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    AttachmentBuilder,
+    PermissionFlagsBits,
+    SlashCommandBuilder,
+} from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
@@ -11,9 +15,28 @@ export default {
         .setName("now")
         .setDescription(".")
         .addSubcommand((subcommand) =>
-            subcommand.setName("playing").setDescription("What is playing?"),
+            subcommand.setName("playing").setDescription("What is playing?")
         ),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
         const { member, guild } = interaction;
         const vc = member.voice.channel;
 

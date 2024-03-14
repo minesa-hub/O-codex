@@ -85,12 +85,6 @@ export default {
         ),
 
     execute: async ({ interaction }) => {
-        if (interaction.channel.type !== ChannelType.GuildText)
-            return interaction.reply({
-                content: `${exclamationmark_circleEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
-                ephemeral: true,
-            });
-
         if (
             defaultPermissionErrorForBot(
                 interaction,
@@ -110,6 +104,11 @@ export default {
             )
         )
             return;
+        if (interaction.channel.type !== ChannelType.GuildText)
+            return interaction.reply({
+                content: `${exclamationmark_circleEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
+                ephemeral: true,
+            });
 
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
