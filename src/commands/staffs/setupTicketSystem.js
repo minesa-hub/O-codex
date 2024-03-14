@@ -117,7 +117,7 @@ export default {
             .setDescription(
                 embedDescription
                     ? embedDescription
-                    : `# ${button_emoji} Create a Ticket\nIf you're experiencing an issue with our product or service, please use the "Create Ticket" button to report it. This includes any server-related issues you may be encountering in our Discord server.`
+                    : `# ${button_emoji} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create Ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
             )
             .setColor(embedColor ? embedColor : EMBED_COLOR)
             .setImage(
@@ -128,16 +128,16 @@ export default {
                 iconURL: interaction.guild.iconURL(),
             });
 
-        const createIssueButton = new ButtonBuilder()
-            .setCustomId("create-issue")
-            .setLabel("Create Issue")
+        const createticketButton = new ButtonBuilder()
+            .setCustomId("create-ticket")
+            .setLabel("Create ticket")
             .setStyle(ButtonStyle.Secondary)
             .setEmoji(ticket_emoji);
 
-        const row = new ActionRowBuilder().addComponents(createIssueButton);
+        const row = new ActionRowBuilder().addComponents(createticketButton);
 
         await interaction.reply({
-            content: `${ticket_created} Created the issue system succesfully!`,
+            content: `${ticket_created} Created the ticket system succesfully!`,
             ephemeral: true,
         });
 

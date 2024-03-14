@@ -7,16 +7,16 @@ import {
 
 export default {
     data: {
-        customId: "create-issue",
+        customId: "create-ticket",
     },
     execute: async ({ interaction }) => {
         const modal = new ModalBuilder()
-            .setCustomId("create-issue-modal")
-            .setTitle("Issue Creation");
+            .setCustomId("create-ticket-modal")
+            .setTitle("ticket Creation");
 
         const input = new TextInputBuilder()
-            .setCustomId("issue-title")
-            .setLabel("Please explain your issue with a few words.")
+            .setCustomId("ticket-title")
+            .setLabel("Please explain your ticket with a few words.")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Cannot post memes")

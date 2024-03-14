@@ -1,6 +1,6 @@
 import { AuditLogEvent, Events, time } from "discord.js";
-import { row3 } from "../../components/selectMenus/issue-select-menu-states.js";
-import { lockButton } from "../../components/modals/create-issue-title.js";
+import { row3 } from "../../components/selectMenus/ticket-select-menu-states.js";
+import { lockButton } from "../../components/modals/create-ticket-title.js";
 import {
     lockEmoji,
     lock_openEmoji,
@@ -48,11 +48,11 @@ export default {
                 const messages = await newThread.messages.fetch();
                 const message = messages.first();
 
-                if (message) {
-                    await message.edit({
-                        components: [row3, lockButton],
-                    });
-                }
+                // if (message) {
+                //     await message.edit({
+                //         components: [row3, lockButton],
+                //     });
+                // }
             }
         }
 

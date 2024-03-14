@@ -5,28 +5,29 @@ import {
     StringSelectMenuOptionBuilder,
     time,
 } from "discord.js";
-import { lockButton } from "../modals/create-issue-title.js";
+import { lockButton } from "../modals/create-ticket-title.js";
 import {
     checkmark_circleEmoji,
     returnEmoji,
     circle_slashEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 const menu3 = new StringSelectMenuBuilder()
-    .setCustomId("issue-select-menu")
+    .setCustomId("ticket-select-menu")
     .setDisabled(false)
     .setMaxValues(1)
-    .setPlaceholder("Action to close issue")
+    .setPlaceholder("Action to close ticket")
     .addOptions(
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as completed")
-            .setValue("issue-menu-close")
+            .setValue("ticket-menu-close")
             .setDescription("Done, closed, fixed, resolved")
             .setEmoji(checkmark_circleEmoji)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as not planned")
-            .setValue("issue-menu-duplicate")
+            .setValue("ticket-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
             .setEmoji(circle_slashEmoji)
     );
@@ -35,30 +36,55 @@ export const row3 = new ActionRowBuilder().addComponents(menu3);
 
 export default {
     data: {
-        customId: "issue-select-menu",
+        customId: "ticket-select-menu",
     },
 
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ManageThreads
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewAuditLog,
+                `It is needed to check last state of thread.`
+            )
+        )
+            return;
+
         let value = interaction.values[0];
 
         const formattedTime = time(new Date(), "R");
 
         switch (value) {
-            case "issue-menu-close":
+            case "ticket-menu-close":
                 const menu1 = new StringSelectMenuBuilder()
-                    .setCustomId("issue-select-menu")
+                    .setCustomId("ticket-select-menu")
                     .setDisabled(false)
                     .setMaxValues(1)
                     .setPlaceholder("What do you want to do?")
                     .addOptions(
                         new StringSelectMenuOptionBuilder()
-                            .setLabel("Reopen Issue")
-                            .setValue("issue-menu-reopen")
+                            .setLabel("Reopen ticket")
+                            .setValue("ticket-menu-reopen")
                             .setEmoji(returnEmoji)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as not planned")
-                            .setValue("issue-menu-duplicate")
+                            .setValue("ticket-menu-duplicate")
                             .setDescription(
                                 "Won’t fix, can’t repo, duplicate, stale"
                             )
@@ -78,6 +104,7 @@ export default {
                         content: `${checkmark_circleEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
+                    await interaction.channel.setLocked(true);
                     await interaction.channel.setArchived(
                         true,
                         `${interaction.user.username} marked as completed`
@@ -91,6 +118,7 @@ export default {
                         content: `${checkmark_circleEmoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
+                    await interaction.channel.setLocked(true);
                     await interaction.channel.setArchived(
                         true,
                         `${interaction.user.username} marked as completed`
@@ -98,20 +126,20 @@ export default {
                 }
                 break;
 
-            case "issue-menu-duplicate":
+            case "ticket-menu-duplicate":
                 const menu2 = new StringSelectMenuBuilder()
-                    .setCustomId("issue-select-menu")
+                    .setCustomId("ticket-select-menu")
                     .setDisabled(false)
                     .setMaxValues(1)
                     .setPlaceholder("What do you want to do?")
                     .addOptions(
                         new StringSelectMenuOptionBuilder()
-                            .setLabel("Reopen Issue")
-                            .setValue("issue-menu-reopen")
+                            .setLabel("Reopen ticket")
+                            .setValue("ticket-menu-reopen")
                             .setEmoji(returnEmoji),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as completed")
-                            .setValue("issue-menu-close")
+                            .setValue("ticket-menu-close")
                             .setDescription("Done, closed, fixed, resolved")
                             .setEmoji(checkmark_circleEmoji)
                             .setDefault(false)
@@ -131,10 +159,8 @@ export default {
                 );
                 break;
 
-            case "issue-menu-reopen":
-                let threadChannel = interaction.channel;
-
-                await threadChannel.setArchived(
+            case "ticket-menu-reopen":
+                await interaction.channel.setArchived(
                     false,
                     `${interaction.user.username} marked as open`
                 );

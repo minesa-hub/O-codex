@@ -4,10 +4,10 @@ import { lockEmoji } from "./emojis.js";
 export async function setLockedAndUpdateMessage(interaction, reason = "") {
     const formattedTime = time(new Date(), "R");
 
-    interaction.channel.setLocked(true);
+    await interaction.channel.setLocked(true);
 
     await interaction.update({
-        content: `${lockEmoji} Locked this issue successfully. To unlock this issue, please enable it manually on "unlock" button.`,
+        content: `${lockEmoji} Locked this ticket successfully. To unlock this ticket, please enable it manually on "unlock" button.`,
         embeds: [],
         components: [],
     });

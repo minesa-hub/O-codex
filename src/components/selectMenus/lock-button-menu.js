@@ -1,27 +1,48 @@
 import { PermissionFlagsBits } from "discord.js";
 import { setLockedAndUpdateMessage } from "../../shortcuts/setLockedAndUpdateMessage.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: {
-        customId: "issue-lock-reason",
+        customId: "ticket-lock-reason",
     },
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ManageThreads
+            )
+        )
+            return;
+
         let value = interaction.values[0];
 
         switch (value) {
-            case "issue-lock-reason-other":
+            case "ticket-lock-reason-other":
                 setLockedAndUpdateMessage(interaction);
                 break;
-            case "issue-lock-reason-off-topic":
+            case "ticket-lock-reason-off-topic":
                 setLockedAndUpdateMessage(interaction, "as **off-topic**");
                 break;
-            case "issue-lock-reason-too-heated":
+            case "ticket-lock-reason-too-heated":
                 setLockedAndUpdateMessage(interaction, "as **too heated**");
                 break;
-            case "issue-lock-reason-resolved":
+            case "ticket-lock-reason-resolved":
                 setLockedAndUpdateMessage(interaction, "as **resolved**");
                 break;
-            case "issue-lock-reason-spam":
+            case "ticket-lock-reason-spam":
                 setLockedAndUpdateMessage(interaction, "as **spam**");
                 break;
             default:
