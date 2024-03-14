@@ -35,7 +35,6 @@ export default {
                 interaction.targetId
             );
             const avatar = target.user.displayAvatarURL({
-                dynamic: true,
                 size: 4096,
             });
 
