@@ -2,6 +2,7 @@ import {
     ContextMenuCommandBuilder,
     ApplicationCommandType,
     EmbedBuilder,
+    PermissionFlagsBits,
 } from "discord.js";
 import {
     exclamationmark_circleEmoji,
