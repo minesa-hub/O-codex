@@ -11,12 +11,12 @@ import {
 } from "discord.js";
 import {
     exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
     button_emoji,
     ticket_created,
     ticket_emoji,
 } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -91,6 +91,26 @@ export default {
                 ephemeral: true,
             });
 
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
+
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
 
@@ -125,20 +145,15 @@ export default {
         await interaction.channel.send({ embeds: [embed], components: [row] });
 
         if (
-            interaction.guild.members.me.permissions.has(
+            !interaction.guild.members.me.permissions.has(
                 PermissionFlagsBits.ManageMessages
             )
-        ) {
-            return;
-        } else {
+        )
             return interaction.followUp({
-                content: `${exclamationmark_triangleEmoji} ${underscore(
-                    "Recommending"
-                )}: If Ita has ${bold(
+                content: `${underscore("Recommending")}\nIf Kaeru has ${bold(
                     "Manage Messages"
-                )} permission, it will be very easy to reach at first message with pinned messages.`,
+                )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                 ephemeral: true,
             });
-        }
     },
 };

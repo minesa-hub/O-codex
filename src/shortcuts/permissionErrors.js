@@ -18,7 +18,7 @@ export const defaultPermissionErrorForBot = (
             content: `${exclamationmark_triangleEmoji} I don't have ${bold(
                 PERMISSION_NAME
             )} permission to do this action, <@${interaction.user.id}>. ${
-                additionalText == "" ? "" : "\n> " + additionalText
+                additionalText == `` ? `` : `\n>>> ${additionalText}`
             }`,
             ephemeral: true,
         });
@@ -44,7 +44,7 @@ export const defaultPermissionErrorForMember = async (
             content: `${exclamationmark_triangleEmoji} You don't have ${bold(
                 PERMISSION_NAME
             )} permission to do this action, <@${interaction.user.id}>. ${
-                additionalText == "" ? "" : "\n> " + additionalText
+                additionalText == `` ? `` : `\n>>> ${additionalText}`
             }`,
             ephemeral: true,
         });

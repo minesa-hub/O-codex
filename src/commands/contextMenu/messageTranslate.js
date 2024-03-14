@@ -1,5 +1,9 @@
 import translate from "@iamtraction/google-translate";
-import { ApplicationCommandType, ContextMenuCommandBuilder } from "discord.js";
+import {
+    ApplicationCommandType,
+    ContextMenuCommandBuilder,
+    PermissionFlagsBits,
+} from "discord.js";
 import {
     arrow_triangle_swapEmoji,
     exclamationmark_circleEmoji,
@@ -16,6 +20,22 @@ export default {
         })
         .setType(ApplicationCommandType.Message),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            )
+        )
+            return;
+
         const message = interaction.options.getMessage("message");
 
         try {
@@ -31,7 +51,7 @@ export default {
 
             const translated = await translate(
                 message.content.replace(/(<a?)?:\w+:(\d{18}>)?/g, ""),
-                { to: locale },
+                { to: locale }
             );
 
             await interaction.reply({

@@ -85,6 +85,18 @@ export default {
         if (
             defaultPermissionErrorForBot(
                 interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
                 PermissionFlagsBits.EmbedLinks
             )
         )

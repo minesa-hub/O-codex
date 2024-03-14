@@ -9,6 +9,7 @@ import {
     exclamationmark_triangleEmoji,
     photoEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -22,6 +23,10 @@ export default {
         .setDMPermission(false),
     execute: async ({ interaction, client }) => {
         if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
             defaultPermissionErrorForBot(
                 interaction,
                 PermissionFlagsBits.EmbedLinks
