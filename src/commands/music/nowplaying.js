@@ -7,8 +7,9 @@ import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
     info_bubbleEmoji,
-    music_note,
+    play_emoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -33,8 +34,13 @@ export default {
             ) ||
             defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.EmbedLinks
-            )
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
         )
             return;
         const { member, guild } = interaction;
@@ -65,7 +71,7 @@ export default {
         const song = queue.songs[0];
 
         return interaction.reply({
-            content: `## ${music_note} Playing\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Added by:**__ ${song.user}`,
+            content: `## ${play_emoji} Playing\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Added by:**__ ${song.user}`,
             attachment: [new AttachmentBuilder(song.thumbnail || "")],
         });
     },

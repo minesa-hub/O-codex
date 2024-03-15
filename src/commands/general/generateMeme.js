@@ -1,8 +1,8 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
 import {
+    brain_emoji,
     exclamationmark_triangleEmoji,
-    face_smilingEmoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -66,7 +66,7 @@ export default {
             const response = await raw.json();
 
             await interaction.editReply({
-                content: `# ${face_smilingEmoji + " Meme"}\n> ${
+                content: `# ${brain_emoji + " " + response.data.title}\n> ${
                     response.data.image
                 }`,
             });

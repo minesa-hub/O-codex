@@ -7,6 +7,16 @@ export const slash_emoji = "<:slash:1217888014739574966>";
 export const return_emoji = "<:return:1217893319791739001>";
 export const lockEmoji = "<:lock:1217899621997871104>";
 export const lock_openEmoji = "<:lock_open:1217899619175108608>";
+export const brain_emoji = "<:brain:1218301354171301918>";
+export const senstive_emoji = "<:eye_sensitive:1218302715436732527>";
+export const info_bubbleEmoji = "<:info:1218303854962147428>";
+export const gift_card = "<:giftcard:1218306186172960798>";
+export const play_emoji = "<:play:1218306675291852900>";
+export const pause_emoji = "<:pause:1218307580296822864>";
+export const foward_emoji = "<:forward:1218307582989434980>";
+export const stop_emoji = "<:stop:1218307549808296068>";
+export const append_emoji = "<:append:1218307481822953602>";
+export const infinity_emoji = "<:infinity:1218307517927522467>";
 
 // user emojis
 export const person_profile = "<:profile:1217889549393330247>";
@@ -20,18 +30,3 @@ export const exclamationmark_triangleEmoji =
     "<:exclamationmark_yellow:1217888059589398648>";
 export const exclamationmark_circleEmoji =
     "<:exclamationmark_red:1217888041809743892>";
-
-// old emojis
-export const bubble_left_and_rightEmoji =
-    "<:bubble_left_and_right:1172961046466666496>";
-export const bubble_leftEmoji = "<:bubble_left:1172966495857430639>";
-export const bubble_rightEmoji = "<:bubble_right:1172960582819913759>";
-export const arrow_upEmoji = "<:arrow_up:1172959842353295450>";
-export const returnEmoji = "<:return:1149786412539981894>";
-export const info_bubbleEmoji = "<:info_bubble:1149795813539713156>";
-export const senstive_contentEmoji = "<:senstive_content:1172922017104810004>";
-export const lock_shieldEmoji = "<:lock_shield:1149796396522815560>";
-export const plus_messageEmoji = "<:plus_message:1149806747230412800>";
-export const face_smilingEmoji = "<:face_smiling:1172956677436354692>";
-export const gift_card = "<:gift_card:1209197347716857926>";
-export const music_note = "<:music_note:1212857301136842772>";

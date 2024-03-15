@@ -8,7 +8,7 @@ import {
 import fetch from "node-fetch";
 import {
     exclamationmark_triangleEmoji,
-    senstive_contentEmoji,
+    senstive_emoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -117,7 +117,7 @@ export default {
             const response = await raw.json();
 
             const imageUrl = response.message;
-            const NSFWMessage = `# ${senstive_contentEmoji} Sensitive Content\nIf you are a young person who attempts to see nsfw images, I recommend you to stop it for your sake.`;
+            const NSFWMessage = `# ${senstive_emoji} Sensitive Content\nIf you are a young person who attempts to see nsfw images, I recommend you to stop it for your sake.`;
 
             const displayOnBrowser = new ButtonBuilder()
                 .setLabel("Display on Browser")

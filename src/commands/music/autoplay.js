@@ -2,8 +2,10 @@ import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
+    infinity_emoji,
     info_bubbleEmoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -25,8 +27,13 @@ export default {
             ) ||
             defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.EmbedLinks
-            )
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
         )
             return;
         const { member, guild } = interaction;
@@ -50,7 +57,9 @@ export default {
         const autoplay = queue.toggleAutoplay();
 
         return interaction.reply({
-            content: `Toggled autoplay: \`${autoplay ? "On" : "Off"}\``,
+            content: `${infinity_emoji} Autoplay is ${
+                autoplay ? "on" : "off"
+            } now.`,
         });
     },
 };

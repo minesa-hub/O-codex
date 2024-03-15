@@ -21,7 +21,6 @@ export const saveStaffRoleId = (guildId, roleId) => {
 
         try {
             fs.writeFileSync(filePath, JSON.stringify(guildData, null, 2));
-            console.log(`Staff role ID ${roleId} saved for guild ${guildId}`);
         } catch (err) {
             console.error("Error writing JSON file:", err);
         }

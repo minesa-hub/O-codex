@@ -11,7 +11,7 @@ import {
 import fs from "fs";
 import { config } from "dotenv";
 import { setRPC } from "./rpc.js";
-import { music_note } from "./shortcuts/emojis.js";
+import { append_emoji } from "./shortcuts/emojis.js";
 
 config();
 setRPC();
@@ -42,7 +42,7 @@ const client = new Client({
         activities: [
             {
                 name: "What is happening? 👀",
-                type: ActivityType.Watching,
+                type: ActivityType.Custom,
             },
         ],
     },
@@ -66,7 +66,7 @@ const player = new DisTube(client, {
 
 let queueVarCallback;
 player.on("addSong", (queue, song) => {
-    let message = `## ${music_note} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
+    let message = `## ${append_emoji} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
 
     if (queueVarCallback) {
         queueVarCallback(message);

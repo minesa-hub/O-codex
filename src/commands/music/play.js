@@ -2,6 +2,7 @@ import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player, { waitForQueueVar } from "../../index.js";
 import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
 import { DisTubeError } from "distube";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -34,8 +35,13 @@ export default {
             ) ||
             defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.EmbedLinks
-            )
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
         )
             return;
         const { options, member, guild, channel } = interaction;
