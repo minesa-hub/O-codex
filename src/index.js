@@ -9,17 +9,11 @@ import {
 } from "discord.js";
 // import { connect } from "mongoose";
 import fs from "fs";
-import { config } from "dotenv";
 import { setRPC } from "./rpc.js";
 import { append_emoji } from "./shortcuts/emojis.js";
+import { TOKEN } from "./config.js";
 
-config();
 setRPC();
-
-const {
-    TOKEN,
-    // DATABASE_URI
-} = process.env;
 
 const client = new Client({
     intents: [

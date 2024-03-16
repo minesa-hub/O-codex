@@ -31,7 +31,6 @@
         "discord-rpc": "^4.0.1",
         "discord.js": "^14.14.1",
         "distube": "^4.0.4",
-        "dotenv": "^16.0.3",
         "ffmpeg-static": "^4.4.1",
         "fs": "^0.0.1-security",
         "libsodium-wrappers": "^0.7.11",
