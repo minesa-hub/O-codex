@@ -16,7 +16,7 @@ export default {
 
         const input = new TextInputBuilder()
             .setCustomId("ticket-title")
-            .setLabel("Please explain your ticket with a few words.")
+            .setLabel("Please explain your issue with a few words.")
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Cannot post memes")

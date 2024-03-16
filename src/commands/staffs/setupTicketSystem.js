@@ -138,7 +138,7 @@ export default {
             .setDescription(
                 embedDescription
                     ? embedDescription
-                    : `# ${button_emoji} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create Ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
+                    : `# ${button_emoji} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
             )
             .setColor(embedColor ? embedColor : EMBED_COLOR)
             .setImage(
