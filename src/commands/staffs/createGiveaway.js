@@ -12,7 +12,6 @@ import {
     timezoneChecking,
     timeChecking,
 } from "../../shortcuts/timeChecking.js";
-import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
 import { gift_card } from "../../shortcuts/emojis.js";
 
 export default {
@@ -45,7 +44,7 @@ export default {
                     it: "Qual è il premio?",
                     "zh-CN": "奖品是什么？",
                 })
-                .setRequired(true),
+                .setRequired(true)
         )
         .addStringOption((option) =>
             option
@@ -170,8 +169,8 @@ export default {
                             it: "3 giorni",
                             "zh-CN": "3天",
                         },
-                    },
-                ),
+                    }
+                )
         )
         .addStringOption((option) =>
             option
@@ -187,7 +186,7 @@ export default {
                     it: "Descrizione del concorso.",
                     "zh-CN": "抽奖描述。",
                 })
-                .setRequired(false),
+                .setRequired(false)
         )
         .addAttachmentOption((option) =>
             option
@@ -203,18 +202,35 @@ export default {
                     it: "Immagine del concorso.",
                     "zh-CN": "抽奖图片。",
                 })
-                .setRequired(false),
+                .setRequired(false)
         ),
 
     execute: async ({ client, interaction }) => {
-        await interaction.deferReply({ ephemeral: true });
         if (
-            await defaultBotPermError(
+            defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.ManageEvents,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ManageEvents
             )
         )
             return;
+
+        await interaction.deferReply({ ephemeral: true });
 
         const giveawayName = interaction.options.getString("prize"),
             giveawayDescription =
@@ -237,7 +253,7 @@ export default {
             description:
                 giveawayDescription +
                 ` ${gift_card} \n${bold("Giveaway created by:")} ${userMention(
-                    interaction.user.id,
+                    interaction.user.id
                 )}`,
             image: giveawayImage
                 ? giveawayImage.url
@@ -272,7 +288,7 @@ export default {
                         let description = "";
                         if (subscribers.size > 0) {
                             const subscriberUsernames = Array.from(
-                                subscribers.values(),
+                                subscribers.values()
                             ).map((subscriber) => subscriber.user);
 
                             const shuffledUsernames =
@@ -280,7 +296,7 @@ export default {
 
                             winner = shuffledUsernames[0];
                             description = `a winner! ${gift_card}\n${userMention(
-                                winner.id,
+                                winner.id
                             )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
                         } else {
                             winner =
@@ -302,11 +318,11 @@ export default {
                 });
                 interaction.editReply({
                     content: `# ${gift_card} Giveaway has been created: ${underscore(
-                        giveawayName,
+                        giveawayName
                     )}\nGiveaway's winner ${bold(
-                        "will be shown",
+                        "will be shown"
                     )} after the giveaway is on ${underscore(
-                        "happening",
+                        "happening"
                     )} state!
                     \n${inviteLink}`,
                 });

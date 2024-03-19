@@ -2,11 +2,15 @@ import {
     ContextMenuCommandBuilder,
     ApplicationCommandType,
     EmbedBuilder,
+    PermissionFlagsBits,
 } from "discord.js";
 import {
     exclamationmark_circleEmoji,
-    photoEmoji,
+    exclamationmark_triangleEmoji,
+    person_banner,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -19,26 +23,52 @@ export default {
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),
     execute: async ({ interaction, client }) => {
-        const user = client.users.fetch(interaction.targetId, { force: true });
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
 
-        user.then(async (resolved) => {
-            const imageURI = resolved.bannerURL({ dynamic: true, size: 4096 });
+        try {
+            await interaction.deferReply({ ephemeral: true });
 
-            const embed = new EmbedBuilder()
-                .setDescription(
-                    `# ${photoEmoji} ${resolved.tag}\nYou're viewing ${resolved.tag}'s user banner.`,
-                )
-                .setImage(imageURI)
-                .setColor(0x3b81f5);
+            const user = client.users.fetch(interaction.targetId, {
+                force: true,
+            });
 
-            if (imageURI === null) {
-                await interaction.reply({
-                    content: `${exclamationmark_circleEmoji} This user has no banner set.`,
-                    ephemeral: true,
-                });
-            } else {
-                await interaction.reply({ embeds: [embed], ephemeral: true });
-            }
-        });
+            user.then(async (resolved) => {
+                const imageURI = resolved.bannerURL({ size: 4096 });
+
+                const embed = new EmbedBuilder()
+                    .setDescription(
+                        `# ${person_banner} ${resolved.tag}\nYou're viewing ${resolved.tag}'s user banner.`
+                    )
+                    .setImage(imageURI)
+                    .setColor(EMBED_COLOR);
+
+                if (imageURI === null) {
+                    await interaction.editReply({
+                        content: `${exclamationmark_circleEmoji} This user has no banner set.`,
+                        ephemeral: true,
+                    });
+                } else {
+                    await interaction.editReply({
+                        embeds: [embed],
+                        ephemeral: true,
+                    });
+                }
+            });
+        } catch (error) {
+            return interaction.editReply({
+                content: `${exclamationmark_triangleEmoji} Are we sure they are a member in this guild?`,
+                ephemeral: true,
+            });
+        }
     },
 };

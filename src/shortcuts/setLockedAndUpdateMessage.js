@@ -1,13 +1,38 @@
-import { time, bold } from "discord.js";
+import { time, bold, PermissionFlagsBits } from "discord.js";
 import { lockEmoji } from "./emojis.js";
+import { defaultPermissionErrorForBot } from "./permissionErrors.js";
 
 export async function setLockedAndUpdateMessage(interaction, reason = "") {
+    if (
+        defaultPermissionErrorForBot(
+            interaction,
+            PermissionFlagsBits.ViewChannel
+        ) ||
+        defaultPermissionErrorForBot(
+            interaction,
+            PermissionFlagsBits.UseExternalEmojis
+        ) ||
+        defaultPermissionErrorForBot(
+            interaction,
+            PermissionFlagsBits.SendMessages
+        ) ||
+        defaultPermissionErrorForBot(
+            interaction,
+            PermissionFlagsBits.ManageThreads
+        ) ||
+        defaultPermissionErrorForBot(
+            interaction,
+            PermissionFlagsBits.ViewAuditLog
+        )
+    )
+        return;
+
     const formattedTime = time(new Date(), "R");
 
-    interaction.channel.setLocked(true);
+    await interaction.channel.setLocked(true);
 
     await interaction.update({
-        content: `${lockEmoji} Locked this issue successfully. To unlock this issue, please enable it manually on "unlock" button.`,
+        content: `${lockEmoji} Locked this ticket successfully. To unlock this ticket, please enable it manually on "unlock" button.`,
         embeds: [],
         components: [],
     });

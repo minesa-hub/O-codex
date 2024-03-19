@@ -4,40 +4,58 @@ import {
     PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
+    bold,
 } from "discord.js";
 import {
-    defaultBotPermError,
-    defaultUserPermError,
-} from "../../shortcuts/defaultPermissionsErrors.js";
+    defaultPermissionErrorForBot,
+    defaultPermissionErrorForMember,
+} from "../../shortcuts/permissionErrors.js";
+import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
-        customId: "issue-lock-conversation",
+        customId: "ticket-lock-conversation",
     },
     execute: async ({ interaction }) => {
         if (
-            await defaultBotPermError(
-                interaction,
-                PermissionFlagsBits.ManageThreads,
+            !interaction.member.permissions.has(
+                PermissionFlagsBits.ManageThreads
             )
         )
-            return;
+            return interaction.reply({
+                content: `${exclamationmark_triangleEmoji} You don't have ${bold(
+                    "Manage Threads"
+                )} permission to do this action, <@${interaction.user.id}>.`,
+                ephemeral: true,
+            });
 
         if (
-            await defaultUserPermError(
+            defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.ManageThreads,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ManageThreads
             )
         )
             return;
 
         const lockButtonExplanation = new EmbedBuilder()
-            .setTitle("Lock conversation on this issue")
+            .setTitle("Lock conversation on this ticket")
             .setThumbnail(
-                "https://media.discordapp.net/attachments/736571695170584576/1208128307166449664/d59654a9-100a-432d-8e9b-d6a026dffa7a.png?ex=65e2282a&is=65cfb32a&hm=e616682b0279995500c428b2cfd17b3dd890ab2f2a55838aefa211e9970dc6b9&=&format=webp&quality=lossless&width=1032&height=1032",
+                "https://cdn.discordapp.com/attachments/736571695170584576/1217897612653367296/locking.png?ex=6605b28a&is=65f33d8a&hm=895f9a5a074235cece4ba50b95cfdaf8513f6437b5ba024fd25001077ed20fe2&"
             )
             .setDescription(
-                `* Other user(s) can’t add new comments to this issue.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this issue again in the future.`,
+                `* Other user(s) can’t add new comments to this ticket.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this ticket again in the future.`
             )
             .setFooter({
                 text: "Optionally, choose a reason for locking that others can see.",
@@ -45,27 +63,27 @@ export default {
 
         const lockReasonsMenu = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
-                .setCustomId("issue-lock-reason")
+                .setCustomId("ticket-lock-reason")
                 .setDisabled(false)
                 .setMaxValues(1)
                 .setPlaceholder("Choose a reason")
                 .addOptions(
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Other")
-                        .setValue("issue-lock-reason-other"),
+                        .setValue("ticket-lock-reason-other"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Off-topic")
-                        .setValue("issue-lock-reason-off-topic"),
+                        .setValue("ticket-lock-reason-off-topic"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Too heated")
-                        .setValue("issue-lock-reason-too-heated"),
+                        .setValue("ticket-lock-reason-too-heated"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Resolved")
-                        .setValue("issue-lock-reason-resolved"),
+                        .setValue("ticket-lock-reason-resolved"),
                     new StringSelectMenuOptionBuilder()
                         .setLabel("Spam")
-                        .setValue("issue-lock-reason-spam"),
-                ),
+                        .setValue("ticket-lock-reason-spam")
+                )
         );
 
         await interaction.reply({

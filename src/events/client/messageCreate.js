@@ -29,7 +29,7 @@ export default {
         // try {
         //     if (message.author.bot) return;
         //     const { response } = await model.generateContent(
-        //         message.cleanContent,
+        //         message.cleanContent
         //     );
         //     if (
         //         message.channel.type === ChannelType.PublicThread &&

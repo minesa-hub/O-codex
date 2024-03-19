@@ -1,19 +1,48 @@
-import { AttachmentBuilder, SlashCommandBuilder } from "discord.js";
+import {
+    AttachmentBuilder,
+    PermissionFlagsBits,
+    SlashCommandBuilder,
+} from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
     info_bubbleEmoji,
-    music_note,
+    play_emoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
         .setName("now")
         .setDescription(".")
         .addSubcommand((subcommand) =>
-            subcommand.setName("playing").setDescription("What is playing?"),
+            subcommand.setName("playing").setDescription("What is playing?")
         ),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
+        )
+            return;
         const { member, guild } = interaction;
         const vc = member.voice.channel;
 
@@ -42,7 +71,7 @@ export default {
         const song = queue.songs[0];
 
         return interaction.reply({
-            content: `## ${music_note} Playing\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Added by:**__ ${song.user}`,
+            content: `## ${play_emoji} Playing\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Added by:**__ ${song.user}`,
             attachment: [new AttachmentBuilder(song.thumbnail || "")],
         });
     },

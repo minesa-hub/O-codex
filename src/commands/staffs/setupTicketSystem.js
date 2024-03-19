@@ -5,17 +5,20 @@ import {
     EmbedBuilder,
     ButtonStyle,
     ChannelType,
-    inlineCode,
     PermissionFlagsBits,
     underscore,
     bold,
 } from "discord.js";
 import {
     exclamationmark_circleEmoji,
-    plus_messageEmoji,
-    lock_shieldEmoji,
+    button_emoji,
+    ticket_created,
+    ticket_emoji,
     exclamationmark_triangleEmoji,
 } from "../../shortcuts/emojis.js";
+import { EMBED_COLOR } from "../../config.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { saveStaffRoleId } from "../../shortcuts/saveStaffRole.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -33,6 +36,24 @@ export default {
             it: "Configurazione del sistema di ticket con thread.",
             tr: "Alt başlıklarla bilet sistemi kurulumunu yap.",
         })
+        .addRoleOption((option) =>
+            option
+                .setName("staff_role")
+                .setNameLocalizations({
+                    ChineseCN: "员工角色",
+                    it: "ruolo_del_personale",
+                    tr: "personel_rolü",
+                })
+                .setDescription(
+                    "Role to be tagged when ticket channel is created"
+                )
+                .setDescriptionLocalizations({
+                    ChineseCN: "创建工单通道时要标记的角色",
+                    it: "Ruolo da taggare quando viene creato il canale ticket",
+                    tr: "Bilet kanalı oluşturulduğunda etiketlenecek rol",
+                })
+                .setRequired(true)
+        )
         .addStringOption((option) =>
             option
                 .setName("description")
@@ -47,7 +68,7 @@ export default {
                     it: "Imposta la descrizione del messaggio incorporato",
                     tr: "Zengin mesajının açıklamasını ayarlayın",
                 })
-                .setRequired(false),
+                .setRequired(false)
         )
         .addStringOption((option) =>
             option
@@ -79,17 +100,37 @@ export default {
                     { name: "Pale Turquoise", value: "#AFEEEE" },
                     { name: "Light Salmon", value: "#FFA07A" },
                     { name: "Black", value: "#000000" },
-                    { name: "White", value: "#FFFFFF" },
-                ),
+                    { name: "White", value: "#FFFFFF" }
+                )
         ),
 
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
+            return;
         if (interaction.channel.type !== ChannelType.GuildText)
             return interaction.reply({
                 content: `${exclamationmark_circleEmoji} You **can not** setup this system in this channel, <@${interaction.user.id}>.\nPlease try again in __Text Channel__ type channel.`,
                 ephemeral: true,
             });
 
+        const staffRole = interaction.options.getRole("staff_role").id;
         const embedDescription = interaction.options.getString("description");
         const embedColor = interaction.options.getString("color");
 
@@ -97,51 +138,50 @@ export default {
             .setDescription(
                 embedDescription
                     ? embedDescription
-                    : `If you're experiencing an issue with our product or service, please use the "Issue Creation" button to report it. This includes any server-related issues you may be encountering in our Discord server.
-
-                    When creating a new issue, please provide a clear summary of the problem and any steps you took before encountering it. This information will help us resolve the issue as quickly as possible.
-
-                    Thank you for helping us improve our product/service and Discord server!`,
+                    : `# ${button_emoji} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
             )
-            .setColor(embedColor ? embedColor : "Random")
+            .setColor(embedColor ? embedColor : EMBED_COLOR)
             .setImage(
-                "https://media.discordapp.net/attachments/736571695170584576/1208117619165757570/Bluefire_Support_Card-ai-brush-removebg-zogyn14l.png?ex=65e21e36&is=65cfa936&hm=7da084b5a1d1854883afe8deba9f6f7319a1183b9350bafaeb452d7f462e9c98&=&format=webp&quality=lossless&width=1100&height=430",
+                "https://cdn.discordapp.com/attachments/736571695170584576/1217221352134807613/IMG_0212.png?ex=66033cb9&is=65f0c7b9&hm=aef4f257a97c8abf645a4e5d7294ca3dec849b46b36afe8ee324d62615ad780d&"
             )
             .setFooter({
                 text: interaction.guild.name,
                 iconURL: interaction.guild.iconURL(),
             });
 
-        const createIssueButton = new ButtonBuilder()
-            .setCustomId("create-issue")
-            .setLabel("Create Issue")
+        const createticketButton = new ButtonBuilder()
+            .setCustomId(`create-ticket`)
+            .setLabel("Create ticket")
             .setStyle(ButtonStyle.Secondary)
-            .setEmoji(plus_messageEmoji);
+            .setEmoji(ticket_emoji);
 
-        const row = new ActionRowBuilder().addComponents(createIssueButton);
+        const row = new ActionRowBuilder().addComponents(createticketButton);
 
         await interaction.reply({
-            content: `${lock_shieldEmoji} Created the issue system succesfully!`,
+            content: `${ticket_created} Created the ticket system succesfully!`,
             ephemeral: true,
         });
+
+        const guild = interaction.guild.id;
+
+        saveStaffRoleId(guild, staffRole);
 
         await interaction.channel.send({ embeds: [embed], components: [row] });
 
         if (
-            interaction.guild.members.me.permissions.has(
-                PermissionFlagsBits.ManageMessages,
+            !interaction.guild.members.me.permissions.has(
+                PermissionFlagsBits.ManageMessages
             )
-        ) {
-            return;
-        } else {
+        )
             return interaction.followUp({
-                content: `${exclamationmark_triangleEmoji} ${underscore(
-                    "Recommending",
-                )}: If Ita has ${bold(
-                    "Manage Messages",
-                )} permission, it will be very easy to reach at first message with pinned messages.`,
+                content: `## ${
+                    exclamationmark_triangleEmoji +
+                    " " +
+                    underscore("Recommending")
+                }\nIf Kaeru has ${bold(
+                    "Manage Messages"
+                )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                 ephemeral: true,
             });
-        }
     },
 };

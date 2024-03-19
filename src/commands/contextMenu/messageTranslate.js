@@ -1,9 +1,13 @@
 import translate from "@iamtraction/google-translate";
-import { ApplicationCommandType, ContextMenuCommandBuilder } from "discord.js";
 import {
-    arrow_triangle_swapEmoji,
+    ApplicationCommandType,
+    ContextMenuCommandBuilder,
+    PermissionFlagsBits,
+} from "discord.js";
+import {
     exclamationmark_circleEmoji,
     exclamationmark_triangleEmoji,
+    swap_emoji,
 } from "../../shortcuts/emojis.js";
 
 export default {
@@ -16,6 +20,22 @@ export default {
         })
         .setType(ApplicationCommandType.Message),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            )
+        )
+            return;
+
         const message = interaction.options.getMessage("message");
 
         try {
@@ -31,11 +51,11 @@ export default {
 
             const translated = await translate(
                 message.content.replace(/(<a?)?:\w+:(\d{18}>)?/g, ""),
-                { to: locale },
+                { to: locale }
             );
 
             await interaction.reply({
-                content: `# ${arrow_triangle_swapEmoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
             });
         } catch (error) {
             await interaction.reply({

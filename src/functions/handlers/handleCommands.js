@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
+import { TOKEN } from "../../config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -26,8 +27,8 @@ export default async (client) => {
 
                 console.log(
                     chalk.green(
-                        `[Commands]: Loaded ${command.data.name} command.`,
-                    ),
+                        `[Commands]: Loaded ${command.data.name} command.`
+                    )
                 );
             }
         }
@@ -35,13 +36,13 @@ export default async (client) => {
         /* Defining the guild id
         const guildId = '795473336998035486';
         */
-        const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+        const rest = new REST({ version: "10" }).setToken(TOKEN);
 
         try {
             console.log(
                 chalk.cyan(
-                    `[Commands] Started refreshing application (/) commands.`,
-                ),
+                    `[Commands] Started refreshing application (/) commands.`
+                )
             );
 
             await rest.put(Routes.applicationCommands(clientId), {
@@ -50,8 +51,8 @@ export default async (client) => {
 
             console.log(
                 chalk.cyan(
-                    `[Commands] Successfully reloaded application (/) commands.`,
-                ),
+                    `[Commands] Successfully reloaded application (/) commands.`
+                )
             );
         } catch (error) {
             console.error(error);

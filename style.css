@@ -237,8 +237,8 @@ main section {
     background: linear-gradient(to bottom, #00000070, #00000031);
     padding: 3em;
     box-shadow: 0 0 30px -5px rgba(0, 0, 0, 0.2);
-    -webkit-backdrop-filter: blur(25px);
-    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(100px);
+    backdrop-filter: blur(100px);
 }
 
 .tos {

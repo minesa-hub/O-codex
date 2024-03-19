@@ -1,7 +1,8 @@
-import { SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player, { waitForQueueVar } from "../../index.js";
 import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
 import { DisTubeError } from "distube";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -15,10 +16,34 @@ export default {
                     opt
                         .setName("query")
                         .setDescription("The URL or name of the song!")
-                        .setRequired(true),
-                ),
+                        .setRequired(true)
+                )
         ),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
+        )
+            return;
         const { options, member, guild, channel } = interaction;
 
         const query = options.getString("query");

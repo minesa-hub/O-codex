@@ -1,14 +1,39 @@
-import { SlashCommandBuilder } from "discord.js";
+import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import player from "../../index.js";
 import {
     exclamationmark_triangleEmoji,
+    foward_emoji,
     info_bubbleEmoji,
-    music_note,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder().setName("skip").setDescription("skip it!"),
     execute: async ({ interaction }) => {
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.AttachFiles
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.Connect
+            ) ||
+            defaultPermissionErrorForBot(interaction, PermissionFlagsBits.Speak)
+        )
+            return;
         const { member, guild } = interaction;
 
         const vc = member.voice.channel;
@@ -30,9 +55,9 @@ export default {
         const song = queue.skip();
 
         return interaction.reply({
-            content: `# ${music_note} Skipping to new song\n> Now playing ${
+            content: `# ${foward_emoji} Skipping to new song\n> Now playing: **${
                 (await song).name
-            }.`,
+            }**`,
         });
     },
 };

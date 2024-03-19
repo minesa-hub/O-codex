@@ -1,10 +1,10 @@
 import { PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import { fetch } from "undici";
 import {
+    brain_emoji,
     exclamationmark_triangleEmoji,
-    face_smilingEmoji,
 } from "../../shortcuts/emojis.js";
-import { defaultBotPermError } from "../../shortcuts/defaultPermissionsErrors.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -34,29 +34,46 @@ export default {
                     ChineseCN: "从某处发送一个随机梗图!",
                     it: "Invia un meme casuale da qualche parte!",
                     tr: "Rastgele bir mim gönder!",
-                }),
+                })
         ),
     execute: async ({ interaction }) => {
-        if (defaultBotPermError(interaction, PermissionFlagsBits.EmbedLinks))
+        if (
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.ViewChannel
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.UseExternalEmojis
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.SendMessages
+            ) ||
+            defaultPermissionErrorForBot(
+                interaction,
+                PermissionFlagsBits.EmbedLinks
+            )
+        )
             return;
 
-        await interaction.deferReply();
-
         try {
+            await interaction.deferReply();
+
             const raw = await fetch("https://apis.duncte123.me/meme", {
                 method: "GET",
             });
             const response = await raw.json();
 
-            return interaction.editReply({
-                content: `# ${face_smilingEmoji + " Meme"}\n> ${
+            await interaction.editReply({
+                content: `# ${brain_emoji + " " + response.data.title}\n> ${
                     response.data.image
                 }`,
             });
         } catch (error) {
             console.error(error);
 
-            return interaction.editReply({
+            await interaction.reply({
                 content: `${exclamationmark_triangleEmoji} An error occurred while trying to fetch the meme. Try again in some time later.`,
                 ephemeral: true,
             });

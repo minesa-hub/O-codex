@@ -7,16 +7,13 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
-import { connect } from "mongoose";
+// import { connect } from "mongoose";
 import fs from "fs";
-import { config } from "dotenv";
 import { setRPC } from "./rpc.js";
-import { music_note } from "./shortcuts/emojis.js";
+import { append_emoji } from "./shortcuts/emojis.js";
+import { TOKEN } from "./config.js";
 
-config();
 setRPC();
-
-const { TOKEN, DATABASE_URI } = process.env;
 
 const client = new Client({
     intents: [
@@ -39,7 +36,7 @@ const client = new Client({
         activities: [
             {
                 name: "What is happening? 👀",
-                type: ActivityType.Watching,
+                type: ActivityType.Custom,
             },
         ],
     },
@@ -63,7 +60,7 @@ const player = new DisTube(client, {
 
 let queueVarCallback;
 player.on("addSong", (queue, song) => {
-    let message = `## ${music_note} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
+    let message = `## ${append_emoji} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
 
     if (queueVarCallback) {
         queueVarCallback(message);
