@@ -1,41 +1,24 @@
 import translate from "@iamtraction/google-translate";
 import {
-    ApplicationCommandType,
-    ContextMenuCommandBuilder,
-    PermissionFlagsBits,
-} from "discord.js";
-import {
     exclamationmark_circleEmoji,
     exclamationmark_triangleEmoji,
     swap_emoji,
 } from "../../shortcuts/emojis.js";
 
 export default {
-    data: new ContextMenuCommandBuilder()
-        .setName("Translate")
-        .setNameLocalizations({
-            ChineseCN: "翻译消息",
+    data: {
+        name: "Translate Message",
+        name_localizations: {
+            "zh-CN": "翻译消息",
             it: "Traduci Messaggio",
             tr: "Mesajı Çevir",
-        })
-        .setType(ApplicationCommandType.Message),
+        },
+        integration_types: [1],
+        contexts: [0, 1, 2],
+        dm_permission: "true",
+        type: 3,
+    },
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            )
-        )
-            return;
-
         const message = interaction.options.getMessage("message");
 
         try {
@@ -55,7 +38,7 @@ export default {
             );
 
             await interaction.reply({
-                content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                content: `# ⇅ Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
             });
         } catch (error) {
             await interaction.reply({

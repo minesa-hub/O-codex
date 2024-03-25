@@ -12,6 +12,7 @@ import {
     timezoneChecking,
     timeChecking,
 } from "../../shortcuts/timeChecking.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { gift_card } from "../../shortcuts/emojis.js";
 
 export default {
@@ -257,7 +258,7 @@ export default {
                 )}`,
             image: giveawayImage
                 ? giveawayImage.url
-                : "https://i.ibb.co/yPc75Qs/Giveaway-Card.jpg",
+                : "https://cdn.discordapp.com/attachments/736571695170584576/1217221351711047720/IMG_0213.png?ex=660c7739&is=65fa0239&hm=8ef0dd6676691a1baa9b1c42f6d7b3c61c01efce8935bcdfb5b99127f708e389&",
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
