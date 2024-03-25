@@ -1,4 +1,9 @@
-import { REST, Routes } from "discord.js";
+import {
+    ContextMenuCommandBuilder,
+    REST,
+    Routes,
+    SlashCommandBuilder,
+} from "discord.js";
 import { promises as fs } from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -23,7 +28,14 @@ export default async (client) => {
                     `../../commands/${folder}/${file}`
                 );
                 commands.set(command.data.name, command);
-                commandArray.push(command.data.toJSON());
+                if (
+                    command.data instanceof SlashCommandBuilder ||
+                    command.data instanceof ContextMenuCommandBuilder
+                ) {
+                    commandArray.push(command.data.toJSON());
+                } else {
+                    commandArray.push(command.data);
+                }
 
                 console.log(
                     chalk.green(
