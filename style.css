@@ -283,6 +283,7 @@ main section {
         mix-blend-mode: lighten;
         filter: brightness(1.5);
         font-size: clamp(1em, 5vw, 4em);
+        margin-top: 1em;
     }
 
     & h2 {
