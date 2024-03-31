@@ -25,12 +25,19 @@ export default {
             tr: "çekiliş-oluştur",
             it: "crea-concorso",
             "zh-CN": "创建抽奖",
+            el: "δημιουργία-διαγωνισμού",
+            "pt-BR": "criar-sorteio",
+            ro: "creează-tombolă",
         })
         .setDescriptionLocalizations({
             tr: "Bir çekiliş oluşturun",
             it: "Crea un concorso",
             "zh-CN": "创建抽奖活动",
+            el: "Δημιουργήστε έναν διαγωνισμό",
+            "pt-BR": "Crie um sorteio",
+            ro: "Creează o tombolă",
         })
+
         .addStringOption((option) =>
             option
                 .setName("prize")
@@ -38,12 +45,18 @@ export default {
                     tr: "ödül",
                     it: "premio",
                     "zh-CN": "奖品",
+                    el: "έπαθλο",
+                    "pt-BR": "prêmio",
+                    ro: "premiu",
                 })
                 .setDescription("What will be the prize?")
                 .setDescriptionLocalizations({
                     tr: "Ödül nedir?",
                     it: "Qual è il premio?",
                     "zh-CN": "奖品是什么？",
+                    el: "Ποιο θα είναι το έπαθλο;",
+                    "pt-BR": "Qual será o prêmio?",
+                    ro: "Care va fi premiul?",
                 })
                 .setRequired(true)
         )
@@ -54,12 +67,18 @@ export default {
                     tr: "süre",
                     it: "durata",
                     "zh-CN": "持续时间",
+                    el: "διάρκεια",
+                    "pt-BR": "duração",
+                    ro: "durată",
                 })
                 .setDescription("The duration of event")
                 .setDescriptionLocalizations({
                     tr: "Etkinliğin süresi",
                     it: "La durata dell'evento",
                     "zh-CN": "活动持续时间",
+                    el: "Η διάρκεια του γεγονότος",
+                    "pt-BR": "A duração do evento",
+                    ro: "Durata evenimentului",
                 })
                 .setRequired(true)
                 .addChoices(
@@ -70,6 +89,9 @@ export default {
                             tr: "1 dakika",
                             it: "1 minuto",
                             "zh-CN": "1分钟",
+                            el: "1 λεπτό",
+                            "pt-BR": "1 minuto",
+                            ro: "1 minut",
                         },
                     },
                     {
@@ -79,6 +101,9 @@ export default {
                             tr: "10 dakika",
                             it: "10 minuti",
                             "zh-CN": "10分钟",
+                            el: "10 λεπτά",
+                            "pt-BR": "10 minutos",
+                            ro: "10 minute",
                         },
                     },
                     {
@@ -88,6 +113,9 @@ export default {
                             tr: "30 dakika",
                             it: "30 minuti",
                             "zh-CN": "30分钟",
+                            el: "30 λεπτά",
+                            "pt-BR": "30 minutos",
+                            ro: "30 de minute",
                         },
                     },
                     {
@@ -97,6 +125,9 @@ export default {
                             tr: "1 saat",
                             it: "1 ora",
                             "zh-CN": "1小时",
+                            el: "1 ώρα",
+                            "pt-BR": "1 hora",
+                            ro: "1 oră",
                         },
                     },
                     {
@@ -106,6 +137,9 @@ export default {
                             tr: "2 saat",
                             it: "2 ore",
                             "zh-CN": "2小时",
+                            el: "2 ώρες",
+                            "pt-BR": "2 horas",
+                            ro: "2 ore",
                         },
                     },
                     {
@@ -115,6 +149,9 @@ export default {
                             tr: "3 saat",
                             it: "3 ore",
                             "zh-CN": "3小时",
+                            el: "3 ώρες",
+                            "pt-BR": "3 horas",
+                            ro: "3 ore",
                         },
                     },
                     {
@@ -124,6 +161,9 @@ export default {
                             tr: "4 saat",
                             it: "4 ore",
                             "zh-CN": "4小时",
+                            el: "4 ώρες",
+                            "pt-BR": "4 horas",
+                            ro: "4 ore",
                         },
                     },
                     {
@@ -133,6 +173,9 @@ export default {
                             tr: "5 saat",
                             it: "5 ore",
                             "zh-CN": "5小时",
+                            el: "5 ώρες",
+                            "pt-BR": "5 horas",
+                            ro: "5 ore",
                         },
                     },
                     {
@@ -142,6 +185,9 @@ export default {
                             tr: "6 saat",
                             it: "6 ore",
                             "zh-CN": "6小时",
+                            el: "6 ώρες",
+                            "pt-BR": "6 horas",
+                            ro: "6 ore",
                         },
                     },
                     {
@@ -151,6 +197,9 @@ export default {
                             tr: "1 gün",
                             it: "1 giorno",
                             "zh-CN": "1天",
+                            el: "1 ημέρα",
+                            "pt-BR": "1 dia",
+                            ro: "1 zi",
                         },
                     },
                     {
@@ -160,6 +209,9 @@ export default {
                             tr: "2 gün",
                             it: "2 giorni",
                             "zh-CN": "2天",
+                            el: "2 ημέρες",
+                            "pt-BR": "2 dias",
+                            ro: "2 zile",
                         },
                     },
                     {
@@ -169,6 +221,9 @@ export default {
                             tr: "3 gün",
                             it: "3 giorni",
                             "zh-CN": "3天",
+                            el: "3 ημέρες",
+                            "pt-BR": "3 dias",
+                            ro: "3 zile",
                         },
                     }
                 )
@@ -180,12 +235,18 @@ export default {
                     tr: "açıklama",
                     it: "descrizione",
                     "zh-CN": "描述",
+                    el: "περιγραφή",
+                    "pt-BR": "descrição",
+                    ro: "descriere",
                 })
                 .setDescription("Giveaway description.")
                 .setDescriptionLocalizations({
                     tr: "Çekiliş açıklaması.",
                     it: "Descrizione del concorso.",
                     "zh-CN": "抽奖描述。",
+                    el: "Περιγραφή διαγωνισμού.",
+                    "pt-BR": "Descrição do sorteio.",
+                    ro: "Descrierea concursului.",
                 })
                 .setRequired(false)
         )
@@ -196,16 +257,21 @@ export default {
                     tr: "resim",
                     it: "immagine",
                     "zh-CN": "图片",
+                    el: "εικόνα",
+                    "pt-BR": "imagem",
+                    ro: "imagine",
                 })
                 .setDescription("Giveaway image.")
                 .setDescriptionLocalizations({
                     tr: "Çekiliş resmi.",
                     it: "Immagine del concorso.",
                     "zh-CN": "抽奖图片。",
+                    el: "Εικόνα διαγωνισμού.",
+                    "pt-BR": "Imagem do sorteio.",
+                    ro: "Imaginea concursului.",
                 })
                 .setRequired(false)
         ),
-
     execute: async ({ client, interaction }) => {
         if (
             defaultPermissionErrorForBot(

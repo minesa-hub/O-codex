@@ -9,6 +9,7 @@ import {
     exclamationmark_triangleEmoji,
     swap_emoji,
 } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -17,6 +18,9 @@ export default {
             ChineseCN: "翻译消息",
             it: "Traduci Messaggio",
             tr: "Mesajı Çevir",
+            "pt-BR": "Traduzir Mensagem",
+            ro: "Traduceți Mesajul",
+            el: "Μετάφραση Μηνύματος",
         })
         .setType(ApplicationCommandType.Message),
     execute: async ({ interaction }) => {

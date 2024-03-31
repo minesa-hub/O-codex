@@ -19,6 +19,9 @@ export default {
             ChineseCN: "用户横幅",
             it: "Banner Utente",
             tr: "Kullanıcı Afişi",
+            "pt-BR": "Banner do Usuário",
+            ro: "Banner Utilizator",
+            el: "Σημαιάκι Χρήστη",
         })
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),

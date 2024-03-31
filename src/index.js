@@ -7,7 +7,6 @@ import {
     GatewayIntentBits,
     Partials,
 } from "discord.js";
-// import { connect } from "mongoose";
 import fs from "fs";
 import { setRPC } from "./rpc.js";
 import { append_emoji } from "./shortcuts/emojis.js";

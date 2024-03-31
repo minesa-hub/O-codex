@@ -8,14 +8,54 @@ export default {
     data: new SlashCommandBuilder()
         .setName("play")
         .setDescription(".")
+        .setNameLocalizations({
+            ChineseCN: "播放",
+            it: "riproduci",
+            tr: "çal",
+            "pt-BR": "tocar",
+            ro: "redă",
+            el: "παίξε",
+        })
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("song")
+                .setNameLocalizations({
+                    ChineseCN: "歌曲",
+                    it: "canzone",
+                    tr: "şarkı",
+                    "pt-BR": "música",
+                    ro: "cântec",
+                    el: "τραγούδι",
+                })
                 .setDescription("Pick, paste, play. Never been this easy!")
-                .addStringOption((opt) =>
-                    opt
+                .setDescriptionLocalizations({
+                    ChineseCN: "选取、粘贴、播放。从未如此简单！",
+                    it: "Scegli, incolla, riproduci. Non è mai stato così facile!",
+                    tr: "Seç, yapıştır, çal. Hiç bu kadar kolay olmamıştı!",
+                    "pt-BR": "Escolha, cole, reproduza. Nunca foi tão fácil!",
+                    ro: "Alege, lipește, redă. Nu a fost niciodată atât de ușor!",
+                    el: "Επίλεξε, επικόλλησε, παίξε. Δεν ήταν ποτέ τόσο εύκολο!",
+                })
+                .addStringOption((option) =>
+                    option
                         .setName("query")
+                        .setNameLocalizations({
+                            ChineseCN: "查询",
+                            it: "query",
+                            tr: "sorgula",
+                            "pt-BR": "consulta",
+                            ro: "interogare",
+                            el: "ερώτημα",
+                        })
                         .setDescription("The URL or name of the song!")
+                        .setDescriptionLocalizations({
+                            ChineseCN: "歌曲的URL或名称！",
+                            it: "L'URL o il nome della canzone!",
+                            tr: "Şarkının URL'si veya adı!",
+                            "pt-BR": "O URL ou nome da música!",
+                            ro: "URL-ul sau numele cântecului!",
+                            el: "Το URL ή το όνομα του τραγουδιού!",
+                        })
                         .setRequired(true)
                 )
         ),

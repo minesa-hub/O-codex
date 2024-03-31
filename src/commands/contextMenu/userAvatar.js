@@ -18,6 +18,9 @@ export default {
             ChineseCN: "用户头像",
             it: "Avatar Utente",
             tr: "Kullanıcı Avatarı",
+            "pt-BR": "Avatar do Usuário",
+            ro: "Avatar Utilizator",
+            el: "Άβαταρ Χρήστη",
         })
         .setType(ApplicationCommandType.User)
         .setDMPermission(false),

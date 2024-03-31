@@ -8,7 +8,25 @@ import {
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
-    data: new SlashCommandBuilder().setName("skip").setDescription("skip it!"),
+    data: new SlashCommandBuilder()
+        .setName("skip")
+        .setNameLocalizations({
+            ChineseCN: "跳过",
+            it: "salta",
+            tr: "atla",
+            "pt-BR": "pular",
+            ro: "sari",
+            el: "παράλειψη",
+        })
+        .setDescription("skip it!")
+        .setDescriptionLocalizations({
+            ChineseCN: "跳过它！",
+            it: "Salta!",
+            tr: "atla!",
+            "pt-BR": "pule!",
+            ro: "sari!",
+            el: "παράλειψη!",
+        }),
     execute: async ({ interaction }) => {
         if (
             defaultPermissionErrorForBot(

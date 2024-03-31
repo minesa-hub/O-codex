@@ -10,7 +10,23 @@ import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.j
 export default {
     data: new SlashCommandBuilder()
         .setName("autoplay")
-        .setDescription("Toggle autoplay!"),
+        .setNameLocalizations({
+            ChineseCN: "自动播放",
+            it: "riproduzione-automatica",
+            tr: "otomatik-oynatma",
+            "pt-BR": "reprodução-automática",
+            ro: "redare-automată",
+            el: "αυτόματη-αναπαραγωγή",
+        })
+        .setDescription("Toggle autoplay!")
+        .setDescriptionLocalizations({
+            ChineseCN: "切换自动播放！",
+            it: "Attiva/disattiva riproduzione automatica!",
+            tr: "Otomatik oynatmayı aç/kapat!",
+            "pt-BR": "Ativar/desativar reprodução automática!",
+            ro: "Comută redarea automată!",
+            el: "Εναλλαγή αυτόματης αναπαραγωγής!",
+        }),
     execute: async ({ interaction }) => {
         if (
             defaultPermissionErrorForBot(
