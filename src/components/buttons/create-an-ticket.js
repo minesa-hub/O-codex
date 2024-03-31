@@ -20,6 +20,7 @@ export default {
             .setRequired(true)
             .setStyle(TextInputStyle.Short)
             .setPlaceholder("Cannot post memes")
+            .setMinLength(5)
             .setMaxLength(100);
         const firstActionRow = new ActionRowBuilder().addComponents(input);
 

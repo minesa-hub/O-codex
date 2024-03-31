@@ -14,12 +14,18 @@ export default {
             ChineseCN: "显示",
             it: "mostra",
             tr: "mim",
+            "pt-BR": "enviar",
+            ro: "trimite",
+            el: "στείλτε",
         })
         .setDescription("Send a random meme from somewhere to enjoy!")
         .setDescriptionLocalizations({
             ChineseCN: "从某处发送一个随机梗图!",
             it: "Invia un meme casuale da qualche parte!",
             tr: "Rastgele bir mim gönder!",
+            "pt-BR": "Envie um meme aleatório de algum lugar para curtir!",
+            ro: "Trimite un meme aleatoriu de undeva să te distrezi!",
+            el: "Στείλτε ένα τυχαίο μεμέ από κάπου για να απολαύσετε!",
         })
         .addSubcommand((subcommand) =>
             subcommand
@@ -28,12 +34,19 @@ export default {
                     ChineseCN: "梗图",
                     it: "meme",
                     tr: "göster",
+                    "pt-BR": "meme",
+                    ro: "meme",
+                    el: "μεμέ",
                 })
                 .setDescription("Send a random meme from somewhere to enjoy!")
                 .setDescriptionLocalizations({
                     ChineseCN: "从某处发送一个随机梗图!",
                     it: "Invia un meme casuale da qualche parte!",
                     tr: "Rastgele bir mim gönder!",
+                    "pt-BR":
+                        "Envie um meme aleatório de algum lugar para curtir!",
+                    ro: "Trimite un meme aleatoriu de undeva să te distrezi!",
+                    el: "Στείλτε ένα τυχαίο μεμέ από κάπου για να απολαύσετε!",
                 })
         ),
     execute: async ({ interaction }) => {

@@ -17,6 +17,7 @@ export const foward_emoji = "<:forward:1218307582989434980>";
 export const stop_emoji = "<:stop:1218307549808296068>";
 export const append_emoji = "<:append:1218307481822953602>";
 export const infinity_emoji = "<:infinity:1218307517927522467>";
+export const timeout_emoji = "<:timeout:1224057320405995753>";
 
 // user emojis
 export const person_profile = "<:profile:1217889549393330247>";

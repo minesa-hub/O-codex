@@ -17,7 +17,7 @@ import {
     slash_emoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { getStaffRoleId } from "../../shortcuts/saveStaffRole.js";
+import { getStaffRoleId } from "../../shortcuts/database.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()

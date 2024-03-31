@@ -14,9 +14,43 @@ import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.j
 export default {
     data: new SlashCommandBuilder()
         .setName("now")
-        .setDescription(".")
+        .setNameLocalizations({
+            ChineseCN: "当前",
+            it: "adesso",
+            tr: "şimdi",
+            "pt-BR": "agora",
+            ro: "acum",
+            el: "τώρα",
+        })
+        .setDescription("Display current status.")
+        .setDescriptionLocalizations({
+            ChineseCN: "显示当前状态。",
+            it: "Mostra lo stato attuale.",
+            tr: "Mevcut durumu göster.",
+            "pt-BR": "Mostra o status atual.",
+            ro: "Afișează starea curentă.",
+            el: "Εμφάνιση τρέχουσας κατάστασης.",
+        })
         .addSubcommand((subcommand) =>
-            subcommand.setName("playing").setDescription("What is playing?")
+            subcommand
+                .setName("playing")
+                .setNameLocalizations({
+                    ChineseCN: "播放中",
+                    it: "in-riproduzione",
+                    tr: "oynatıyor",
+                    "pt-BR": "tocando",
+                    ro: "redare",
+                    el: "αναπαραγωγή",
+                })
+                .setDescription("What is playing?")
+                .setDescriptionLocalizations({
+                    ChineseCN: "正在播放什么？",
+                    it: "Cosa sta riproducendo?",
+                    tr: "Ne çalıyor?",
+                    "pt-BR": "O que está tocando?",
+                    ro: "Ce se redă?",
+                    el: "Τι αναπαράγεται;",
+                })
         ),
     execute: async ({ interaction }) => {
         if (

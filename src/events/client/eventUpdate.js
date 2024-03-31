@@ -1,6 +1,4 @@
 import { Events, GuildScheduledEventStatus } from "discord.js";
-import chalk from "chalk";
-import UserForScheduledEvents from "../../schemas/UserForScheduledEvents.js";
 
 export default {
     name: Events.GuildScheduledEventUpdate,

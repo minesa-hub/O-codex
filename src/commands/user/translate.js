@@ -1,17 +1,15 @@
 import translate from "@iamtraction/google-translate";
-import {
-    exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
-    swap_emoji,
-} from "../../shortcuts/emojis.js";
 
 export default {
     data: {
-        name: "Translate Message",
+        name: "Translate Message (Personal)",
         name_localizations: {
-            "zh-CN": "翻译消息",
-            it: "Traduci Messaggio",
-            tr: "Mesajı Çevir",
+            "zh-CN": "翻译消息（个人的）",
+            it: "Traduci Messaggio (Personale)",
+            tr: "Mesajı Çevir (Kişisel)",
+            "pt-BR": "Traduzir Mensagem (Pessoal)",
+            ro: "Traduceți Mesajul (Personal)",
+            el: "Μετάφραση Μηνύματος (Προσωπικό)",
         },
         integration_types: [1],
         contexts: [0, 1, 2],
@@ -24,7 +22,7 @@ export default {
         try {
             if (!message.content)
                 return interaction.reply({
-                    content: `${exclamationmark_triangleEmoji} Message has no content to translate.`,
+                    content: `Message has no content to translate.`,
                     ephemeral: true,
                 });
 
@@ -39,10 +37,11 @@ export default {
 
             await interaction.reply({
                 content: `# ⇅ Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                ephemeral: true,
             });
         } catch (error) {
             await interaction.reply({
-                content: `${exclamationmark_circleEmoji} An error occurred while translating the message.`,
+                content: `An error occurred while translating the message.`,
                 ephemeral: true,
             });
         }
