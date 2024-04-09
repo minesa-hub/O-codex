@@ -1,5 +1,5 @@
 {
-    "name": "ita",
+    "name": "kaeru",
     "version": "2.0.2",
     "description": "A Discord bot is doing unique things.",
     "main": "index.js",
@@ -7,19 +7,20 @@
     "scripts": {
         "test": "echo Hi mom!",
         "start": "npm install && npm update && node src/index.js",
-        "dev": "node src/index.js"
+        "dev": "node src/index.js",
+        "server": "node src/applications/server.js"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/minesa-time/Ita.git"
+        "url": "git+https://github.com/minesa-time/kaeru.git"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/minesa-time/Ita/issues"
+        "url": "https://github.com/minesa-time/kaeru/issues"
     },
-    "homepage": "https://github.com/minesa-hub/Ita#readme",
+    "homepage": "https://github.com/minesa-hub/kaeru#readme",
     "dependencies": {
         "@discordjs/opus": "^0.9.0",
         "@discordjs/voice": "^0.16.0",

@@ -21,7 +21,7 @@ async function activity() {
         buttons: [
             {
                 label: `Invite Kaeru”`,
-                url: `https://minesa.live/users/ita.html`,
+                url: `https://minesa.live/users/kaeru.html`,
             },
             {
                 label: `Join Minesa Hub™️`,

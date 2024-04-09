@@ -9,22 +9,16 @@ const url = `https://discord.com/api/v10/applications/${CLIENT_ID}/role-connecti
 // supported types: number_lt=1, number_gt=2, number_eq=3 number_neq=4, datetime_lt=5, datetime_gt=6, boolean_eq=7, boolean_neq=8
 const body = [
     {
-        key: "cookieseaten",
-        name: "Cookies Eaten",
-        description: "Cookies Eaten Greater Than",
+        key: "warnings",
+        name: "Warnings",
+        description: "You need a warning to get this role.",
         type: 2,
     },
     {
-        key: "allergictonuts",
-        name: "Allergic To Nuts",
-        description: "Is Allergic To Nuts",
+        key: "badge",
+        name: "Rule Breaker",
+        description: "You will be awarded with a badge.",
         type: 7,
-    },
-    {
-        key: "bakingsince",
-        name: "Baking Since",
-        description: "Days since baking their first cookie",
-        type: 6,
     },
 ];
 

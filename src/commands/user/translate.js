@@ -1,4 +1,7 @@
 import translate from "@iamtraction/google-translate";
+import { swap_emoji } from "../../shortcuts/emojis.js";
+import { EmbedBuilder } from "discord.js";
+import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: {
@@ -35,8 +38,22 @@ export default {
                 { to: locale }
             );
 
+            const embed = new EmbedBuilder()
+                .setDescription(`# ${swap_emoji} Translate Message`)
+                .setFields([
+                    {
+                        name: "Original Message",
+                        value: `${message.content}`,
+                    },
+                    {
+                        name: "Translated Message",
+                        value: `${translated.text}`,
+                    },
+                ])
+                .setColor(EMBED_COLOR);
+
             await interaction.reply({
-                content: `# ⇅ Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                embeds: [embed],
                 ephemeral: true,
             });
         } catch (error) {

@@ -96,7 +96,7 @@ export async function pushMetadata(userId, tokens, metadata) {
     const url = `https://discord.com/api/v10/users/@me/applications/${CLIENT_ID}/role-connection`;
     const accessToken = await getAccessToken(userId, tokens);
     const body = {
-        platform_name: "Example Linked Role Discord Bot",
+        platform_name: "Moderation",
         metadata,
     };
     const response = await fetch(url, {
