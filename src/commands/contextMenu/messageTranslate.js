@@ -22,7 +22,8 @@ export default {
             ro: "Traduceți Mesajul",
             el: "Μετάφραση Μηνύματος",
         })
-        .setType(ApplicationCommandType.Message),
+        .setType(ApplicationCommandType.Message)
+        .setDMPermission(false),
     execute: async ({ interaction }) => {
         if (
             defaultPermissionErrorForBot(
