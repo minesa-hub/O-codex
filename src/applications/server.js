@@ -4,6 +4,8 @@ import cookieParser from "cookie-parser";
 import * as discord from "./discord.js";
 import * as storage from "./storage.js";
 import { COOKIE_SECRET } from "../config.js";
+import { getUserInfo } from "../shortcuts/database.js";
+import { LINKED_ROLE_GUILD_ID } from "../events/client/messageCreate.js";
 
 /**
  * Main HTTP server used for the bot.
@@ -25,16 +27,30 @@ app.get("/", (req, res) => {
  * To start the flow, generate the OAuth2 consent dialog url for Discord,
  * and redirect the user there.
  */
-app.get("/linked-role", async (req, res) => {
-    const { url, state } = discord.getOAuthUrl();
+app.get("/linked-role/:guildId", async (req, res) => {
+    try {
+        // Extract the guild ID from the URL parameters
+        const guildId = req.params.guildId;
 
-    // Store the signed state param in the user's cookies so we can verify
-    // the value later. See:
-    // https://discord.com/developers/docs/topics/oauth2#state-and-security
-    res.cookie("clientState", state, { maxAge: 1000 * 60 * 5, signed: true });
+        console.log("Guild ID:", guildId);
 
-    // Send the user to the Discord owned OAuth2 authorization endpoint
-    res.redirect(url);
+        // Discord OAuth2 authorization URL generation
+        const { url, state } = discord.getOAuthUrl();
+
+        // Store the state parameter in the user's cookies for verification
+        res.cookie("clientState", state, {
+            maxAge: 1000 * 60 * 5,
+            signed: true,
+        });
+
+        // Redirect the user to the Discord OAuth2 authorization endpoint
+        res.redirect(url);
+    } catch (error) {
+        console.error("Error while redirecting to Discord OAuth:", error);
+        res.status(500).send(
+            "An error occurred while redirecting to Discord OAuth."
+        );
+    }
 });
 
 /**
@@ -111,9 +127,9 @@ async function updateMetadata(userId) {
         // is going to be different.  To keep the example simple, we'll
         // just generate some random data.
         metadata = {
-            warnings: 1,
-            badge: 1,
+            messagecount: await getUserInfo("697039582922801182", userId),
         };
+        console.log(metadata);
     } catch (e) {
         e.message = `Error fetching external data: ${e.message}`;
         console.error(e);

@@ -13,6 +13,49 @@ if (!fs.existsSync(dataDirectory)) {
 
 const filePath = (guildId) => path.resolve(dataDirectory, `${guildId}.json`);
 
+function getUserInfo(guildId, userId) {
+    try {
+        // Construct the path to the user's JSON file
+        const filePath = path.join(dataDirectory, `./users/${userId}.json`);
+
+        // Read the user data from the file with utf-8 encoding
+        const data = fs.readFileSync(filePath, { encoding: "utf-8" });
+
+        // Parse the JSON data and return
+        const userData = JSON.parse(data);
+
+        // Return message count for the specified guild or null if not found
+        return userData[guildId] || null;
+    } catch (error) {
+        // Handle errors, such as file not found
+        console.error("Error reading user data:", error);
+        return null;
+    }
+}
+
+function saveMessageCount(guildId, userId) {
+    try {
+        const filePath = path.join(dataDirectory, `./users/${userId}.json`);
+        let userData = {};
+        try {
+            const data = fs.readFileSync(filePath, "utf8");
+            userData = JSON.parse(data);
+        } catch (error) {
+            if (error.code !== "ENOENT") {
+                console.error("Error reading user data:", error);
+            }
+        }
+
+        // Increment message count for the specific guild or set it to 1 if it doesn't exist
+        userData[guildId] = (userData[guildId] || 0) + 1;
+
+        // Write the updated user data back to the file
+        fs.writeFileSync(filePath, JSON.stringify(userData, null, 2));
+    } catch (error) {
+        console.error("Error updating message count:", error);
+    }
+}
+
 // Staff Role
 function saveStaffRoleId(guildId, roleId) {
     const file = filePath(guildId);
@@ -138,6 +181,8 @@ function checkLoggingChannel(guildId) {
 }
 
 export {
+    getUserInfo,
+    saveMessageCount,
     saveStaffRoleId,
     getStaffRoleId,
     addWarning,

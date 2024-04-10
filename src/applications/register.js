@@ -9,16 +9,12 @@ const url = `https://discord.com/api/v10/applications/${CLIENT_ID}/role-connecti
 // supported types: number_lt=1, number_gt=2, number_eq=3 number_neq=4, datetime_lt=5, datetime_gt=6, boolean_eq=7, boolean_neq=8
 const body = [
     {
-        key: "warnings",
-        name: "Warnings",
-        description: "You need a warning to get this role.",
+        key: "messagecount",
+        name: "messages sent to claim it!",
+        name_localizations: { tr: "mesaj gönderdi bu rolü almak için!" },
+        description: "You have to send this amount of messages:",
+        description_localizations: { tr: "Göndermen gereken mesaj sayısı:" },
         type: 2,
-    },
-    {
-        key: "badge",
-        name: "Rule Breaker",
-        description: "You will be awarded with a badge.",
-        type: 7,
     },
 ];
 
