@@ -10,7 +10,8 @@ export default {
         const oneDayInMillis = 1000 * 60 * 60 * 24;
         const sevenDaysInMillis = oneDayInMillis * 7;
         const channelId = await checkLoggingChannel(guild.id);
-        const channel = guild.channels.cache.get(channelId);
+        const channel =
+            guild.channels.cache.get(channelId) || "961144092782374942";
 
         if (accountAge < sevenDaysInMillis) {
             try {
@@ -35,7 +36,9 @@ export default {
                     )
                     .catch(console.error);
                 if (channel) {
-                    const logginChannel = await guild.channels.fetch(channelId);
+                    const logginChannel =
+                        (await guild.channels.fetch(channelId)) ||
+                        "961144092782374942";
 
                     await logginChannel.send({ embeds: [embed] });
                 }

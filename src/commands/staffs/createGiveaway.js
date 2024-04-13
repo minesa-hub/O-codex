@@ -20,7 +20,7 @@ export default {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
         .setDMPermission(false)
         .setName("create-giveaway")
-        .setDescription("Create a giveaway")
+        .setDescription("Create a giveaway (THIS IS STILL ON BETA)")
         .setNameLocalizations({
             tr: "çekiliş-oluştur",
             it: "crea-concorso",

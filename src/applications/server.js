@@ -27,13 +27,8 @@ app.get("/", (req, res) => {
  * To start the flow, generate the OAuth2 consent dialog url for Discord,
  * and redirect the user there.
  */
-app.get("/linked-role/:guildId", async (req, res) => {
+app.get("/linked-role", async (req, res) => {
     try {
-        // Extract the guild ID from the URL parameters
-        const guildId = req.params.guildId;
-
-        console.log("Guild ID:", guildId);
-
         // Discord OAuth2 authorization URL generation
         const { url, state } = discord.getOAuthUrl();
 
@@ -104,6 +99,7 @@ app.get("/discord-oauth-callback", async (req, res) => {
 app.post("/update-metadata", async (req, res) => {
     try {
         const userId = req.body.userId;
+
         await updateMetadata(userId);
 
         res.sendStatus(204);
@@ -127,7 +123,7 @@ async function updateMetadata(userId) {
         // is going to be different.  To keep the example simple, we'll
         // just generate some random data.
         metadata = {
-            messagecount: await getUserInfo("697039582922801182", userId),
+            messagecount: await getUserInfo(userId),
         };
         console.log(metadata);
     } catch (e) {

@@ -9,6 +9,7 @@ import {
     addWarning,
     checkLoggingChannel,
     checkWarnings,
+    getWarningRole,
 } from "../../shortcuts/database.js";
 import {
     exclamationmark_circleEmoji,
@@ -268,83 +269,81 @@ export default {
                 .setRequired(false)
         ),
     execute: async ({ client, interaction }) => {
+        await interaction.deferReply({ ephemeral: true });
+
         const target = interaction.options.getUser("target");
         let reason = interaction.options.getString("reason");
         let customReason =
             interaction.options.getString("additional_reason") ||
-            "No reason provided.";
-        let duration = interaction.options.getNumber("duration") || 60; // Default duration: 1 minute
+            "No extra information provided.";
+        let duration = interaction.options.getNumber("duration") || 60; // 1 hour
         const guild = interaction.guild;
         const guildMember = guild.members.cache.get(target.id);
-        // const channel = guild.channels.cache.get("961144092782374942");
         const author = interaction.user;
+        let mainReason;
 
         switch (reason) {
             case "spam":
-                reason = "Member was spamming messages.";
-                duration = 5;
+                mainReason = "Member was spamming messages.";
                 break;
             case "harassment":
-                reason =
+                mainReason =
                     "Member was engaging in harassment or bullying behavior.";
-                duration = 10;
                 break;
             case "inappropriate":
-                reason = "Member was posting inappropriate content.";
-                duration = 15;
+                mainReason = "Member was posting inappropriate content.";
                 break;
             case "advertising":
-                reason =
+                mainReason =
                     "Member was advertising external products, services, or communities.";
-                duration = 20;
                 break;
             case "impersonation":
-                reason = "Member was impersonating someone else.";
-                duration = 10;
+                mainReason = "Member was impersonating someone else.";
                 break;
             case "trolling":
-                reason = "Member was trolling or provoking others.";
-                duration = 10;
+                mainReason = "Member was trolling or provoking others.";
                 break;
             case "server_rules":
-                reason = "Member violated server rules.";
-                duration = 10;
+                mainReason = "Member violated server rules.";
                 break;
             case "offensive_behavior":
-                reason = "Member displayed offensive behavior.";
-                duration = 10;
+                mainReason = "Member displayed offensive behavior.";
                 break;
             case "breaking_tos":
-                reason = "Member broke Discord's Terms of Service.";
-                duration = 180;
+                mainReason = "Member broke Discord's Terms of Service.";
                 break;
             case "repeated_infractions":
-                reason = "Member committed repeated infractions.";
-                duration = 30;
+                mainReason = "Member committed repeated infractions.";
+                break;
+            case "other":
+                mainReason = "";
                 break;
             default:
-                reason = customReason;
+                mainReason = customReason;
                 break;
+        }
+
+        if (reason === "other") {
+            reason = customReason;
+        } else if (customReason.trim() !== "") {
+            reason = `${mainReason} \n> ${customReason}`;
+        } else {
+            reason = mainReason;
         }
 
         addWarning(guild.id, target.id);
 
         const warnings = checkWarnings(guild.id, target.id);
-        if (warnings >= 4) {
-            // Ban the user
-            await guild.members.ban(target.id, {
-                reason: "Exceeded warning limit",
-            });
-            return interaction.reply({
-                content: `User banned because they received 4 warnings.`,
-                ephemeral: true,
-            });
-        }
 
-        if (warnings == 2) {
-            duration = duration * 2;
+        if (warnings == 1) {
+            duration = 60;
+            await guildMember.roles.add(getWarningRole(guild.id, [0]));
+        } else if (warnings == 2) {
+            duration = 1440; // 1 day
+            await guildMember.roles.add(getWarningRole(guild.id, [1]));
         } else if (warnings >= 3) {
-            duration = duration * 4 + 24 * 60;
+            duration = 10080; // 1 week
+            await guildMember.roles.add(getWarningRole(guild.id, [2]));
         }
 
         const expiryTime = new Date(Date.now() + duration * 60 * 1000);
@@ -405,6 +404,16 @@ export default {
                     ],
                 });
 
+                if (warnings >= 4) {
+                    // Ban the user
+                    await guild.members.ban(target.id, {
+                        reason: "Exceeded warning limit",
+                    });
+                    return interaction.editReply({
+                        content: `Member got ban because they received 4 warnings. They better be cool.`,
+                    });
+                }
+
                 if (duration <= 40320) {
                     guildMember
                         .disableCommunicationUntil(
@@ -412,7 +421,7 @@ export default {
                             `${reason} Moderated by ${author.username}.`
                         )
                         .catch(console.error);
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `# ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
@@ -423,9 +432,8 @@ export default {
                         ephemeral: true,
                     });
                 } else {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${exclamationmark_circleEmoji} I cannot timeout more than 28 days. Can you?`,
-                        ephemeral: true,
                     });
                 }
             } else {
@@ -437,7 +445,7 @@ export default {
                         )
                         .catch(console.error);
 
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: ` # ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
@@ -448,7 +456,7 @@ export default {
                         ephemeral: true,
                     });
                 } else {
-                    return interaction.reply({
+                    return interaction.editReply({
                         content: `${exclamationmark_circleEmoji} I cannot timeout more than 28 days. Can you?`,
                         ephemeral: true,
                     });
@@ -456,7 +464,8 @@ export default {
             }
         } catch (err) {
             console.log(err);
-            return interaction.reply({
+
+            return interaction.editReply({
                 content: `Something went wrong, please contact with Neo.`,
                 ephemeral: true,
             });
