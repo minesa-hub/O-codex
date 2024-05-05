@@ -1,4 +1,4 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder, Integration } from "discord.js";
 import {
     exclamationmark_triangleEmoji,
     person_profile,
@@ -25,7 +25,6 @@ export default {
         try {
             await interaction.deferReply({ ephemeral: true });
 
-            
             const userId = interaction.targetId;
             const user = await client.users.fetch(userId);
             const avatar = user.displayAvatarURL({
@@ -41,14 +40,12 @@ export default {
 
             await interaction.editReply({
                 embeds: [embed],
-                ephemeral: true,
             });
         } catch (error) {
             console.log(error);
 
             return interaction.editReply({
                 content: `${exclamationmark_triangleEmoji} Are we sure they are a member in this guild?`,
-                ephemeral: true,
             });
         }
     },

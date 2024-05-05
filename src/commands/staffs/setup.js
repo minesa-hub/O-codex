@@ -6,7 +6,7 @@ import {
     ButtonStyle,
     ChannelType,
     PermissionFlagsBits,
-    underscore,
+    underline,
     bold,
 } from "discord.js";
 import {
@@ -21,11 +21,11 @@ import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.j
 import {
     saveStaffRoleId,
     setupLoggingChannel,
-    setupWarningRoles,
 } from "../../shortcuts/database.js";
 
 export default {
     data: new SlashCommandBuilder()
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false)
         .setName("setup")
         .setNameLocalizations({
@@ -638,7 +638,7 @@ export default {
                     content: `## ${
                         exclamationmark_triangleEmoji +
                         " " +
-                        underscore("Recommending")
+                        underline("Recommending")
                     }\nIf Kaeru has ${bold(
                         "Manage Messages"
                     )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
@@ -647,35 +647,19 @@ export default {
         }
         // logs system
         if (interaction.options.getSubcommand() == "logs") {
+            await interaction.deferReply({ ephemeral: true });
+
             const logginChannel = interaction.options.getChannel("channel");
 
             setupLoggingChannel(guild.id, logginChannel.id);
 
             await logginChannel.send({
-                content: "Successfully setup the loggin channel",
+                content:
+                    checkmark_emoji + " Successfully setup the loggin channel.",
             });
 
-            return interaction.reply({
+            return interaction.editReply({
                 content: `${checkmark_emoji} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
-                ephemeral: true,
-            });
-        }
-        // warning system
-        if (interaction.options.getSubcommand() == "warning") {
-            const warning_1 = interaction.options.getRole("warning_1");
-            const warning_2 = interaction.options.getRole("warning_2");
-            const warning_3 = interaction.options.getRole("warning_3");
-
-            setupWarningRoles(
-                guild.id,
-                warning_1.id,
-                warning_2.id,
-                warning_3.id
-            );
-
-            return interaction.reply({
-                content: `## ${checkmark_emoji} Done!\nThese roles will be logged to members who does bad bad stuffs!`,
-                ephemeral: true,
             });
         }
     },

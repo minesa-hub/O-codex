@@ -13,42 +13,6 @@ if (!fs.existsSync(dataDirectory)) {
 
 const filePath = (guildId) => path.resolve(dataDirectory, `${guildId}.json`);
 
-// warning system
-export function setupWarningRoles(guildId, ...warningRoles) {
-    const file = filePath(guildId);
-    let guildData = {};
-
-    try {
-        const data = fs.readFileSync(file);
-        guildData = JSON.parse(data);
-    } catch (err) {
-        if (err.code !== "ENOENT") {
-            console.error("Error reading JSON file:", err);
-        }
-    }
-
-    guildData.warningRoles = warningRoles;
-
-    try {
-        fs.writeFileSync(file, JSON.stringify(guildData, null, 2));
-    } catch (err) {
-        console.error("Error writing JSON file:", err);
-    }
-}
-
-export function getWarningRole(guildId, index) {
-    const file = filePath(guildId);
-    try {
-        const data = fs.readFileSync(file, "utf8");
-        const guildData = JSON.parse(data);
-        const warningRoles = guildData.warningRoles || [];
-        return warningRoles[index];
-    } catch (err) {
-        console.error("Error reading JSON file:", err);
-        return null;
-    }
-}
-
 // Staff Role
 export function saveStaffRoleId(guildId, roleId) {
     const file = filePath(guildId);

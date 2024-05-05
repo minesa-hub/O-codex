@@ -8,11 +8,8 @@ import {
     Partials,
 } from "discord.js";
 import fs from "fs";
-import { setRPC } from "./rpc.js";
 import { append_emoji } from "./shortcuts/emojis.js";
 import { TOKEN } from "./config.js";
-
-setRPC();
 
 const client = new Client({
     intents: [

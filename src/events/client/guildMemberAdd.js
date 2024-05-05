@@ -1,5 +1,7 @@
 import { EmbedBuilder, Events } from "discord.js";
 import { checkLoggingChannel } from "../../shortcuts/database.js";
+import { timeout_emoji } from "../../shortcuts/emojis.js";
+import { EMBED_COLOR } from "../../config.js";
 
 export default {
     name: Events.GuildMemberAdd,
@@ -15,30 +17,39 @@ export default {
 
         if (accountAge < sevenDaysInMillis) {
             try {
-                await member.send(
-                    `You might be questioning why are you timeouted; since your account is younger than 7 days, we have restricted you temporarily.`
-                );
+                await member.send({
+                    content: `## ${guild.name}`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setTitle(`${timeout_emoji} Time outed`)
+                            .setDescription(
+                                "You might be questioning why are you timeouted...\nWell, since your account is younger than 7 days, I have restricted you temporarily."
+                            )
+                            .setColor(EMBED_COLOR)
+                            .setThumbnail(guild.iconURL())
+                            .setTimestamp(),
+                    ],
+                });
 
                 const embed = new EmbedBuilder()
-                    .setTitle("New Account!")
+                    .setTitle(`${timeout_emoji} Time outed New Member`)
                     .setDescription(
                         `User <@${member.user.id}> has joined the server. Their account is younger than 7 days. They have been temporarily restricted. Aka they are timeouted for one week.`
                     )
-                    .setColor(0xfa996b)
+                    .setThumbnail(member.user.displayAvatarURL())
+                    .setColor(EMBED_COLOR)
                     .setFooter({
                         text: guild.name,
                         iconURL: guild.iconURL(),
                     });
                 await member
                     .disableCommunicationUntil(
-                        new Date(Date.now() + oneDayInMillis),
+                        new Date(Date.now() + sevenDaysInMillis),
                         `Account is younger than 7 days.`
                     )
                     .catch(console.error);
                 if (channel) {
-                    const logginChannel =
-                        (await guild.channels.fetch(channelId)) ||
-                        "961144092782374942";
+                    const logginChannel = await guild.channels.fetch(channelId);
 
                     await logginChannel.send({ embeds: [embed] });
                 }

@@ -330,7 +330,7 @@ export default {
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: {
-                location: interaction.guild.name,
+                location: "By " + interaction.user.username,
             },
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });

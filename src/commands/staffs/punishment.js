@@ -9,7 +9,6 @@ import {
     addWarning,
     checkLoggingChannel,
     checkWarnings,
-    getWarningRole,
 } from "../../shortcuts/database.js";
 import {
     exclamationmark_circleEmoji,
@@ -19,6 +18,7 @@ import {
 
 export default {
     data: new SlashCommandBuilder()
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .setName("punishment")
         .setNameLocalizations({
             "pt-BR": "punição",
@@ -40,7 +40,6 @@ export default {
             it: "Punire il membro cronometrandoli. Questo darà loro anche un avvertimento.",
             tr: "Üyeyi zaman aşımı ile cezalandırın. Bu aynı zamanda onlara bir uyarı verecektir.",
         })
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .addUserOption((option) =>
             option
                 .setName("target")
@@ -335,17 +334,6 @@ export default {
 
         const warnings = checkWarnings(guild.id, target.id);
 
-        if (warnings == 1) {
-            duration = 60;
-            await guildMember.roles.add(getWarningRole(guild.id, [0]));
-        } else if (warnings == 2) {
-            duration = 1440; // 1 day
-            await guildMember.roles.add(getWarningRole(guild.id, [1]));
-        } else if (warnings >= 3) {
-            duration = 10080; // 1 week
-            await guildMember.roles.add(getWarningRole(guild.id, [2]));
-        }
-
         const expiryTime = new Date(Date.now() + duration * 60 * 1000);
 
         await interaction.guild.members.fetch(guildMember);
@@ -404,6 +392,26 @@ export default {
                     ],
                 });
 
+                await guildMember.send({
+                    content: `## ${timeout_emoji} You have been timeouted.`,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setFields(
+                                {
+                                    name: "Duration",
+                                    value: `${time(expiryTime, "R")}`,
+                                },
+                                {
+                                    name: "Reason",
+                                    value: `${reason}`,
+                                    inline: true,
+                                }
+                            )
+                            .setThumbnail(guild.iconURL())
+                            .setTimestamp(),
+                    ],
+                });
+
                 if (warnings >= 4) {
                     // Ban the user
                     await guild.members.ban(target.id, {
@@ -415,12 +423,21 @@ export default {
                 }
 
                 if (duration <= 40320) {
-                    guildMember
+                    if (warnings == 1) {
+                        duration = 60;
+                    } else if (warnings == 2) {
+                        duration = 1440; // 1 day
+                    } else if (warnings >= 3) {
+                        duration = 10080; // 1 week
+                    }
+
+                    await guildMember
                         .disableCommunicationUntil(
                             expiryTime,
                             `${reason} Moderated by ${author.username}.`
                         )
                         .catch(console.error);
+
                     return interaction.editReply({
                         content: `# ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
@@ -438,7 +455,15 @@ export default {
                 }
             } else {
                 if (duration <= 40320) {
-                    guildMember
+                    if (warnings == 1) {
+                        duration = 60;
+                    } else if (warnings == 2) {
+                        duration = 1440; // 1 day
+                    } else if (warnings >= 3) {
+                        duration = 10080; // 1 week
+                    }
+
+                    await guildMember
                         .disableCommunicationUntil(
                             expiryTime,
                             `${reason} Moderated by ${author.username}.`
@@ -466,7 +491,7 @@ export default {
             console.log(err);
 
             return interaction.editReply({
-                content: `Something went wrong, please contact with Neo.`,
+                content: `Something went wrong, please contact with Developer.`,
                 ephemeral: true,
             });
         }

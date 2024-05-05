@@ -8,7 +8,7 @@ import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.j
 
 export default {
     data: new SlashCommandBuilder()
-        .setDMPermission(false)
+        .setDMPermission(true)
         .setName("send")
         .setNameLocalizations({
             ChineseCN: "显示",
@@ -86,9 +86,8 @@ export default {
         } catch (error) {
             console.error(error);
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: `${exclamationmark_triangleEmoji} An error occurred while trying to fetch the meme. Try again in some time later.`,
-                ephemeral: true,
             });
         }
     },

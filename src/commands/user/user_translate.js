@@ -17,11 +17,13 @@ export default {
         type: 3,
     },
     execute: async ({ interaction }) => {
+        await interaction.deferReply({ ephemeral: true });
+
         const message = interaction.options.getMessage("message");
 
         try {
             if (!message.content)
-                return interaction.reply({
+                return interaction.editReply({
                     content: `Message has no content to translate.`,
                     ephemeral: true,
                 });
@@ -35,12 +37,11 @@ export default {
                 { to: locale }
             );
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: `# Translate Message\n### Original Message\n${message.content}\n\n### Translated Message\n${translated.text}`,
-                ephemeral: true,
             });
         } catch (error) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: `An error occurred while translating the message.`,
                 ephemeral: true,
             });
