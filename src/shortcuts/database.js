@@ -138,22 +138,66 @@ export function checkLoggingChannel(guildId) {
 }
 
 // linked roles
-export function getUserInfo(userId) {
+export async function saveStaffs(client, guildId, roleId) {
+    const guild = client.guilds.cache.get(guildId);
+    if (!guild) {
+        console.error("Guild not found.");
+        return;
+    }
+
+    const staffRole = guild.roles.cache.get(roleId);
+    if (!staffRole) {
+        console.error("Staff role not found in the guild.");
+        return;
+    }
+
+    const membersWithStaffRole = staffRole.members.map(
+        (member) => member.user.id
+    );
+
     try {
-        const filePath = path.join(dataDirectory, `./users/${userId}.json`);
-        const data = fs.readFileSync(filePath, { encoding: "utf-8" });
-        const userData = JSON.parse(data);
+        const file = filePath(guildId);
+        let guildData = {};
 
-        // Return the message count for the latest server
-        const latestServerId = userData.latestServer;
-        const messageCount = userData.messageCount
-            ? userData.messageCount[latestServerId] || null
-            : null;
+        try {
+            const data = fs.readFileSync(file);
+            guildData = JSON.parse(data);
+        } catch (err) {
+            if (err.code !== "ENOENT") {
+                console.error("Error reading JSON file:", err);
+            }
+        }
 
-        return messageCount;
-    } catch (error) {
-        console.error("Error reading user data:", error);
-        return null;
+        guildData.staffMembers = membersWithStaffRole;
+
+        try {
+            fs.writeFileSync(file, JSON.stringify(guildData, null, 2));
+            console.log(
+                "Staff role ID and members have been saved in the database."
+            );
+        } catch (err) {
+            console.error("Error writing JSON file:", err);
+        }
+    } catch (err) {
+        console.error(err);
+    }
+}
+export async function getStaffUserId(guildId, userId) {
+    const file = filePath(guildId);
+    try {
+        const data = fs.readFileSync(file, "utf8");
+        const guildData = JSON.parse(data);
+        const staffMembers = guildData.staffMembers || [];
+
+        // Check if the user ID is in the list of staff members
+        if (staffMembers.includes(userId)) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (err) {
+        console.error("Error reading JSON file:", err);
+        return false;
     }
 }
 

@@ -20,6 +20,7 @@ import { EMBED_COLOR } from "../../config.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import {
     saveStaffRoleId,
+    saveStaffs,
     setupLoggingChannel,
 } from "../../shortcuts/database.js";
 
@@ -469,96 +470,8 @@ export default {
                         })
                         .setRequired(true)
                 )
-        )
-        .addSubcommand((subcommand) =>
-            subcommand
-                .setName("warning")
-                .setNameLocalizations({
-                    tr: "uyarı",
-                    it: "avviso",
-                    "zh-CN": "警告",
-                    el: "προειδοποίηση",
-                    "pt-BR": "aviso",
-                    ro: "avertizare",
-                })
-                .setDescription("Set warning roles for punishment system.")
-                .setDescriptionLocalizations({
-                    tr: "Cezalandırma sistemi için uyarı rollerini ayarlayın.",
-                    it: "Imposta i ruoli di avviso per il sistema di punizione.",
-                    "zh-CN": "设置惩罚系统的警告角色。",
-                    el: "Ορίστε ρόλους προειδοποίησης για το σύστημα τιμωρίας.",
-                    "pt-BR":
-                        "Defina os cargos de aviso para o sistema de punição.",
-                    ro: "Setați rolurile de avertizare pentru sistemul de pedeapsă.",
-                })
-                .addRoleOption((option) =>
-                    option
-                        .setName("warning_1")
-                        .setNameLocalizations({
-                            tr: "uyarı_1",
-                            it: "avviso_1",
-                            "zh-CN": "警告_1",
-                            el: "προειδοποίηση_1",
-                            "pt-BR": "aviso_1",
-                            ro: "avertizare_1",
-                        })
-                        .setDescription("Set a role for first warning.")
-                        .setDescriptionLocalizations({
-                            tr: "İlk uyarı için bir rol belirleyin.",
-                            it: "Imposta un ruolo per il primo avviso.",
-                            "zh-CN": "设置第一个警告的角色。",
-                            el: "Ορίστε έναν ρόλο για την πρώτη προειδοποίηση.",
-                            "pt-BR": "Defina um cargo para o primeiro aviso.",
-                            ro: "Setați un rol pentru prima avertizare.",
-                        })
-                        .setRequired(true)
-                )
-                .addRoleOption((option) =>
-                    option
-                        .setName("warning_2")
-                        .setNameLocalizations({
-                            tr: "uyarı_2",
-                            it: "avviso_2",
-                            "zh-CN": "警告_2",
-                            el: "προειδοποίηση_2",
-                            "pt-BR": "aviso_2",
-                            ro: "avertizare_2",
-                        })
-                        .setDescription("Set a role for second warning.")
-                        .setDescriptionLocalizations({
-                            tr: "İkinci uyarı için bir rol belirleyin.",
-                            it: "Imposta un ruolo per il secondo avviso.",
-                            "zh-CN": "设置第二个警告的角色。",
-                            el: "Ορίστε έναν ρόλο για τη δεύτερη προειδοποίηση.",
-                            "pt-BR": "Defina um cargo para o segundo aviso.",
-                            ro: "Setați un rol pentru a doua avertizare.",
-                        })
-                        .setRequired(true)
-                )
-                .addRoleOption((option) =>
-                    option
-                        .setName("warning_3")
-                        .setNameLocalizations({
-                            tr: "uyarı_3",
-                            it: "avviso_3",
-                            "zh-CN": "警告_3",
-                            el: "προειδοποίηση_3",
-                            "pt-BR": "aviso_3",
-                            ro: "avertizare_3",
-                        })
-                        .setDescription("Set a role for third warning.")
-                        .setDescriptionLocalizations({
-                            tr: "Üçüncü uyarı için bir rol belirleyin.",
-                            it: "Imposta un ruolo per il terzo avviso.",
-                            "zh-CN": "设置第三个警告的角色。",
-                            el: "Ορίστε έναν ρόλο για την τρίτη προειδοποίηση.",
-                            "pt-BR": "Defina um cargo para o terceiro aviso.",
-                            ro: "Setați un rol pentru a treia avertizare.",
-                        })
-                        .setRequired(true)
-                )
         ),
-    execute: async ({ interaction }) => {
+    execute: async ({ interaction, client }) => {
         if (
             defaultPermissionErrorForBot(
                 interaction,
@@ -600,7 +513,7 @@ export default {
                 .setImage(
                     banner
                         ? banner.url
-                        : "https://cdn.discordapp.com/attachments/736571695170584576/1217221352134807613/IMG_0212.png?ex=66033cb9&is=65f0c7b9&hm=aef4f257a97c8abf645a4e5d7294ca3dec849b46b36afe8ee324d62615ad780d&"
+                        : "https://media.discordapp.net/attachments/861208192121569280/1237829665608044615/IMG_0737.PNG?ex=663d1236&is=663bc0b6&hm=ca833f02840371b9c75a071458c1adfaee690fb88bfd6c4c8256d5196e8fea76&=&format=webp&quality=lossless&width=2160&height=862"
                 )
                 .setFooter({
                     text: interaction.guild.name,
@@ -623,6 +536,7 @@ export default {
             });
 
             saveStaffRoleId(guild.id, staffRole);
+            await saveStaffs(client, guild.id, staffRole);
 
             await sendingChannel.send({
                 embeds: [embed],

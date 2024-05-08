@@ -4,8 +4,7 @@ import cookieParser from "cookie-parser";
 import * as discord from "./discord.js";
 import * as storage from "./storage.js";
 import { COOKIE_SECRET } from "../config.js";
-import { getUserInfo } from "../shortcuts/database.js";
-import { LINKED_ROLE_GUILD_ID } from "../events/client/messageCreate.js";
+import { getStaffUserId } from "../shortcuts/database.js";
 
 /**
  * Main HTTP server used for the bot.
@@ -123,7 +122,7 @@ async function updateMetadata(userId) {
         // is going to be different.  To keep the example simple, we'll
         // just generate some random data.
         metadata = {
-            messagecount: await getUserInfo(userId),
+            userId: await getStaffUserId(userId),
         };
         console.log(metadata);
     } catch (e) {

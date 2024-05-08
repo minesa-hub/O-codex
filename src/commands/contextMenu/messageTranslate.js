@@ -25,8 +25,6 @@ export default {
         .setType(ApplicationCommandType.Message)
         .setDMPermission(false),
     execute: async ({ interaction }) => {
-        await interaction.deferReply();
-
         if (
             defaultPermissionErrorForBot(
                 interaction,
@@ -42,6 +40,8 @@ export default {
             )
         )
             return;
+
+        await interaction.deferReply();
 
         const message = interaction.options.getMessage("message");
 
