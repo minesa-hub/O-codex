@@ -20,7 +20,7 @@ export default {
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
         .setDMPermission(false)
         .setName("create-giveaway")
-        .setDescription("Create a giveaway")
+        .setDescription("Create a giveaway (THIS IS STILL ON BETA)")
         .setNameLocalizations({
             tr: "çekiliş-oluştur",
             it: "crea-concorso",
@@ -330,7 +330,7 @@ export default {
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: {
-                location: interaction.guild.name,
+                location: "By " + interaction.user.username,
             },
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });

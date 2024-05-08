@@ -41,11 +41,13 @@ export default {
         )
             return;
 
+        await interaction.deferReply();
+
         const message = interaction.options.getMessage("message");
 
         try {
             if (!message.content)
-                return interaction.reply({
+                return interaction.followUp({
                     content: `${exclamationmark_triangleEmoji} Message has no content to translate.`,
                     ephemeral: true,
                 });
@@ -59,7 +61,7 @@ export default {
                 { to: locale }
             );
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
             });
         } catch (error) {

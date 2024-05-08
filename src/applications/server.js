@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import * as discord from "./discord.js";
 import * as storage from "./storage.js";
 import { COOKIE_SECRET } from "../config.js";
+import { getStaffUserId } from "../shortcuts/database.js";
 
 /**
  * Main HTTP server used for the bot.
@@ -26,15 +27,24 @@ app.get("/", (req, res) => {
  * and redirect the user there.
  */
 app.get("/linked-role", async (req, res) => {
-    const { url, state } = discord.getOAuthUrl();
+    try {
+        // Discord OAuth2 authorization URL generation
+        const { url, state } = discord.getOAuthUrl();
 
-    // Store the signed state param in the user's cookies so we can verify
-    // the value later. See:
-    // https://discord.com/developers/docs/topics/oauth2#state-and-security
-    res.cookie("clientState", state, { maxAge: 1000 * 60 * 5, signed: true });
+        // Store the state parameter in the user's cookies for verification
+        res.cookie("clientState", state, {
+            maxAge: 1000 * 60 * 5,
+            signed: true,
+        });
 
-    // Send the user to the Discord owned OAuth2 authorization endpoint
-    res.redirect(url);
+        // Redirect the user to the Discord OAuth2 authorization endpoint
+        res.redirect(url);
+    } catch (error) {
+        console.error("Error while redirecting to Discord OAuth:", error);
+        res.status(500).send(
+            "An error occurred while redirecting to Discord OAuth."
+        );
+    }
 });
 
 /**
@@ -88,6 +98,7 @@ app.get("/discord-oauth-callback", async (req, res) => {
 app.post("/update-metadata", async (req, res) => {
     try {
         const userId = req.body.userId;
+
         await updateMetadata(userId);
 
         res.sendStatus(204);
@@ -111,9 +122,9 @@ async function updateMetadata(userId) {
         // is going to be different.  To keep the example simple, we'll
         // just generate some random data.
         metadata = {
-            warnings: 1,
-            badge: 1,
+            userId: await getStaffUserId(userId),
         };
+        console.log(metadata);
     } catch (e) {
         e.message = `Error fetching external data: ${e.message}`;
         console.error(e);

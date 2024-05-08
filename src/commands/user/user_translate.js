@@ -1,7 +1,4 @@
 import translate from "@iamtraction/google-translate";
-import { swap_emoji } from "../../shortcuts/emojis.js";
-import { EmbedBuilder } from "discord.js";
-import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: {
@@ -20,11 +17,13 @@ export default {
         type: 3,
     },
     execute: async ({ interaction }) => {
+        await interaction.deferReply({ ephemeral: true });
+
         const message = interaction.options.getMessage("message");
 
         try {
             if (!message.content)
-                return interaction.reply({
+                return interaction.editReply({
                     content: `Message has no content to translate.`,
                     ephemeral: true,
                 });
@@ -38,26 +37,11 @@ export default {
                 { to: locale }
             );
 
-            const embed = new EmbedBuilder()
-                .setDescription(`# ${swap_emoji} Translate Message`)
-                .setFields([
-                    {
-                        name: "Original Message",
-                        value: `${message.content}`,
-                    },
-                    {
-                        name: "Translated Message",
-                        value: `${translated.text}`,
-                    },
-                ])
-                .setColor(EMBED_COLOR);
-
-            await interaction.reply({
-                embeds: [embed],
-                ephemeral: true,
+            await interaction.editReply({
+                content: `# Translate Message\n### Original Message\n${message.content}\n\n### Translated Message\n${translated.text}`,
             });
         } catch (error) {
-            await interaction.reply({
+            await interaction.editReply({
                 content: `An error occurred while translating the message.`,
                 ephemeral: true,
             });

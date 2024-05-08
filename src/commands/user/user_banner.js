@@ -43,12 +43,10 @@ export default {
                 if (imageURI === null) {
                     await interaction.editReply({
                         content: `${exclamationmark_circleEmoji} This user has no banner set.`,
-                        ephemeral: true,
                     });
                 } else {
                     await interaction.editReply({
                         embeds: [embed],
-                        ephemeral: true,
                     });
                 }
             });
@@ -57,7 +55,6 @@ export default {
 
             return interaction.editReply({
                 content: `${exclamationmark_triangleEmoji} Something went wrong.`,
-                ephemeral: true,
             });
         }
     },

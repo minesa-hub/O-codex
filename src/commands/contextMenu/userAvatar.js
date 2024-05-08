@@ -38,7 +38,7 @@ export default {
             return;
 
         try {
-            await interaction.deferReply({ ephemeral: true });
+            await interaction.deferReply();
 
             const target = interaction.guild.members.cache.get(
                 interaction.targetId
@@ -61,7 +61,6 @@ export default {
         } catch (error) {
             return interaction.editReply({
                 content: `${exclamationmark_triangleEmoji} Are we sure they are a member in this guild?`,
-                ephemeral: true,
             });
         }
     },

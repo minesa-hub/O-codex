@@ -9,15 +9,11 @@ const url = `https://discord.com/api/v10/applications/${CLIENT_ID}/role-connecti
 // supported types: number_lt=1, number_gt=2, number_eq=3 number_neq=4, datetime_lt=5, datetime_gt=6, boolean_eq=7, boolean_neq=8
 const body = [
     {
-        key: "warnings",
-        name: "Warnings",
-        description: "You need a warning to get this role.",
-        type: 2,
-    },
-    {
-        key: "badge",
-        name: "Rule Breaker",
-        description: "You will be awarded with a badge.",
+        key: "user",
+        name: "Get the role!",
+        name_localizations: { tr: "Role sahip ol!" },
+        description: "You look like a staff.",
+        description_localizations: { tr: "Sen yetkili birine benziyorsun." },
         type: 7,
     },
 ];

@@ -6,7 +6,7 @@ import {
     ButtonStyle,
     ChannelType,
     PermissionFlagsBits,
-    underscore,
+    underline,
     bold,
 } from "discord.js";
 import {
@@ -14,16 +14,19 @@ import {
     ticket_created,
     ticket_emoji,
     exclamationmark_triangleEmoji,
+    checkmark_emoji,
 } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import {
     saveStaffRoleId,
+    saveStaffs,
     setupLoggingChannel,
 } from "../../shortcuts/database.js";
 
 export default {
     data: new SlashCommandBuilder()
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
         .setDMPermission(false)
         .setName("setup")
         .setNameLocalizations({
@@ -468,8 +471,7 @@ export default {
                         .setRequired(true)
                 )
         ),
-
-    execute: async ({ interaction }) => {
+    execute: async ({ interaction, client }) => {
         if (
             defaultPermissionErrorForBot(
                 interaction,
@@ -511,7 +513,7 @@ export default {
                 .setImage(
                     banner
                         ? banner.url
-                        : "https://cdn.discordapp.com/attachments/736571695170584576/1217221352134807613/IMG_0212.png?ex=66033cb9&is=65f0c7b9&hm=aef4f257a97c8abf645a4e5d7294ca3dec849b46b36afe8ee324d62615ad780d&"
+                        : "https://media.discordapp.net/attachments/861208192121569280/1237829665608044615/IMG_0737.PNG?ex=663d1236&is=663bc0b6&hm=ca833f02840371b9c75a071458c1adfaee690fb88bfd6c4c8256d5196e8fea76&=&format=webp&quality=lossless&width=2160&height=862"
                 )
                 .setFooter({
                     text: interaction.guild.name,
@@ -534,6 +536,7 @@ export default {
             });
 
             saveStaffRoleId(guild.id, staffRole);
+            await saveStaffs(client, guild.id, staffRole);
 
             await sendingChannel.send({
                 embeds: [embed],
@@ -549,26 +552,28 @@ export default {
                     content: `## ${
                         exclamationmark_triangleEmoji +
                         " " +
-                        underscore("Recommending")
+                        underline("Recommending")
                     }\nIf Kaeru has ${bold(
                         "Manage Messages"
                     )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                     ephemeral: true,
                 });
         }
-
+        // logs system
         if (interaction.options.getSubcommand() == "logs") {
+            await interaction.deferReply({ ephemeral: true });
+
             const logginChannel = interaction.options.getChannel("channel");
 
             setupLoggingChannel(guild.id, logginChannel.id);
 
             await logginChannel.send({
-                content: "Successfully setup the loggin channel",
+                content:
+                    checkmark_emoji + " Successfully setup the loggin channel.",
             });
 
-            return interaction.reply({
-                content: "Done!",
-                ephemeral: true,
+            return interaction.editReply({
+                content: `${checkmark_emoji} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
             });
         }
     },
