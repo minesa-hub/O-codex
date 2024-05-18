@@ -178,6 +178,13 @@ export default {
                     );
                     RESPONSE = await API.json();
                     IMAGE_URL = RESPONSE.message;
+                    const imageType = IMAGE_URL.endsWith(".gif")
+                        ? "gif"
+                        : IMAGE_URL.endsWith(".png")
+                        ? "png"
+                        : IMAGE_URL.endsWith(".jpg")
+                        ? "jpg"
+                        : "unknown";
 
                     const displayOnBrowser = new ButtonBuilder()
                         .setLabel("Display on Browser")
@@ -188,7 +195,7 @@ export default {
                     );
 
                     const file = new AttachmentBuilder(IMAGE_URL, {
-                        name: "kaeru_nsfw.png",
+                        name: `kaeru_nsfw.${imageType}`,
                         description: category,
                     });
                     file.setSpoiler(visibility ? false : true);

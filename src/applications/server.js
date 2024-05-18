@@ -112,17 +112,14 @@ app.post("/update-metadata", async (req, res) => {
  * metadata endpoint.
  */
 async function updateMetadata(userId) {
-    // Fetch the Discord tokens from storage
+    const isStaff = await getStaffUserId(userId);
     const tokens = await storage.getDiscordTokens(userId);
 
     let metadata = {};
     try {
-        // Fetch the new metadata you want to use from an external source.
-        // This data could be POST-ed to this endpoint, but every service
-        // is going to be different.  To keep the example simple, we'll
-        // just generate some random data.
+        // Generate metadata based on whether the user is on the staff list
         metadata = {
-            userId: await getStaffUserId(userId),
+            isstaff: isStaff,
         };
         console.log(metadata);
     } catch (e) {
