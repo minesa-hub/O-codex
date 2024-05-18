@@ -9,7 +9,8 @@ import {
 } from "discord.js";
 import fs from "fs";
 import { append_emoji } from "./shortcuts/emojis.js";
-import { TOKEN } from "./config.js";
+import { DATABASE_URI, TOKEN } from "./config.js";
+import { MongoClient } from "mongodb";
 
 const client = new Client({
     intents: [
@@ -48,8 +49,8 @@ client.commandArray = [];
 const player = new DisTube(client, {
     emitNewSongOnly: true,
     leaveOnFinish: false,
-    leaveOnEmpty: false,
-    emptyCooldown: 0,
+    leaveOnEmpty: true,
+    emptyCooldown: 60,
     emitAddSongWhenCreatingQueue: true,
     plugins: [new SpotifyPlugin()],
 });
@@ -82,6 +83,22 @@ for (const folder of functionFolders) {
         func(client);
     }
 }
+
+const mongoClient = new MongoClient(DATABASE_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
+
+async function connectToMongoDB() {
+    try {
+        await mongoClient.connect();
+        console.log("Connected to MongoDB");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+    }
+}
+
+connectToMongoDB();
 
 client.handleCommands();
 client.handleEvents();

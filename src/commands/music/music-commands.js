@@ -9,6 +9,7 @@ import {
 } from "../../shortcuts/emojis.js";
 import player, { waitForQueueVar } from "../../index.js";
 import { DisTubeError } from "distube";
+import { genres } from "../../shortcuts/genres.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -22,31 +23,196 @@ export default {
                 .setDescription("Play music!")
                 .addSubcommand((subcommand) =>
                     subcommand
-                        .setName("youtube")
+                        .setName("foryou")
                         .setDescription(
-                            "Pick, paste, play. Never been this easy!"
+                            "Pick, feel, play. Never been this easy!"
                         )
                         .addStringOption((option) =>
                             option
-                                .setName("query")
+                                .setName("list")
                                 .setNameLocalizations({
-                                    ChineseCN: "查询",
-                                    it: "query",
-                                    tr: "sorgula",
-                                    "pt-BR": "consulta",
-                                    ro: "interogare",
-                                    el: "ερώτημα",
+                                    tr: "liste",
+                                    it: "lista",
+                                    "zh-CN": "列表",
+                                    el: "κατάλογος",
+                                    "pt-BR": "lista",
+                                    ro: "listă",
                                 })
-                                .setDescription("The URL or name of the song!")
+                                .setDescription(
+                                    "Lists update weekly. Stay tuned!"
+                                )
+                                .setDescription(
+                                    "Lists update weekly. Stay tuned!"
+                                )
                                 .setDescriptionLocalizations({
-                                    ChineseCN: "歌曲的URL或名称！",
-                                    it: "L'URL o il nome della canzone!",
-                                    tr: "Şarkının URL'si veya adı!",
-                                    "pt-BR": "O URL ou nome da música!",
-                                    ro: "URL-ul sau numele cântecului!",
-                                    el: "Το URL ή το όνομα του τραγουδιού!",
+                                    tr: "Listeler haftalık olarak güncellenir. Takipte kalın!",
+                                    it: "Le liste vengono aggiornate settimanalmente. Resta sintonizzato!",
+                                    "zh-CN": "列表每周更新。 敬请关注！",
+                                    el: "Οι λίστες ενημερώνονται εβδομαδιαία. Μείνετε συντονισμένοι!",
+                                    "pt-BR":
+                                        "Listas atualizam semanalmente. Fique ligado!",
+                                    ro: "Listele se actualizează săptămânal. Rămâneți conectat!",
                                 })
                                 .setRequired(true)
+                                .addChoices(
+                                    {
+                                        name: "Geleneksel Pop Müziği",
+                                        value: "traditional_pop",
+                                        name_localizations: {
+                                            tr: "Geleneksel Pop Müziği",
+                                            it: "Musica pop tradizionale",
+                                            "zh-CN": "传统流行音乐",
+                                            el: "Παραδοσιακή pop μουσική",
+                                            "pt-BR": "Música pop tradicional",
+                                            ro: "Muzică pop tradițională",
+                                        },
+                                    },
+                                    {
+                                        name: "Rock",
+                                        value: "rock",
+                                        name_localizations: {
+                                            tr: "Rock",
+                                            it: "Rock classico",
+                                            "zh-CN": "经典摇滚音乐",
+                                            el: "Κλασική ροκ μουσική",
+                                            "pt-BR": "Rock clássico",
+                                            ro: "Rock clasic",
+                                        },
+                                    },
+                                    {
+                                        name: "Hip-Hop/Rap",
+                                        value: "hip_hop_rap",
+                                        name_localizations: {
+                                            tr: "Hip-Hop/Rap",
+                                            it: "Musica Hip-Hop/Rap",
+                                            "zh-CN": "嘻哈/说唱音乐",
+                                            el: "Μουσική Hip-Hop/Rap",
+                                            "pt-BR": "Música Hip-Hop/Rap",
+                                            ro: "Muzică Hip-Hop/Rap",
+                                        },
+                                    },
+                                    {
+                                        name: "R&B",
+                                        value: "rnb",
+                                        name_localizations: {
+                                            tr: "R&B",
+                                            it: "Musica R&B",
+                                            "zh-CN": "节奏蓝调音乐",
+                                            el: "Μουσική R&B",
+                                            "pt-BR": "Música R&B",
+                                            ro: "Muzică R&B",
+                                        },
+                                    },
+                                    {
+                                        name: "Dance",
+                                        value: "dance",
+                                        name_localizations: {
+                                            tr: "Dans",
+                                            it: "Musica dance",
+                                            "zh-CN": "电子舞曲",
+                                            el: "Ηλεκτρονική μουσική χορού",
+                                            "pt-BR":
+                                                "Música eletrônica de dança",
+                                            ro: "Muzică electronică de dans",
+                                        },
+                                    },
+                                    {
+                                        name: "K-Pop",
+                                        value: "kpop",
+                                        name_localizations: {
+                                            tr: "K-Pop",
+                                            it: "Musica K-Pop",
+                                            "zh-CN": "韩国流行音乐",
+                                            el: "Κορεατική pop μουσική",
+                                            "pt-BR": "Música pop coreana",
+                                            ro: "Muzică pop coreeană",
+                                        },
+                                    },
+                                    {
+                                        name: "Metal",
+                                        value: "metal",
+                                        name_localizations: {
+                                            tr: "Metal",
+                                            it: "Musica metal",
+                                            "zh-CN": "重金属音乐",
+                                            el: "Μουσική heavy metal",
+                                            "pt-BR": "Música heavy metal",
+                                            ro: "Muzică heavy metal",
+                                        },
+                                    },
+                                    {
+                                        name: "Classical",
+                                        value: "classical",
+                                        name_localizations: {
+                                            tr: "Klasik",
+                                            it: "Musica classica",
+                                            "zh-CN": "古典音乐",
+                                            el: "Κλασική μουσική",
+                                            "pt-BR": "Música clássica",
+                                            ro: "Muzică clasică",
+                                        },
+                                    },
+                                    {
+                                        name: "Jazz",
+                                        value: "jazz",
+                                        name_localizations: {
+                                            tr: "Caz",
+                                            it: "Musica jazz",
+                                            "zh-CN": "爵士音乐",
+                                            el: "Τζαζ μουσική",
+                                            "pt-BR": "Música jazz",
+                                            ro: "Muzică jazz",
+                                        },
+                                    },
+                                    {
+                                        name: "Electronic",
+                                        value: "electronic",
+                                        name_localizations: {
+                                            tr: "Elektronik",
+                                            it: "Musica elettronica",
+                                            "zh-CN": "电子音乐",
+                                            el: "Ηλεκτρονική μουσική",
+                                            "pt-BR": "Música eletrônica",
+                                            ro: "Muzică electronică",
+                                        },
+                                    },
+                                    {
+                                        name: "Love",
+                                        value: "love",
+                                        name_localizations: {
+                                            tr: "Aşk",
+                                            it: "Canzoni d'amore",
+                                            "zh-CN": "情歌",
+                                            el: "Τραγούδια αγάπης",
+                                            "pt-BR": "Canções de amor",
+                                            ro: "Cântece de dragoste",
+                                        },
+                                    },
+                                    {
+                                        name: "Broken Heart",
+                                        value: "broken_heart",
+                                        name_localizations: {
+                                            tr: "Kalp Kırıklığı",
+                                            it: "Canzoni di rottura",
+                                            "zh-CN": "心碎歌曲",
+                                            el: "Τραγούδια καρδιακής απογοήτευσης",
+                                            "pt-BR": "Canções de desgosto",
+                                            ro: "Cântece de inimă frântă",
+                                        },
+                                    },
+                                    {
+                                        name: "Chill",
+                                        value: "chill",
+                                        name_localizations: {
+                                            tr: "Rahatlatıcı",
+                                            it: "Musica chillout",
+                                            "zh-CN": "放松音乐",
+                                            el: "Χαλαρή μουσική",
+                                            "pt-BR": "Música relaxante",
+                                            ro: "Muzică relaxantă",
+                                        },
+                                    }
+                                )
                         )
                 )
         )
@@ -102,7 +268,7 @@ export default {
         const subgroup = options.getSubcommandGroup();
         const subcommand = options.getSubcommand();
 
-        const query = options.getString("query");
+        const list = options.getString("list");
         const voiceChannel = member.voice.channel;
         const queue = player.getQueue(guild);
 
@@ -122,9 +288,13 @@ export default {
         switch (subgroup) {
             case "play":
                 switch (subcommand) {
-                    case "youtube":
+                    case "for_you":
+                        const artists = genres[list];
+                        const randomArtist =
+                            artists[Math.floor(Math.random() * artists.length)];
+
                         player
-                            .play(voiceChannel, query, {
+                            .play(voiceChannel, randomArtist.query, {
                                 textChannel: channel,
                                 member: member,
                             })
