@@ -1,5 +1,3 @@
-import { DisTube } from "distube";
-import { SpotifyPlugin } from "@distube/spotify";
 import {
     ActivityType,
     Client,
@@ -8,9 +6,7 @@ import {
     Partials,
 } from "discord.js";
 import fs from "fs";
-import { append_emoji } from "./shortcuts/emojis.js";
-import { DATABASE_URI, TOKEN } from "./config.js";
-import { MongoClient } from "mongodb";
+import { TOKEN } from "./config.js";
 
 const client = new Client({
     intents: [
@@ -45,31 +41,6 @@ client.selectMenus = new Collection();
 client.modals = new Collection();
 client.commandArray = [];
 
-// music starts
-const player = new DisTube(client, {
-    emitNewSongOnly: true,
-    leaveOnFinish: false,
-    leaveOnEmpty: true,
-    emptyCooldown: 60,
-    emitAddSongWhenCreatingQueue: true,
-    plugins: [new SpotifyPlugin()],
-});
-
-let queueVarCallback;
-player.on("addSong", (queue, song) => {
-    let message = `## ${append_emoji} Added new song\n>>> **Song name:** ${song.name}\n**Song duration:** ${song.formattedDuration}\n__**Requested by:**__ ${song.user}`;
-
-    if (queueVarCallback) {
-        queueVarCallback(message);
-    }
-});
-
-export function waitForQueueVar(callback) {
-    queueVarCallback = callback;
-}
-export default player;
-// music finished
-
 const functionFolders = fs.readdirSync("./src/functions");
 
 for (const folder of functionFolders) {
@@ -84,27 +55,8 @@ for (const folder of functionFolders) {
     }
 }
 
-const mongoClient = new MongoClient(DATABASE_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-async function connectToMongoDB() {
-    try {
-        await mongoClient.connect();
-        console.log("Connected to MongoDB");
-    } catch (error) {
-        console.error("Error connecting to MongoDB:", error);
-    }
-}
-
-connectToMongoDB();
-
 client.handleCommands();
 client.handleEvents();
 client.handleComponents();
 
 client.login(TOKEN);
-// (async () => {
-//     await connect(DATABASE_URI).catch(console.error);
-// })();
