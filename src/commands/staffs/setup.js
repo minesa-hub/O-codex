@@ -513,7 +513,7 @@ export default {
                 .setImage(
                     banner
                         ? banner.url
-                        : "https://media.discordapp.net/attachments/736571695170584576/1327599824861921353/Kaeru-new-card.png?ex=6783a72f&is=678255af&hm=7a5dd7614f9964643320b203d219e96075dd76e9bcdbd700b84a2ba56fe23a52&=&width=2062&height=934"
+                        : "https://media.discordapp.net/attachments/736571695170584576/1327613275839529000/Kaeru-new-card.png?ex=6783b3b6&is=67826236&hm=2edf9e1027fe7340e8b50e78e0ef723db6f4d62b5198a33beb4618e39a0da6dc&=&width=2062&height=934"
                 )
                 .setFooter({
                     text: interaction.guild.name,
