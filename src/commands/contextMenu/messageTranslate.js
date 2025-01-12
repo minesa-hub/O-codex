@@ -3,12 +3,10 @@ import {
     ApplicationCommandType,
     ContextMenuCommandBuilder,
     PermissionFlagsBits,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from "discord.js";
-import {
-    exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
-    swap_emoji,
-} from "../../shortcuts/emojis.js";
+import { swap_emoji } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
@@ -23,23 +21,33 @@ export default {
             el: "Μετάφραση Μηνύματος",
         })
         .setType(ApplicationCommandType.Message)
-        .setDMPermission(false),
+        .setIntegrationTypes([
+            ApplicationIntegrationType.UserInstall,
+            ApplicationIntegrationType.GuildInstall,
+        ])
+        .setContexts([
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel,
+            InteractionContextType.Guild,
+        ]),
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
+        if (InteractionContextType.Guild) {
+            if (
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.ViewChannel
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.UseExternalEmojis
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.SendMessages
+                )
             )
-        )
-            return;
+                return;
+        }
 
         await interaction.deferReply();
 
@@ -47,8 +55,8 @@ export default {
 
         try {
             if (!message.content)
-                return interaction.followUp({
-                    content: `${exclamationmark_triangleEmoji} Message has no content to translate.`,
+                return interaction.editReply({
+                    content: `Message has no content to translate.`,
                     ephemeral: true,
                 });
 
@@ -62,11 +70,11 @@ export default {
             );
 
             await interaction.editReply({
-                content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                content: `# ${swap_emoji} Translate Message\n### Original Message\n${message.content}\n\n### Translated Message\n${translated.text}`,
             });
         } catch (error) {
-            await interaction.reply({
-                content: `${exclamationmark_circleEmoji} An error occurred while translating the message.`,
+            await interaction.editReply({
+                content: `An error occurred while translating the message.`,
                 ephemeral: true,
             });
         }

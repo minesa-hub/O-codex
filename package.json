@@ -28,7 +28,7 @@
         "@iamtraction/google-translate": "^2.0.1",
         "chalk": "^5.2.0",
         "cookie-parser": "^1.4.7",
-        "discord.js": "^14.16.3",
+        "discord.js": "^14.17.3",
         "express": "^4.21.2",
         "fs": "^0.0.1-security",
         "moment-timezone": "^0.5.43",

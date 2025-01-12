@@ -73,7 +73,7 @@ export default {
                 "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your ticket?"
             )
             .setThumbnail(
-                "https://cdn.discordapp.com/attachments/736571695170584576/1217884073305964564/support.png?ex=6605a5ee&is=65f330ee&hm=479e2ab6d7143e563d2b6bc279de30562b4e70d8944df151e6354138361b24a7&"
+                "https://media.discordapp.net/attachments/736571695170584576/1327617435418755185/23679.png?ex=67850916&is=6783b796&hm=caaf8ac06396dbea8baeae42c2dc929a603f97d2109c34287ac16db6c38b1b3d&=&width=934&height=934"
             );
 
         const menu = new StringSelectMenuBuilder()

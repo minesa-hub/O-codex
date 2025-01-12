@@ -3,6 +3,8 @@ import {
     ApplicationCommandType,
     EmbedBuilder,
     PermissionFlagsBits,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from "discord.js";
 import {
     exclamationmark_circleEmoji,
@@ -24,19 +26,30 @@ export default {
             el: "Σημαιάκι Χρήστη",
         })
         .setType(ApplicationCommandType.User)
-        .setDMPermission(false),
+        .setType(ApplicationCommandType.User)
+        .setIntegrationTypes([
+            ApplicationIntegrationType.UserInstall,
+            ApplicationIntegrationType.GuildInstall,
+        ])
+        .setContexts([
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel,
+            InteractionContextType.Guild,
+        ]),
     execute: async ({ interaction, client }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
+        if (InteractionContextType.Guild) {
+            if (
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.UseExternalEmojis
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.EmbedLinks
+                )
             )
-        )
-            return;
+                return;
+        }
 
         try {
             await interaction.deferReply();
@@ -58,18 +71,18 @@ export default {
                 if (imageURI === null) {
                     await interaction.editReply({
                         content: `${exclamationmark_circleEmoji} This user has no banner set.`,
-                        ephemeral: true,
                     });
                 } else {
                     await interaction.editReply({
                         embeds: [embed],
-                        ephemeral: true,
                     });
                 }
             });
         } catch (error) {
+            console.error(error);
+
             return interaction.editReply({
-                content: `${exclamationmark_triangleEmoji} Are we sure they are a member in this guild?`,
+                content: `${exclamationmark_triangleEmoji} Something went wrong.`,
             });
         }
     },

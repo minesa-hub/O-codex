@@ -5,8 +5,9 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
     bold,
-    underscore,
+    MessageFlags,
     userMention,
+    underscore,
 } from "discord.js";
 import {
     timezoneChecking,
@@ -297,7 +298,7 @@ export default {
         )
             return;
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const giveawayName = interaction.options.getString("prize"),
             giveawayDescription =
@@ -317,20 +318,16 @@ export default {
 
         const giveaway = await interaction.guild.scheduledEvents.create({
             name: giveawayName,
-            description:
-                giveawayDescription +
-                ` ${gift_card} \n${bold("Giveaway created by:")} ${userMention(
-                    interaction.user.id
-                )}`,
+            description: giveawayDescription,
             image: giveawayImage
                 ? giveawayImage.url
-                : "https://cdn.discordapp.com/attachments/736571695170584576/1217221351711047720/IMG_0213.png?ex=660c7739&is=65fa0239&hm=8ef0dd6676691a1baa9b1c42f6d7b3c61c01efce8935bcdfb5b99127f708e389&",
+                : "https://media.discordapp.net/attachments/736571695170584576/1328119344957362296/Kaeru-giveaway-card.png?ex=67858b07&is=67843987&hm=d4c1f6822be29ec9009e4370a3f405baa0da5f7af9f3b7ea993883a8c18cfcf0&=&width=2062&height=934",
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
             entityType: GuildScheduledEventEntityType.External,
             entityMetadata: {
-                location: "By " + interaction.user.username,
+                location: `By ${userMention(interaction.user.id)}`,
             },
             reason: `Giveaway created by ${interaction.user.tag} for ${giveawayName}.`,
         });

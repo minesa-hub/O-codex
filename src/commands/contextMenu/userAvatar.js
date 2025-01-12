@@ -1,21 +1,22 @@
 import {
-    ContextMenuCommandBuilder,
     ApplicationCommandType,
+    ApplicationIntegrationType,
     EmbedBuilder,
+    ContextMenuCommandBuilder,
+    InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
 import {
     exclamationmark_triangleEmoji,
     person_profile,
 } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
         .setName("User Avatar")
         .setNameLocalizations({
-            ChineseCN: "用户头像",
+            "zh-CN": "用户头像",
             it: "Avatar Utente",
             tr: "Kullanıcı Avatarı",
             "pt-BR": "Avatar do Usuário",
@@ -23,44 +24,54 @@ export default {
             el: "Άβαταρ Χρήστη",
         })
         .setType(ApplicationCommandType.User)
-        .setDMPermission(false),
-    execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
+        .setIntegrationTypes([
+            ApplicationIntegrationType.UserInstall,
+            ApplicationIntegrationType.GuildInstall,
+        ])
+        .setContexts([
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel,
+            InteractionContextType.Guild,
+        ]),
+    execute: async ({ interaction, client }) => {
+        if (InteractionContextType.Guild) {
+            if (
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.UseExternalEmojis
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.EmbedLinks
+                )
             )
-        )
-            return;
+                return;
+        }
 
         try {
             await interaction.deferReply();
 
-            const target = interaction.guild.members.cache.get(
-                interaction.targetId
-            );
-            const avatar = target.user.displayAvatarURL({
+            const userId = interaction.targetId;
+            const user = await client.users.fetch(userId);
+            const avatar = user.displayAvatarURL({
                 size: 4096,
             });
 
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `# ${person_profile} @${target.user.username}\nYou are viewing their profile picture now.`
+                    `# ${person_profile} @${user.username}\nYou are viewing their profile picture now.`
                 )
                 .setImage(avatar)
                 .setColor(EMBED_COLOR);
 
             await interaction.editReply({
                 embeds: [embed],
-                ephemeral: true,
             });
         } catch (error) {
+            console.log(error);
+
             return interaction.editReply({
-                content: `${exclamationmark_triangleEmoji} Are we sure they are a member in this guild?`,
+                content: `${exclamationmark_triangleEmoji} Are we sure this person exist?`,
             });
         }
     },
