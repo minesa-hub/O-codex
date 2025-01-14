@@ -4,6 +4,7 @@ import {
     SlashCommandBuilder,
     time,
     userMention,
+    MessageFlags,
 } from "discord.js";
 import {
     addWarning,
@@ -376,10 +377,10 @@ export default {
                                 },
                                 {
                                     name: "Warnings",
-                                    value: `${checkWarnings(
+                                    value: `**${checkWarnings(
                                         guild.id,
                                         target.id
-                                    )} warnings / 4 warnings`,
+                                    )} warnings** / 4 warnings`,
                                     inline: false,
                                 },
                                 {
@@ -388,26 +389,6 @@ export default {
                                     inline: false,
                                 }
                             )
-                            .setTimestamp(),
-                    ],
-                });
-
-                await guildMember.send({
-                    content: `## ${timeout_emoji} You have been timeouted.`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setFields(
-                                {
-                                    name: "Duration",
-                                    value: `${time(expiryTime, "R")}`,
-                                },
-                                {
-                                    name: "Reason",
-                                    value: `${reason}`,
-                                    inline: true,
-                                }
-                            )
-                            .setThumbnail(guild.iconURL())
                             .setTimestamp(),
                     ],
                 });
@@ -442,11 +423,11 @@ export default {
                         content: `# ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have **${checkWarnings(
+                        )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(
                             guild.id,
                             target.id
                         )}** warnings.`,
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 } else {
                     return interaction.editReply({
@@ -470,6 +451,34 @@ export default {
                         )
                         .catch(console.error);
 
+                    try {
+                        await guildMember.send({
+                            content: `## ${timeout_emoji} You have been timeouted.`,
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setFields(
+                                        {
+                                            name: "Duration",
+                                            value: `${time(expiryTime, "R")}`,
+                                        },
+                                        {
+                                            name: "Reason",
+                                            value: `${reason}`,
+                                            inline: true,
+                                        }
+                                    )
+                                    .setThumbnail(guild.iconURL())
+                                    .setTimestamp(),
+                            ],
+                        });
+                    } catch (error) {
+                        console.error(`Could not send a DM to user:`, error);
+                        return interaction.followUp({
+                            content: `Could not send a DM to ${target}.`,
+                            flags: MessageFlags.Ephemeral,
+                        });
+                    }
+
                     return interaction.editReply({
                         content: ` # ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
@@ -478,12 +487,12 @@ export default {
                             guild.id,
                             target.id
                         )} warnings.\n\n> _${exclamationmark_triangleEmoji} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 } else {
                     return interaction.editReply({
                         content: `${exclamationmark_circleEmoji} I cannot timeout more than 28 days. Can you?`,
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 }
             }
@@ -492,7 +501,7 @@ export default {
 
             return interaction.editReply({
                 content: `Something went wrong, please contact with Developer.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     },
