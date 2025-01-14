@@ -8,6 +8,7 @@ import {
     PermissionFlagsBits,
     underline,
     bold,
+    MessageFlags,
 } from "discord.js";
 import {
     button_emoji,
@@ -455,7 +456,10 @@ export default {
                 })
                 .addChannelOption((option) =>
                     option
-                        .addChannelTypes(ChannelType.GuildText)
+                        .addChannelTypes([
+                            ChannelType.GuildText,
+                            ChannelType.PublicThread,
+                        ])
                         .setName("channel")
                         .setNameLocalizations({
                             "zh-CN": "渠道",
@@ -559,13 +563,15 @@ export default {
                     ephemeral: true,
                 });
         }
+
         // logs system
         if (interaction.options.getSubcommand() == "logs") {
-            await interaction.deferReply({ ephemeral: true });
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
             const logginChannel = interaction.options.getChannel("channel");
+            const logEvent = interaction.options.getString("event");
 
-            setupLoggingChannel(guild.id, logginChannel.id);
+            setupLoggingChannel(guild.id, logginChannel.id, logEvent.name);
 
             await logginChannel.send({
                 content:
