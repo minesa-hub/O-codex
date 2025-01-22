@@ -20,6 +20,7 @@ export const emoji_bubble = "<:bubble:1331654206540746863>";
 export const emoji_info = "<:info:1331654286081523833>";
 export const emoji_danger = "<:danger:1331654232985702410>";
 export const emoji_important = "<:important:1331654267865534514>";
+export const emoji_redirect = "<:redirect:1331668579770306692>";
 
 // user
 export const emoji_avatar = "<:avatar:1331654153558167666>";
