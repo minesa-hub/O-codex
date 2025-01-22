@@ -94,12 +94,7 @@ export default {
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(emoji_ticket_stale),
-                new StringSelectMenuOptionBuilder()
-                    .setLabel("Close it")
-                    .setValue("ticket-menu-close")
-                    .setDescription("I guess, it was a mistake.")
-                    .setEmoji(emoji_ticket_close)
+                    .setEmoji(emoji_ticket_stale)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);

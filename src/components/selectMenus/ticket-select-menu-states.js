@@ -7,9 +7,10 @@ import {
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
 import {
-    checkmark_emoji,
-    return_emoji,
-    slash_emoji,
+    emoji_ticket_close,
+    emoji_ticket_done,
+    emoji_ticket_reopen,
+    emoji_ticket_stale,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -23,13 +24,18 @@ const menu3 = new StringSelectMenuBuilder()
             .setLabel("Close as completed")
             .setValue("ticket-menu-close")
             .setDescription("Done, closed, fixed, resolved")
-            .setEmoji(checkmark_emoji)
+            .setEmoji(emoji_ticket_done)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as not planned")
             .setValue("ticket-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
-            .setEmoji(slash_emoji)
+            .setEmoji(emoji_ticket_stale),
+        new StringSelectMenuOptionBuilder()
+            .setLabel("Close it")
+            .setValue("ticket-menu-close")
+            .setDescription("I guess, it was a mistake.")
+            .setEmoji(emoji_ticket_close)
     );
 
 export const row3 = new ActionRowBuilder().addComponents(menu3);
@@ -78,9 +84,9 @@ export default {
                     .setPlaceholder("What do you want to do?")
                     .addOptions(
                         new StringSelectMenuOptionBuilder()
-                            .setLabel("Reopen ticket")
+                            .setLabel("Re-open ticket")
                             .setValue("ticket-menu-reopen")
-                            .setEmoji(return_emoji)
+                            .setEmoji(emoji_ticket_reopen)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as not planned")
@@ -88,7 +94,7 @@ export default {
                             .setDescription(
                                 "Won’t fix, can’t repo, duplicate, stale"
                             )
-                            .setEmoji(slash_emoji)
+                            .setEmoji(emoji_ticket_stale)
                     );
 
                 const row1 = new ActionRowBuilder().addComponents(menu1);
@@ -101,7 +107,7 @@ export default {
                     });
 
                     await interaction.channel.send({
-                        content: `${checkmark_emoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${emoji_ticket_done} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
                     await interaction.channel.setLocked(true);
@@ -115,7 +121,7 @@ export default {
                     });
 
                     await interaction.channel.send({
-                        content: `${checkmark_emoji} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                        content: `${emoji_ticket_done} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                     });
 
                     await interaction.channel.setLocked(true);
@@ -134,14 +140,14 @@ export default {
                     .setPlaceholder("What do you want to do?")
                     .addOptions(
                         new StringSelectMenuOptionBuilder()
-                            .setLabel("Reopen ticket")
+                            .setLabel("Re-open ticket")
                             .setValue("ticket-menu-reopen")
-                            .setEmoji(return_emoji),
+                            .setEmoji(emoji_ticket_reopen),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as completed")
                             .setValue("ticket-menu-close")
                             .setDescription("Done, closed, fixed, resolved")
-                            .setEmoji(checkmark_emoji)
+                            .setEmoji(emoji_ticket_stale)
                             .setDefault(false)
                     );
 
@@ -150,7 +156,7 @@ export default {
                 await interaction.update({ components: [row2, lockButton] });
 
                 await interaction.channel.send({
-                    content: `${slash_emoji} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
+                    content: `${emoji_ticket_stale} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
                 });
 
                 await interaction.channel.setArchived(
