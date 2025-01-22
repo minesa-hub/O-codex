@@ -1,40 +1,41 @@
 import {
+    ApplicationCommandType,
+    ContextMenuCommandBuilder,
+    ApplicationIntegrationType,
+    InteractionContextType,
     ChannelType,
-    ActionRowBuilder,
-    EmbedBuilder,
+    MessageFlags,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
-    ButtonBuilder,
-    ButtonStyle,
+    ActionRowBuilder,
     PermissionFlagsBits,
-    roleMention,
-    MessageFlags,
 } from "discord.js";
+
 import {
-    emoji_ticket_lock,
-    emoji_doorEnter,
+    emoji_ticketCreated,
     emoji_ticket_done,
     emoji_ticket_stale,
-    emoji_ticketCreated,
+    emoji_ticket,
+    emoji_info,
     emoji_danger,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { getStaffRoleId } from "../../shortcuts/database.js";
-
-let lockButton = new ActionRowBuilder().addComponents(
-    new ButtonBuilder()
-        .setCustomId("ticket-lock-conversation")
-        .setLabel("Lock Ticket")
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(false)
-        .setEmoji(emoji_ticket_lock)
-);
+import { lockButton } from "../../components/modals/create-ticket-title.js";
 
 export default {
-    data: {
-        customId: "create-ticket-modal",
-    },
-
+    data: new ContextMenuCommandBuilder()
+        .setName("Quick-Ticket")
+        .setNameLocalizations({
+            it: "Biglietto Rapido",
+            tr: "Hızlı Bilet",
+            ro: "Bilet Rapid",
+            el: "Γρήγορο Εισιτήριο",
+            ChineseCN: "快速票证",
+            "pt-BR": "Ingresso Rápido",
+        })
+        .setType(ApplicationCommandType.Message)
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild]),
     execute: async ({ interaction }) => {
         if (
             defaultPermissionErrorForBot(
@@ -66,17 +67,18 @@ export default {
         )
             return;
 
-        const ticketTitle =
-            interaction.fields.getTextInputValue("ticket-title");
+        const message = interaction.options.getMessage("message");
 
-        const embed = new EmbedBuilder()
-            .setTitle(`${emoji_doorEnter} Now, we did it. Here we are!`)
-            .setDescription(
-                "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your ticket?"
-            )
-            .setThumbnail(
-                "https://cdn.discordapp.com/attachments/736571695170584576/1327617435418755185/23679.png?ex=67923816&is=6790e696&hm=20665b7edede15c92383a8411ae23827dac2ff732bdf3afb5161f752e7426dc5&"
-            );
+        if (message.channel.isThread()) {
+            return interaction.reply({
+                content: `${emoji_info} You can't create ticket inside ticket. Huh?`,
+                flags: MessageFlags.Ephemeral,
+            });
+        }
+
+        await interaction.deferReply({
+            flags: MessageFlags.Ephemeral,
+        });
 
         const menu = new StringSelectMenuBuilder()
             .setCustomId("ticket-select-menu")
@@ -100,35 +102,21 @@ export default {
         const menuRow = new ActionRowBuilder().addComponents(menu);
 
         let thread = await interaction.channel.threads.create({
-            name: `${ticketTitle}`,
-            autoArchiveDuration: 1440,
+            name: `— Quick-ticket by ${interaction.user.username}`,
+            autoArchiveDuration: 60,
             type: ChannelType.PrivateThread,
             reason: `${interaction.user.username} opened a thread for support`,
-            invitable: false,
+            invitable: true,
         });
 
-        await interaction.reply({
-            content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
-            flags: MessageFlags.Ephemeral,
-        });
-
-        const staffRoleId = await getStaffRoleId(interaction.guild.id);
-
-        let pinMessage = await thread.send({
-            content: `${roleMention(staffRoleId)}`,
-            embeds: [embed],
+        await thread.send({
+            content: `## ${emoji_ticket} <@${interaction.user.id}>, you have opened a quick-support for this message\n> ${message.content}\n> -# Jump to [message](${message.url})\n> -# ———————————————\n- Message sent by __@${message.author.username}__`,
             components: [menuRow, lockButton],
+            flags: MessageFlags.HasThread,
         });
 
-        await thread.members.add(interaction.user);
-        if (
-            interaction.guild.members.me.permissions.has(
-                PermissionFlagsBits.ManageMessages
-            )
-        )
-            await pinMessage.pin();
-        else return;
+        await interaction.editReply({
+            content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
+        });
     },
 };
-
-export { lockButton };
