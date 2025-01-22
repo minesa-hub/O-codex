@@ -1,31 +1,34 @@
-// remake emojis
-export const ticket_emoji = "<:ticket:1299140706493005886>";
-export const ticket_created = "<:ticket_created:1299140412207927338>";
-export const button_emoji = "<:button:1299140556487917598>";
-export const checkmark_emoji = "<:done:1299135817867989085>";
-export const slash_emoji = "<:stale:1299136510796238889>";
-export const return_emoji = "<:return:1299136492441964624>";
-export const lockEmoji = "<:lock_closed:1299136204356452422>";
-export const lock_openEmoji = "<:lock_open:1299136258148401184>";
-export const brain_emoji = "<:brain:1299140389797756968>";
-export const senstive_emoji = "<:sensitive:1299136005688918027>";
-export const info_bubbleEmoji = "<:info:1299136180834533406>";
-export const gift_card = "<:gift_card:1299136088111317022>";
-export const play_emoji = "<:play:1299141572025253918>";
-export const pause_emoji = "<:pause:1299142075186675793>";
-export const foward_emoji = "<:forward:1299142021466030090>";
-export const stop_emoji = "<:stop:1299142041787432990>";
-export const append_emoji = "<:append:1299140667779321922>";
-export const infinity_emoji = "<:infinity:1299136158470766634>";
-export const timeout_emoji = "<:timeout:1299140480075825353>";
+// ticket
+export const emoji_ticket = "<:ticket:1331654460325498931>";
+export const emoji_ticketCreated = "<:ticket_created:1331655022357905419>";
+export const emoji_ticket_done = "<:done:1331654246264995891>";
+export const emoji_ticket_stale = "<:stale:1331654403177971753>";
+export const emoji_ticket_close = "<:close:1331654220230819921>";
+export const emoji_ticket_reopen = "<:reopen:1331654349754994789>";
 
-// user emojis
-export const person_profile = "<:profile:1299136442899103764>";
-export const person_banner = "<:banner:1299136404533547089>";
+export const emoji_ticket_lock = "<:lock:1331654306599800902>";
+export const emoji_ticket_lockOpen = "<:lock_open:1331654295774433290>";
 
-// emojis
-export const swap_emoji = "<:arrow_swap:1299135596131909652>";
+// memes & nsfw
+export const emoji_brain = "<:brain:1331654195215859823>";
+export const emoji_senstive = "<:sensitive:1331654389680574546>";
 
-// warning emojis
-export const exclamationmark_triangleEmoji = "<:important:1299135950995197982>";
-export const exclamationmark_circleEmoji = "<:danger:1299135901041033286>";
+// discussion
+export const emoji_bubble = "<:bubble:1331654206540746863>";
+
+// information
+export const emoji_info = "<:info:1331654286081523833>";
+export const emoji_danger = "<:danger:1331654232985702410>";
+export const emoji_important = "<:important:1331654267865534514>";
+
+// user
+export const emoji_avatar = "<:avatar:1331654153558167666>";
+export const emoji_banner = "<:banner:1331654167315349535>";
+
+// other
+export const emoji_button = "<:button_press:1331655705039474772>";
+export const emoji_giftCard = "<:gift:1331654256691777657>";
+export const emoji_translate = "<:translate:1331654485096796300>";
+export const emoji_timeout = "<:timeout:1331654473008939070>";
+export const emoji_up = "<:up:1331654045869539359>";
+export const emoji_safety = "<:safety:1331654372744233040>";
