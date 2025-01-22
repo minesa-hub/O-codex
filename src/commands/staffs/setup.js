@@ -14,11 +14,6 @@ import {
     InteractionContextType,
 } from "discord.js";
 import {
-    button_emoji,
-    ticket_created,
-    ticket_emoji,
-    exclamationmark_triangleEmoji,
-    checkmark_emoji,
     emoji_button,
     emoji_ticket,
     emoji_ticketCreated,

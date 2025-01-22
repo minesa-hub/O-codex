@@ -1,16 +1,14 @@
 import {
     ActionRowBuilder,
     EmbedBuilder,
+    MessageFlags,
     PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     bold,
 } from "discord.js";
-import {
-    defaultPermissionErrorForBot,
-    defaultPermissionErrorForMember,
-} from "../../shortcuts/permissionErrors.js";
-import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emoji_important } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -23,10 +21,10 @@ export default {
             )
         )
             return interaction.reply({
-                content: `${exclamationmark_triangleEmoji} You don't have ${bold(
+                content: `${emoji_important} You don't have ${bold(
                     "Manage Threads"
                 )} permission to do this action, <@${interaction.user.id}>.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
 
         if (
@@ -89,7 +87,7 @@ export default {
         await interaction.reply({
             embeds: [lockButtonExplanation],
             components: [lockReasonsMenu],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     },
 };
