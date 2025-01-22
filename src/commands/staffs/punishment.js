@@ -4,6 +4,10 @@ import {
     SlashCommandBuilder,
     time,
     userMention,
+    MessageFlags,
+    ApplicationCommandType,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from "discord.js";
 import {
     addWarning,
@@ -11,26 +15,26 @@ import {
     checkWarnings,
 } from "../../shortcuts/database.js";
 import {
-    exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
-    timeout_emoji,
+    emoji_timeout,
+    emoji_important,
+    emoji_info,
+    emoji_danger,
 } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
         .setName("punishment")
+        .setDescription(
+            "Punish the member by timing them out. This will also give them a warning."
+        )
         .setNameLocalizations({
             "pt-BR": "punição",
             ro: "pedepsire",
             el: "τιμωρία",
-            "zh-CN": "惩罚",
+            ChineseCN: "惩罚",
             it: "punizione",
             tr: "ceza",
         })
-        .setDescription(
-            "Punish the member by timing them out. This will also give them a warning."
-        )
         .setDescriptionLocalizations({
             "pt-BR":
                 "Pune o membro com um timeout. Isso também enviará um aviso para eles.",
@@ -40,6 +44,9 @@ export default {
             it: "Punire il membro cronometrandoli. Questo darà loro anche un avvertimento.",
             tr: "Üyeyi zaman aşımı ile cezalandırın. Bu aynı zamanda onlara bir uyarı verecektir.",
         })
+        .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .addUserOption((option) =>
             option
                 .setName("target")
@@ -346,10 +353,8 @@ export default {
                 await channel.send({
                     embeds: [
                         new EmbedBuilder()
-                            .setAuthor({
-                                name: `Timed out`,
-                                iconURL:
-                                    "https://cdn3.emoji.gg/emojis/3769-timeout-clock.png",
+                            .setTitle({
+                                name: `${emoji_timeout} Timed-out`,
                             })
                             .setThumbnail(
                                 target.displayAvatarURL({
@@ -376,10 +381,10 @@ export default {
                                 },
                                 {
                                     name: "Warnings",
-                                    value: `${checkWarnings(
+                                    value: `**${checkWarnings(
                                         guild.id,
                                         target.id
-                                    )} warnings / 4 warnings`,
+                                    )} warnings** / 4 warnings`,
                                     inline: false,
                                 },
                                 {
@@ -388,26 +393,6 @@ export default {
                                     inline: false,
                                 }
                             )
-                            .setTimestamp(),
-                    ],
-                });
-
-                await guildMember.send({
-                    content: `## ${timeout_emoji} You have been timeouted.`,
-                    embeds: [
-                        new EmbedBuilder()
-                            .setFields(
-                                {
-                                    name: "Duration",
-                                    value: `${time(expiryTime, "R")}`,
-                                },
-                                {
-                                    name: "Reason",
-                                    value: `${reason}`,
-                                    inline: true,
-                                }
-                            )
-                            .setThumbnail(guild.iconURL())
                             .setTimestamp(),
                     ],
                 });
@@ -418,7 +403,7 @@ export default {
                         reason: "Exceeded warning limit",
                     });
                     return interaction.editReply({
-                        content: `Member got ban because they received 4 warnings. They better be cool.`,
+                        content: `${emoji_info} Member got ban because they received 4 warnings. They better be cool.`,
                     });
                 }
 
@@ -439,18 +424,18 @@ export default {
                         .catch(console.error);
 
                     return interaction.editReply({
-                        content: `# ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `# ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have **${checkWarnings(
+                        )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(
                             guild.id,
                             target.id
                         )}** warnings.`,
-                        ephemeral: true,
+                        flags: MessageFlags.Ephemeral,
                     });
                 } else {
                     return interaction.editReply({
-                        content: `${exclamationmark_circleEmoji} I cannot timeout more than 28 days. Can you?`,
+                        content: `${emoji_info} I cannot timeout more than 28 days. Can you?`,
                     });
                 }
             } else {
@@ -470,20 +455,48 @@ export default {
                         )
                         .catch(console.error);
 
+                    try {
+                        await guildMember.send({
+                            content: `## ${emoji_timeout} You have been timeouted.`,
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setFields(
+                                        {
+                                            name: "Duration",
+                                            value: `${time(expiryTime, "R")}`,
+                                        },
+                                        {
+                                            name: "Reason",
+                                            value: `${reason}`,
+                                            inline: true,
+                                        }
+                                    )
+                                    .setThumbnail(guild.iconURL())
+                                    .setTimestamp(),
+                            ],
+                        });
+                    } catch (error) {
+                        console.error(`Could not send a DM to user:`, error);
+                        return interaction.followUp({
+                            content: `Could not send a DM to ${target}.`,
+                            flags: MessageFlags.Ephemeral,
+                        });
+                    }
+
                     return interaction.editReply({
-                        content: ` # ${timeout_emoji} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: ` # ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
                             guild.id,
                             target.id
-                        )} warnings.\n\n> _${exclamationmark_triangleEmoji} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
-                        ephemeral: true,
+                        )} warnings.\n\n> _${emoji_important} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
+                        flags: MessageFlags.Ephemeral,
                     });
                 } else {
                     return interaction.editReply({
-                        content: `${exclamationmark_circleEmoji} I cannot timeout more than 28 days. Can you?`,
-                        ephemeral: true,
+                        content: `${emoji_info} I cannot timeout more than 28 days. Can you?`,
+                        flags: MessageFlags.Ephemeral,
                     });
                 }
             }
@@ -491,8 +504,8 @@ export default {
             console.log(err);
 
             return interaction.editReply({
-                content: `Something went wrong, please contact with Developer.`,
-                ephemeral: true,
+                content: `${emoji_danger} Something went wrong, please contact with Developer.`,
+                flags: MessageFlags.Ephemeral,
             });
         }
     },

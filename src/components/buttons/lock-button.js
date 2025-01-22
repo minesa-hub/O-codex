@@ -1,16 +1,14 @@
 import {
     ActionRowBuilder,
     EmbedBuilder,
+    MessageFlags,
     PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     bold,
 } from "discord.js";
-import {
-    defaultPermissionErrorForBot,
-    defaultPermissionErrorForMember,
-} from "../../shortcuts/permissionErrors.js";
-import { exclamationmark_triangleEmoji } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emoji_important } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -23,10 +21,10 @@ export default {
             )
         )
             return interaction.reply({
-                content: `${exclamationmark_triangleEmoji} You don't have ${bold(
+                content: `${emoji_important} You don't have ${bold(
                     "Manage Threads"
                 )} permission to do this action, <@${interaction.user.id}>.`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
 
         if (
@@ -52,7 +50,7 @@ export default {
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this ticket")
             .setThumbnail(
-                "https://cdn.discordapp.com/attachments/736571695170584576/1217897612653367296/locking.png?ex=6605b28a&is=65f33d8a&hm=895f9a5a074235cece4ba50b95cfdaf8513f6437b5ba024fd25001077ed20fe2&"
+                "https://media.discordapp.net/attachments/736571695170584576/1327617955063791710/75510.png?ex=67850992&is=6783b812&hm=aeef5a062a566fa7d467752ce9f16f2a7932a655342ae048f6a1e4ef379fa10b&=&width=934&height=934"
             )
             .setDescription(
                 `* Other user(s) can’t add new comments to this ticket.\n* You and other moderators with access to this channel can still leave comments that others can see.\n* You can always unlock this ticket again in the future.`
@@ -89,7 +87,7 @@ export default {
         await interaction.reply({
             embeds: [lockButtonExplanation],
             components: [lockReasonsMenu],
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
     },
 };

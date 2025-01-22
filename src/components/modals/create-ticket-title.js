@@ -8,13 +8,15 @@ import {
     ButtonStyle,
     PermissionFlagsBits,
     roleMention,
+    MessageFlags,
 } from "discord.js";
 import {
-    lockEmoji,
-    exclamationmark_circleEmoji,
-    ticket_created,
-    checkmark_emoji,
-    slash_emoji,
+    emoji_ticket_lock,
+    emoji_doorEnter,
+    emoji_ticket_done,
+    emoji_ticket_stale,
+    emoji_ticketCreated,
+    emoji_danger,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { getStaffRoleId } from "../../shortcuts/database.js";
@@ -22,10 +24,10 @@ import { getStaffRoleId } from "../../shortcuts/database.js";
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
         .setCustomId("ticket-lock-conversation")
-        .setLabel("Lock Thread")
+        .setLabel("Lock Ticket")
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(false)
-        .setEmoji(lockEmoji)
+        .setEmoji(emoji_ticket_lock)
 );
 
 export default {
@@ -59,7 +61,7 @@ export default {
             defaultPermissionErrorForBot(
                 interaction,
                 PermissionFlagsBits.SendMessagesInThreads,
-                `${exclamationmark_circleEmoji} Kaeru can't create the tread and add you to thread to send message to there. Please contact with a staff member. This has to be fixed.`
+                `${emoji_danger} Kaeru can't create the tread and add you to thread to send message to there. Please contact with a staff member. This has to be fixed.`
             )
         )
             return;
@@ -68,12 +70,12 @@ export default {
             interaction.fields.getTextInputValue("ticket-title");
 
         const embed = new EmbedBuilder()
-            .setTitle("Now, we are here…")
+            .setTitle(`${emoji_doorEnter} Now, we did it. Here we are!`)
             .setDescription(
                 "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your ticket?"
             )
             .setThumbnail(
-                "https://cdn.discordapp.com/attachments/736571695170584576/1217884073305964564/support.png?ex=6605a5ee&is=65f330ee&hm=479e2ab6d7143e563d2b6bc279de30562b4e70d8944df151e6354138361b24a7&"
+                "https://cdn.discordapp.com/attachments/736571695170584576/1327617435418755185/23679.png?ex=67923816&is=6790e696&hm=20665b7edede15c92383a8411ae23827dac2ff732bdf3afb5161f752e7426dc5&"
             );
 
         const menu = new StringSelectMenuBuilder()
@@ -86,13 +88,13 @@ export default {
                     .setLabel("Close as completed")
                     .setValue("ticket-menu-close")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji(checkmark_emoji)
+                    .setEmoji(emoji_ticket_done)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(slash_emoji)
+                    .setEmoji(emoji_ticket_stale)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -106,8 +108,8 @@ export default {
         });
 
         await interaction.reply({
-            content: `# ${ticket_created} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
-            ephemeral: true,
+            content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
+            flags: MessageFlags.Ephemeral,
         });
 
         const staffRoleId = await getStaffRoleId(interaction.guild.id);

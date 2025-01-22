@@ -8,13 +8,17 @@ import {
     PermissionFlagsBits,
     underline,
     bold,
+    MessageFlags,
+    ApplicationCommandType,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from "discord.js";
 import {
-    button_emoji,
-    ticket_created,
-    ticket_emoji,
-    exclamationmark_triangleEmoji,
-    checkmark_emoji,
+    emoji_button,
+    emoji_ticket,
+    emoji_ticketCreated,
+    emoji_important,
+    emoji_info,
 } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
@@ -26,15 +30,16 @@ import {
 
 export default {
     data: new SlashCommandBuilder()
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .setDMPermission(false)
         .setName("setup")
         .setNameLocalizations({
             tr: "kur",
             it: "impostare",
-            "zh-CN": "设置",
+            ChineseCN: "设置",
         })
         .setDescription("Setup things!")
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("ticket")
@@ -455,7 +460,10 @@ export default {
                 })
                 .addChannelOption((option) =>
                     option
-                        .addChannelTypes(ChannelType.GuildText)
+                        .addChannelTypes([
+                            ChannelType.GuildText,
+                            ChannelType.PublicThread,
+                        ])
                         .setName("channel")
                         .setNameLocalizations({
                             "zh-CN": "渠道",
@@ -507,13 +515,13 @@ export default {
                 .setDescription(
                     embedDescription
                         ? embedDescription
-                        : `# ${button_emoji} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
+                        : `# ${emoji_button} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
                 )
                 .setColor(embedColor ? embedColor : EMBED_COLOR)
                 .setImage(
                     banner
                         ? banner.url
-                        : "https://media.discordapp.net/attachments/736571695170584576/1327613275839529000/Kaeru-new-card.png?ex=6783b3b6&is=67826236&hm=2edf9e1027fe7340e8b50e78e0ef723db6f4d62b5198a33beb4618e39a0da6dc&=&width=2062&height=934"
+                        : "https://cdn.discordapp.com/attachments/736571695170584576/1327613275839529000/Kaeru-new-card.png?ex=67923436&is=6790e2b6&hm=99eb8acc94c846a1eb9407e771a5861d78b0c2bfd58d52a40bf3849c34071b6a&"
                 )
                 .setFooter({
                     text: interaction.guild.name,
@@ -524,15 +532,15 @@ export default {
                 .setCustomId(`create-ticket`)
                 .setLabel("Create ticket")
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji(ticket_emoji);
+                .setEmoji(emoji_ticket);
 
             const row = new ActionRowBuilder().addComponents(
                 createticketButton
             );
 
             await interaction.reply({
-                content: `${ticket_created} Created the ticket system succesfully!`,
-                ephemeral: true,
+                content: `${emoji_ticketCreated} Created the ticket system succesfully!`,
+                flags: MessageFlags.Ephemeral,
             });
 
             saveStaffRoleId(guild.id, staffRole);
@@ -550,30 +558,29 @@ export default {
             )
                 return interaction.followUp({
                     content: `## ${
-                        exclamationmark_triangleEmoji +
-                        " " +
-                        underline("Recommending")
+                        emoji_important + " " + underline("Recommending")
                     }\nIf Kaeru has ${bold(
                         "Manage Messages"
                     )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
-                    ephemeral: true,
+                    flags: MessageFlags.Ephemeral,
                 });
         }
+
         // logs system
         if (interaction.options.getSubcommand() == "logs") {
-            await interaction.deferReply({ ephemeral: true });
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
             const logginChannel = interaction.options.getChannel("channel");
+            const logEvent = interaction.options.getString("event");
 
-            setupLoggingChannel(guild.id, logginChannel.id);
+            setupLoggingChannel(guild.id, logginChannel.id, logEvent.name);
 
             await logginChannel.send({
-                content:
-                    checkmark_emoji + " Successfully setup the loggin channel.",
+                content: `${emoji_info} Successfully setup the loggin channel.`,
             });
 
             return interaction.editReply({
-                content: `${checkmark_emoji} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
+                content: `### ${emoji_info} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
             });
         }
     },

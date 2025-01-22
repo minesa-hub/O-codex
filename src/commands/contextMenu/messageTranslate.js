@@ -1,13 +1,16 @@
-import translate from "@iamtraction/google-translate";
 import {
     ApplicationCommandType,
     ContextMenuCommandBuilder,
     PermissionFlagsBits,
+    ApplicationIntegrationType,
+    InteractionContextType,
+    MessageFlags,
 } from "discord.js";
+import translate from "@iamtraction/google-translate";
 import {
-    exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
-    swap_emoji,
+    emoji_danger,
+    emoji_info,
+    emoji_translate,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -15,31 +18,41 @@ export default {
     data: new ContextMenuCommandBuilder()
         .setName("Translate")
         .setNameLocalizations({
-            ChineseCN: "翻译消息",
             it: "Traduci Messaggio",
             tr: "Mesajı Çevir",
-            "pt-BR": "Traduzir Mensagem",
             ro: "Traduceți Mesajul",
             el: "Μετάφραση Μηνύματος",
+            ChineseCN: "翻译消息",
+            "pt-BR": "Traduzir Mensagem",
         })
         .setType(ApplicationCommandType.Message)
-        .setDMPermission(false),
+        .setIntegrationTypes([
+            ApplicationIntegrationType.UserInstall,
+            ApplicationIntegrationType.GuildInstall,
+        ])
+        .setContexts([
+            InteractionContextType.BotDM,
+            InteractionContextType.PrivateChannel,
+            InteractionContextType.Guild,
+        ]),
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
+        if (InteractionContextType.Guild) {
+            if (
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.ViewChannel
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.UseExternalEmojis
+                ) ||
+                defaultPermissionErrorForBot(
+                    interaction,
+                    PermissionFlagsBits.SendMessages
+                )
             )
-        )
-            return;
+                return;
+        }
 
         await interaction.deferReply();
 
@@ -47,9 +60,9 @@ export default {
 
         try {
             if (!message.content)
-                return interaction.followUp({
-                    content: `${exclamationmark_triangleEmoji} Message has no content to translate.`,
-                    ephemeral: true,
+                return interaction.editReply({
+                    content: `${emoji_info} This message seems to hold no content—nothing to translate across the threads of time.`,
+                    flags: MessageFlags.Ephemeral,
                 });
 
             const locale = !["zh-CN", "zh-TW"].includes(interaction.locale)
@@ -62,12 +75,12 @@ export default {
             );
 
             await interaction.editReply({
-                content: `# ${swap_emoji} Translate Message\n**Original Message**\n${message.content}\n\n**Translated Message**\n${translated.text}`,
+                content: `# ${emoji_translate} Translation\n### Original Message\n${message.content}\n\n### Translated Message (${locale})\n${translated.text}\n\n-# Time sure does wonders, doesn’t it?`,
             });
         } catch (error) {
-            await interaction.reply({
-                content: `${exclamationmark_circleEmoji} An error occurred while translating the message.`,
-                ephemeral: true,
+            await interaction.editReply({
+                content: `${emoji_danger} Oh no! A temporal anomaly occurred while translating. Let’s try again later, shall we?`,
+                flags: MessageFlags.Ephemeral,
             });
         }
     },
