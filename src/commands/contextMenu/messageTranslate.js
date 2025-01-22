@@ -76,7 +76,7 @@ export default {
             );
 
             await interaction.editReply({
-                content: `# ${emoji_translate} Translation\n-# ————————————————————————————\n### ${emoji_globe} Original Message\n${message.content}\n\n### ${emoji_swap} Translated Message (${locale})\n${translated.text}\n\n-# I sent it on below if you need to copy the message.`,
+                content: `# ${emoji_translate} Translation\n-# ————————————————————\n### ${emoji_globe} Original Message\n${message.content}\n\n### ${emoji_swap} Translated Message (${locale})\n${translated.text}\n\n-# I sent it on below if you need to copy the message.`,
             });
 
             return interaction.followUp({
