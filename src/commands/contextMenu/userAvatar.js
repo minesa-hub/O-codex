@@ -6,22 +6,19 @@ import {
     InteractionContextType,
     PermissionFlagsBits,
 } from "discord.js";
-import {
-    exclamationmark_triangleEmoji,
-    person_profile,
-} from "../../shortcuts/emojis.js";
+import { emoji_important, emoji_avatar } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
         .setName("User Avatar")
         .setNameLocalizations({
-            "zh-CN": "用户头像",
-            it: "Avatar Utente",
             tr: "Kullanıcı Avatarı",
-            "pt-BR": "Avatar do Usuário",
+            it: "Avatar Utente",
             ro: "Avatar Utilizator",
             el: "Άβαταρ Χρήστη",
+            "pt-BR": "Avatar do Usuário",
+            "zh-CN": "用户头像",
         })
         .setType(ApplicationCommandType.User)
         .setIntegrationTypes([
@@ -59,7 +56,7 @@ export default {
 
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `# ${person_profile} @${user.username}\nYou are viewing their profile picture now.`
+                    `# ${emoji_avatar} Hey there! You're checking out @${user.username}'s profile picture. Pretty cool, right?`
                 )
                 .setImage(avatar)
                 .setColor(EMBED_COLOR);
@@ -71,7 +68,7 @@ export default {
             console.log(error);
 
             return interaction.editReply({
-                content: `${exclamationmark_triangleEmoji} Are we sure this person exist?`,
+                content: `${emoji_important} Hmm, looks like this person’s gone missing in action. Are you sure they’re around?`,
             });
         }
     },

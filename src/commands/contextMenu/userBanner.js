@@ -7,9 +7,11 @@ import {
     InteractionContextType,
 } from "discord.js";
 import {
+    emoji_banner,
+    emoji_danger,
+    emoji_important,
     exclamationmark_circleEmoji,
     exclamationmark_triangleEmoji,
-    person_banner,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { EMBED_COLOR } from "../../config.js";
@@ -18,14 +20,13 @@ export default {
     data: new ContextMenuCommandBuilder()
         .setName("User Banner")
         .setNameLocalizations({
-            ChineseCN: "用户横幅",
             it: "Banner Utente",
             tr: "Kullanıcı Afişi",
-            "pt-BR": "Banner do Usuário",
             ro: "Banner Utilizator",
             el: "Σημαιάκι Χρήστη",
+            "pt-BR": "Banner do Usuário",
+            "zn-CN": "用户横幅",
         })
-        .setType(ApplicationCommandType.User)
         .setType(ApplicationCommandType.User)
         .setIntegrationTypes([
             ApplicationIntegrationType.UserInstall,
@@ -61,18 +62,18 @@ export default {
             user.then(async (resolved) => {
                 const imageURI = resolved.bannerURL({ size: 4096 });
 
-                const embed = new EmbedBuilder()
-                    .setDescription(
-                        `# ${person_banner} ${resolved.tag}\nYou're viewing ${resolved.tag}'s user banner.`
-                    )
-                    .setImage(imageURI)
-                    .setColor(EMBED_COLOR);
-
                 if (imageURI === null) {
                     await interaction.editReply({
-                        content: `${exclamationmark_circleEmoji} This user has no banner set.`,
+                        content: `${emoji_important} Hmm, looks like this user doesn’t have a banner set. Maybe it’s lost in the folds of time?`,
                     });
                 } else {
+                    const embed = new EmbedBuilder()
+                        .setDescription(
+                            `# ${emoji_banner} Hey there! You're checking out ${resolved.tag}'s banner. Pretty neat, right?`
+                        )
+                        .setImage(imageURI)
+                        .setColor(EMBED_COLOR);
+
                     await interaction.editReply({
                         embeds: [embed],
                     });
@@ -82,7 +83,7 @@ export default {
             console.error(error);
 
             return interaction.editReply({
-                content: `${exclamationmark_triangleEmoji} Something went wrong.`,
+                content: `${emoji_danger} Oops! Something went wrong. Maybe a glitch in the timeline?`,
             });
         }
     },

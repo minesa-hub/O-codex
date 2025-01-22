@@ -1,4 +1,4 @@
-import { PermissionFlagsBits, bold } from "discord.js";
+import { MessageFlags, PermissionFlagsBits, bold } from "discord.js";
 import { exclamationmark_triangleEmoji } from "./emojis.js";
 
 // For bot
@@ -20,7 +20,7 @@ export const defaultPermissionErrorForBot = (
             )} permission to do this action, <@${interaction.user.id}>. ${
                 additionalText == `` ? `` : `\n>>> ${additionalText}`
             }`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
         return true;
     }
@@ -46,7 +46,7 @@ export const defaultPermissionErrorForMember = async (
             )} permission to do this action, <@${interaction.user.id}>. ${
                 additionalText == `` ? `` : `\n>>> ${additionalText}`
             }`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
         return true;
     }
