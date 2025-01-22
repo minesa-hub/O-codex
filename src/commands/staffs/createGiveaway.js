@@ -7,19 +7,19 @@ import {
     bold,
     MessageFlags,
     userMention,
-    underscore,
+    ApplicationCommandType,
+    ApplicationIntegrationType,
+    InteractionContextType,
 } from "discord.js";
 import {
     timezoneChecking,
     timeChecking,
 } from "../../shortcuts/timeChecking.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { gift_card } from "../../shortcuts/emojis.js";
+import { emoji_giftCard } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
-        .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
-        .setDMPermission(false)
         .setName("create-giveaway")
         .setDescription("Create a giveaway (THIS IS STILL ON BETA)")
         .setNameLocalizations({
@@ -38,7 +38,10 @@ export default {
             "pt-BR": "Crie um sorteio",
             ro: "Creează o tombolă",
         })
-
+        .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
+        .setType(ApplicationCommandType.ChatInput)
+        .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
+        .setContexts([InteractionContextType.Guild])
         .addStringOption((option) =>
             option
                 .setName("prize")
@@ -321,7 +324,7 @@ export default {
             description: giveawayDescription,
             image: giveawayImage
                 ? giveawayImage.url
-                : "https://media.discordapp.net/attachments/736571695170584576/1328119344957362296/Kaeru-giveaway-card.png?ex=67858b07&is=67843987&hm=d4c1f6822be29ec9009e4370a3f405baa0da5f7af9f3b7ea993883a8c18cfcf0&=&width=2062&height=934",
+                : "https://cdn.discordapp.com/attachments/736571695170584576/1328119344957362296/Kaeru-giveaway-card.png?ex=67921147&is=6790bfc7&hm=44075978ac96b682cdbbdb38b481045b90d5637b6d8f4c6303f9521f980289c9&",
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
@@ -359,7 +362,7 @@ export default {
                                 shuffleSubscribers(subscriberUsernames);
 
                             winner = shuffledUsernames[0];
-                            description = `a winner! ${gift_card}\n${userMention(
+                            description = `a winner! ${emoji_giftCard}\n${userMention(
                                 winner.id
                             )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
                         } else {
@@ -378,17 +381,17 @@ export default {
                 }, scheduledStartTime.diff(moment(), "milliseconds"));
 
                 interaction.editReply({
-                    content: gift_card + " Creating the giveaway...",
+                    content: emoji_giftCard + " Creating the giveaway...",
                 });
                 interaction.editReply({
-                    content: `# ${gift_card} Giveaway has been created: ${underscore(
+                    content: `# ${emoji_giftCard} Oh, what a moment in time! I've just created a **giveaway** for you all! ${underline(
                         giveawayName
                     )}\nGiveaway's winner ${bold(
                         "will be shown"
-                    )} after the giveaway is on ${underscore(
+                    )} The winner will be revealed when the giveaway reaches the ${underline(
                         "happening"
-                    )} state!
-                    \n${inviteLink}`,
+                    )} point in the timeline. How exciting, right?
+                    \n-# Here is the invite link: ${inviteLink}`,
                 });
             })
             .catch((error) => {
