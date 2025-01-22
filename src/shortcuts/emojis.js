@@ -34,3 +34,5 @@ export const emoji_timeout = "<:timeout:1331654473008939070>";
 export const emoji_up = "<:up:1331654045869539359>";
 export const emoji_safety = "<:safety:1331654372744233040>";
 export const emoji_doorEnter = "<:door_enter:1331678912866156595>";
+export const emoji_swap = "<:swap:1331704952833179780>";
+export const emoji_globe = "<:globe:1331705467839320074>";

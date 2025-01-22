@@ -56,7 +56,7 @@ export default {
 
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `# ${emoji_avatar} Hey there! You're checking out @${user.username}'s profile picture. Pretty cool, right?`
+                    `# ${emoji_avatar} Hey there!\nYou're checking out @${user.username}'s profile picture. Pretty cool, right?`
                 )
                 .setImage(avatar)
                 .setColor(EMBED_COLOR);

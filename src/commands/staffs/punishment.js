@@ -5,7 +5,6 @@ import {
     time,
     userMention,
     MessageFlags,
-    ApplicationCommandType,
     ApplicationIntegrationType,
     InteractionContextType,
 } from "discord.js";
@@ -275,7 +274,7 @@ export default {
                 .setRequired(false)
         ),
     execute: async ({ client, interaction }) => {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const target = interaction.options.getUser("target");
         let reason = interaction.options.getString("reason");
@@ -353,9 +352,7 @@ export default {
                 await channel.send({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle({
-                                name: `${emoji_timeout} Timed-out`,
-                            })
+                            .setTitle(`${emoji_timeout} Timed-out`)
                             .setThumbnail(
                                 target.displayAvatarURL({
                                     format: "png",
@@ -407,7 +404,28 @@ export default {
                     });
                 }
 
-                if (duration <= 40320) {
+                const currentTime = new Date();
+                if (
+                    guildMember.communicationDisabledUntil &&
+                    guildMember.communicationDisabledUntil > currentTime
+                ) {
+                    await guildMember
+                        .disableCommunicationUntil(
+                            expiryTime,
+                            `${reason} Moderated by ${author.username}.`
+                        )
+                        .catch(console.error);
+
+                    await interaction.editReply({
+                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                            expiryTime,
+                            "R"
+                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
+                            guild.id,
+                            target.id
+                        )} warnings.`,
+                    });
+                } else {
                     if (warnings == 1) {
                         duration = 60;
                     } else if (warnings == 2) {
@@ -424,7 +442,7 @@ export default {
                         .catch(console.error);
 
                     return interaction.editReply({
-                        content: `# ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(
@@ -433,27 +451,30 @@ export default {
                         )}** warnings.`,
                         flags: MessageFlags.Ephemeral,
                     });
-                } else {
-                    return interaction.editReply({
-                        content: `${emoji_info} I cannot timeout more than 28 days. Can you?`,
-                    });
                 }
             } else {
-                if (duration <= 40320) {
-                    if (warnings == 1) {
-                        duration = 60;
-                    } else if (warnings == 2) {
-                        duration = 1440; // 1 day
-                    } else if (warnings >= 3) {
-                        duration = 10080; // 1 week
-                    }
-
+                const currentTime = new Date();
+                if (
+                    guildMember.communicationDisabledUntil &&
+                    guildMember.communicationDisabledUntil > currentTime
+                ) {
                     await guildMember
                         .disableCommunicationUntil(
                             expiryTime,
                             `${reason} Moderated by ${author.username}.`
                         )
                         .catch(console.error);
+
+                    await interaction.editReply({
+                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                            expiryTime,
+                            "R"
+                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
+                            guild.id,
+                            target.id
+                        )} warnings.\n\n> _${emoji_important} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
+                        flags: MessageFlags.Ephemeral,
+                    });
 
                     try {
                         await guildMember.send({
@@ -476,15 +497,30 @@ export default {
                             ],
                         });
                     } catch (error) {
-                        console.error(`Could not send a DM to user:`, error);
+                        console.error(`Could not send a DM to ${target.name}.`);
                         return interaction.followUp({
-                            content: `Could not send a DM to ${target}.`,
+                            content: `${emoji_info} Could not send a DM to ${target}.`,
                             flags: MessageFlags.Ephemeral,
                         });
                     }
+                } else {
+                    if (warnings == 1) {
+                        duration = 60;
+                    } else if (warnings == 2) {
+                        duration = 1440; // 1 day
+                    } else if (warnings >= 3) {
+                        duration = 10080; // 1 week
+                    }
 
-                    return interaction.editReply({
-                        content: ` # ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                    await guildMember
+                        .disableCommunicationUntil(
+                            expiryTime,
+                            `${reason} Moderated by ${author.username}.`
+                        )
+                        .catch(console.error);
+
+                    await interaction.editReply({
+                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
@@ -493,18 +529,41 @@ export default {
                         )} warnings.\n\n> _${emoji_important} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
                     });
-                } else {
-                    return interaction.editReply({
-                        content: `${emoji_info} I cannot timeout more than 28 days. Can you?`,
-                        flags: MessageFlags.Ephemeral,
-                    });
+
+                    try {
+                        await guildMember.send({
+                            content: `## ${emoji_timeout} You have been timeouted.`,
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setFields(
+                                        {
+                                            name: "Duration",
+                                            value: `${time(expiryTime, "R")}`,
+                                        },
+                                        {
+                                            name: "Reason",
+                                            value: `${reason}`,
+                                            inline: true,
+                                        }
+                                    )
+                                    .setThumbnail(guild.iconURL())
+                                    .setTimestamp(),
+                            ],
+                        });
+                    } catch (error) {
+                        console.error(`Could not send a DM to ${target.name}.`);
+                        return interaction.followUp({
+                            content: `${emoji_info} Could not send a DM to ${target}.`,
+                            flags: MessageFlags.Ephemeral,
+                        });
+                    }
                 }
             }
         } catch (err) {
             console.log(err);
 
             return interaction.editReply({
-                content: `${emoji_danger} Something went wrong, please contact with Developer.`,
+                content: `${emoji_danger} Are we sure they are not timeouted already?\n-# If you think something is not right, please contact with **@neodevils**.`,
                 flags: MessageFlags.Ephemeral,
             });
         }

@@ -67,7 +67,7 @@ export default {
                 } else {
                     const embed = new EmbedBuilder()
                         .setDescription(
-                            `# ${emoji_banner} Hey there! You're checking out ${resolved.tag}'s banner. Pretty neat, right?`
+                            `# ${emoji_banner} Hey there!\nYou're checking out @${resolved.username}'s banner. Pretty neat, right?`
                         )
                         .setImage(imageURI)
                         .setColor(EMBED_COLOR);

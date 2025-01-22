@@ -11,6 +11,8 @@ import {
     emoji_danger,
     emoji_info,
     emoji_translate,
+    emoji_swap,
+    emoji_globe,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
@@ -62,7 +64,6 @@ export default {
             if (!message.content)
                 return interaction.editReply({
                     content: `${emoji_info} This message seems to hold no content—nothing to translate across the threads of time.`,
-                    flags: MessageFlags.Ephemeral,
                 });
 
             const locale = !["zh-CN", "zh-TW"].includes(interaction.locale)
@@ -75,12 +76,17 @@ export default {
             );
 
             await interaction.editReply({
-                content: `# ${emoji_translate} Translation\n### Original Message\n${message.content}\n\n### Translated Message (${locale})\n${translated.text}\n\n-# Time sure does wonders, doesn’t it?`,
+                content: `# ${emoji_translate} Translation\n-# ————————————————————————————\n### ${emoji_globe} Original Message\n${message.content}\n\n### ${emoji_swap} Translated Message (${locale})\n${translated.text}\n\n-# I sent it on below if you need to copy the message.`,
+            });
+
+            return interaction.followUp({
+                content: `${translated.text}`,
+                flags: MessageFlags.Ephemeral,
             });
         } catch (error) {
+            console.log(error);
             await interaction.editReply({
                 content: `${emoji_danger} Oh no! A temporal anomaly occurred while translating. Let’s try again later, shall we?`,
-                flags: MessageFlags.Ephemeral,
             });
         }
     },

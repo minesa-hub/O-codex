@@ -7,9 +7,9 @@ import {
     bold,
     MessageFlags,
     userMention,
-    ApplicationCommandType,
     ApplicationIntegrationType,
     InteractionContextType,
+    underline,
 } from "discord.js";
 import {
     timezoneChecking,
@@ -387,7 +387,7 @@ export default {
                         giveawayName
                     )}\nGiveaway's winner ${bold(
                         "will be shown"
-                    )} The winner will be revealed when the giveaway reaches the ${underline(
+                    )} when the giveaway reaches the ${underline(
                         "happening"
                     )} point in the timeline. How exciting, right?
                     \n-# Here is the invite link: ${inviteLink}`,

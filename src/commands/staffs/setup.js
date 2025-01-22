@@ -571,9 +571,8 @@ export default {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
             const logginChannel = interaction.options.getChannel("channel");
-            const logEvent = interaction.options.getString("event");
 
-            setupLoggingChannel(guild.id, logginChannel.id, logEvent.name);
+            setupLoggingChannel(guild.id, logginChannel.id);
 
             await logginChannel.send({
                 content: `${emoji_info} Successfully setup the loggin channel.`,
