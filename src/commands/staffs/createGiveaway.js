@@ -25,7 +25,7 @@ export default {
         .setNameLocalizations({
             tr: "çekiliş-oluştur",
             it: "crea-concorso",
-            "zh-CN": "创建抽奖",
+            ChineseCN: "创建抽奖",
             el: "δημιουργία-διαγωνισμού",
             "pt-BR": "criar-sorteio",
             ro: "creează-tombolă",
@@ -33,13 +33,12 @@ export default {
         .setDescriptionLocalizations({
             tr: "Bir çekiliş oluşturun",
             it: "Crea un concorso",
-            "zh-CN": "创建抽奖活动",
+            ChineseCN: "创建抽奖活动",
             el: "Δημιουργήστε έναν διαγωνισμό",
             "pt-BR": "Crie um sorteio",
             ro: "Creează o tombolă",
         })
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageEvents)
-        .setType(ApplicationCommandType.ChatInput)
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .addStringOption((option) =>

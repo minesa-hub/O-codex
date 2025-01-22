@@ -34,11 +34,10 @@ export default {
         .setNameLocalizations({
             tr: "kur",
             it: "impostare",
-            "zh-CN": "设置",
+            ChineseCN: "设置",
         })
         .setDescription("Setup things!")
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
-        .setType(ApplicationCommandType.ChatInput)
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .addSubcommand((subcommand) =>

@@ -8,13 +8,13 @@ import {
     ButtonStyle,
     PermissionFlagsBits,
     roleMention,
+    MessageFlags,
 } from "discord.js";
 import {
     emoji_ticket_lock,
     emoji_doorEnter,
     emoji_ticket_done,
     emoji_ticket_stale,
-    emoji_ticket_close,
     emoji_ticketCreated,
     emoji_danger,
 } from "../../shortcuts/emojis.js";
@@ -109,7 +109,7 @@ export default {
 
         await interaction.reply({
             content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
-            ephemeral: true,
+            flags: MessageFlags.Ephemeral,
         });
 
         const staffRoleId = await getStaffRoleId(interaction.guild.id);

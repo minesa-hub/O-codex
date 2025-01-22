@@ -1,6 +1,6 @@
 import { EmbedBuilder, Events } from "discord.js";
 import { checkLoggingChannel } from "../../shortcuts/database.js";
-import { timeout_emoji } from "../../shortcuts/emojis.js";
+import { emoji_timeout } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
 
 export default {
@@ -21,7 +21,7 @@ export default {
                     content: `## ${guild.name}`,
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle(`${timeout_emoji} Time outed`)
+                            .setTitle(`${emoji_timeout} Time outed`)
                             .setDescription(
                                 "You might be questioning why are you timeouted...\nWell, since your account is younger than 7 days, I have restricted you temporarily."
                             )
@@ -32,7 +32,7 @@ export default {
                 });
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`${timeout_emoji} Time outed New Member`)
+                    .setTitle(`${emoji_timeout} Time outed New Member`)
                     .setDescription(
                         `User <@${member.user.id}> has joined the server. Their account is younger than 7 days. They have been temporarily restricted. Aka they are timeouted for one week.`
                     )

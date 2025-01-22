@@ -18,7 +18,7 @@ export default {
             ro: "Avatar Utilizator",
             el: "Άβαταρ Χρήστη",
             "pt-BR": "Avatar do Usuário",
-            "zh-CN": "用户头像",
+            ChineseCN: "用户头像",
         })
         .setType(ApplicationCommandType.User)
         .setIntegrationTypes([

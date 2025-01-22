@@ -31,7 +31,7 @@ export default {
             "pt-BR": "punição",
             ro: "pedepsire",
             el: "τιμωρία",
-            "zh-CN": "惩罚",
+            ChineseCN: "惩罚",
             it: "punizione",
             tr: "ceza",
         })
@@ -45,7 +45,6 @@ export default {
             tr: "Üyeyi zaman aşımı ile cezalandırın. Bu aynı zamanda onlara bir uyarı verecektir.",
         })
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
-        .setType(ApplicationCommandType.ChatInput)
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild])
         .addUserOption((option) =>

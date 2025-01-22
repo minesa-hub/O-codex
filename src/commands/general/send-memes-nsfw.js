@@ -29,7 +29,7 @@ export default {
             el: "αποστολή",
             ro: "trimite",
             "pt-BR": "enviar",
-            "zh-CN": "发送",
+            ChineseCN: "发送",
         })
         .setDescriptionLocalizations({
             tr: "Eğlenceyi göndermek! ❣",
@@ -37,9 +37,8 @@ export default {
             el: "Αποστολή διασκέδασης! ❣",
             ro: "Trimite distracția! ❣",
             "pt-BR": "Enviando a diversão! ❣",
-            "zh-CN": "发送快乐！❣",
+            ChineseCN: "发送快乐！❣",
         })
-        .setType(ApplicationCommandType.ChatInput)
         .setIntegrationTypes([
             ApplicationIntegrationType.UserInstall,
             ApplicationIntegrationType.GuildInstall,
@@ -59,7 +58,7 @@ export default {
                     ro: "meme",
                     el: "μεμέ",
                     "pt-BR": "meme",
-                    "zn-CN": "梗图",
+                    ChineseCN: "梗图",
                 })
                 .setDescriptionLocalizations({
                     tr: "Cebimden gelen mimler",
@@ -67,7 +66,7 @@ export default {
                     el: "Μεμέδες από την τσέπη μου",
                     ro: "Meme-uri din buzunarul meu",
                     "pt-BR": "Memês do meu bolso",
-                    "zh-CN": "口袋里的梗图",
+                    ChineseCN: "口袋里的梗图",
                 })
         )
         .addSubcommand((subcommand) =>
@@ -80,7 +79,7 @@ export default {
                     el: "άσεμνος",
                     ro: "nsfw",
                     "pt-BR": "nsfw",
-                    "zh-CN": "不安全的内容",
+                    ChineseCN: "不安全的内容",
                 })
                 .setDescriptionLocalizations({
                     tr: "Yetişkinlerin dünyasına hoş geldiniz :3",
@@ -88,7 +87,7 @@ export default {
                     el: "Καλώς ήλθατε στον κόσμο των ενηλίκων :3",
                     ro: "Bine ați venit în lumea adulților :3",
                     "pt-BR": "Bem-vindo ao mundo adulto :3",
-                    "zh-CN": "欢迎来到成人世界 :3",
+                    ChineseCN: "欢迎来到成人世界 :3",
                 })
                 .addStringOption((option) =>
                     option
@@ -101,7 +100,7 @@ export default {
                             el: "κατηγορία",
                             ro: "categorie",
                             "pt-BR": "categoria",
-                            "zh-CN": "类别",
+                            ChineseCN: "类别",
                         })
                         .setDescriptionLocalizations({
                             tr: "Göğüsler olanı daha çok seviyorum 👀",
@@ -109,7 +108,7 @@ export default {
                             el: "Μου αρέσει πολύ το ένα με τα στήθη 👀",
                             ro: "Îmi place mult cel cu sânii 👀",
                             "pt-BR": "Eu gosto muito do dos seios 👀",
-                            "zh-CN": "我更喜欢那个胸部的 👀",
+                            ChineseCN: "我更喜欢那个胸部的 👀",
                         })
                         .setRequired(true)
                 )
@@ -167,9 +166,11 @@ export default {
                     const visibility = options.getBoolean("visibility");
 
                     if (visibility) {
-                        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-                    } else {
                         await interaction.deferReply();
+                    } else {
+                        await interaction.deferReply({
+                            flags: MessageFlags.Ephemeral,
+                        });
                     }
 
                     const API = await fetch(

@@ -38,7 +38,9 @@ export async function setLockedAndUpdateMessage(interaction, reason = "") {
     });
 
     await interaction.channel.send({
-        content: `${lockEmoji} ${bold(interaction.user.username)} locked${
+        content: `${emoji_ticket_lock} ${bold(
+            interaction.user.username
+        )} locked${
             reason ? ` ${reason}` : ""
         } and limited conversation to staffs ${formattedTime}`,
     });

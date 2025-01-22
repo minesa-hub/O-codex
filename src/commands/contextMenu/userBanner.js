@@ -10,8 +10,6 @@ import {
     emoji_banner,
     emoji_danger,
     emoji_important,
-    exclamationmark_circleEmoji,
-    exclamationmark_triangleEmoji,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { EMBED_COLOR } from "../../config.js";
@@ -25,7 +23,7 @@ export default {
             ro: "Banner Utilizator",
             el: "Σημαιάκι Χρήστη",
             "pt-BR": "Banner do Usuário",
-            "zn-CN": "用户横幅",
+            ChineseCN: "用户横幅",
         })
         .setType(ApplicationCommandType.User)
         .setIntegrationTypes([
