@@ -5,6 +5,7 @@ import {
     ContextMenuCommandBuilder,
     InteractionContextType,
     PermissionFlagsBits,
+    MessageFlags,
 } from "discord.js";
 import { emoji_important, emoji_avatar } from "../../shortcuts/emojis.js";
 import { EMBED_COLOR } from "../../config.js";
@@ -45,9 +46,17 @@ export default {
                 return;
         }
 
-        try {
+        if (
+            Object.keys(interaction.authorizingIntegrationOwners).every(
+                (key) => key == ApplicationIntegrationType.UserInstall
+            )
+        ) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+        } else {
             await interaction.deferReply();
+        }
 
+        try {
             const userId = interaction.targetId;
             const user = await client.users.fetch(userId);
             const avatar = user.displayAvatarURL({
@@ -65,7 +74,7 @@ export default {
                 embeds: [embed],
             });
         } catch (error) {
-            console.log(error);
+            console.error("Error fetching user or avatar:", error);
 
             return interaction.editReply({
                 content: `${emoji_important} Hmm, looks like this person’s gone missing in action. Are you sure they’re around?`,
