@@ -56,7 +56,15 @@ export default {
                 return;
         }
 
-        await interaction.deferReply();
+        if (
+            Object.keys(interaction.authorizingIntegrationOwners).every(
+                (key) => key == ApplicationIntegrationType.UserInstall
+            )
+        ) {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+        } else {
+            await interaction.deferReply();
+        }
 
         const message = interaction.options.getMessage("message");
 

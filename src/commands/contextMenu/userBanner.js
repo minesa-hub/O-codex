@@ -5,6 +5,7 @@ import {
     PermissionFlagsBits,
     ApplicationIntegrationType,
     InteractionContextType,
+    MessageFlags,
 } from "discord.js";
 import {
     emoji_banner,
@@ -51,7 +52,15 @@ export default {
         }
 
         try {
-            await interaction.deferReply();
+            if (
+                Object.keys(interaction.authorizingIntegrationOwners).every(
+                    (key) => key == ApplicationIntegrationType.UserInstall
+                )
+            ) {
+                await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+            } else {
+                await interaction.deferReply();
+            }
 
             const user = client.users.fetch(interaction.targetId, {
                 force: true,
