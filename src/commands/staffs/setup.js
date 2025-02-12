@@ -521,7 +521,7 @@ export default {
                 .setImage(
                     banner
                         ? banner.url
-                        : "https://cdn.discordapp.com/attachments/736571695170584576/1327613275839529000/Kaeru-new-card.png?ex=67923436&is=6790e2b6&hm=99eb8acc94c846a1eb9407e771a5861d78b0c2bfd58d52a40bf3849c34071b6a&"
+                        : "https://media.discordapp.net/attachments/736571695170584576/1339321371502837780/Image.png?ex=67ae4bba&is=67acfa3a&hm=57b7c1901d5a6c0d3629d01fbc790d9f01f828f2b35984c3fb6ecb68c10d54a0&=&width=1956&height=886"
                 )
                 .setFooter({
                     text: interaction.guild.name,
@@ -557,11 +557,10 @@ export default {
                 )
             )
                 return interaction.followUp({
-                    content: `## ${
-                        emoji_important + " " + underline("Recommending")
-                    }\nIf Kaeru has ${bold(
-                        "Manage Messages"
-                    )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
+                    content: `## ${emoji_important + " " + underline("Recommending")
+                        }\nIf Kaeru has ${bold(
+                            "Manage Messages"
+                        )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                     flags: MessageFlags.Ephemeral,
                 });
         }
