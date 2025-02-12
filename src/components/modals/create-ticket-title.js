@@ -15,11 +15,19 @@ import {
     emoji_doorEnter,
     emoji_ticket_done,
     emoji_ticket_stale,
+    emoji_ticket_close,
     emoji_ticketCreated,
     emoji_danger,
 } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { getStaffRoleId } from "../../shortcuts/database.js";
+import {
+    emoji_bugLabel,
+    emoji_rewardLabel,
+    emoji_questionLabel,
+    emoji_discussionLabel,
+    emoji_helpLabel,
+} from "../../shortcuts/emojis.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -78,6 +86,7 @@ export default {
                 "https://cdn.discordapp.com/attachments/736571695170584576/1327617435418755185/23679.png?ex=67923816&is=6790e696&hm=20665b7edede15c92383a8411ae23827dac2ff732bdf3afb5161f752e7426dc5&"
             );
 
+        // Updated select menu with unique option values
         const menu = new StringSelectMenuBuilder()
             .setCustomId("ticket-select-menu")
             .setDisabled(false)
@@ -86,7 +95,7 @@ export default {
             .addOptions(
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as completed")
-                    .setValue("ticket-menu-close")
+                    .setValue("ticket-menu-done") // Changed from "ticket-menu-close" to "ticket-menu-done"
                     .setDescription("Done, closed, fixed, resolved")
                     .setEmoji(emoji_ticket_done)
                     .setDefault(false),
@@ -94,10 +103,43 @@ export default {
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(emoji_ticket_stale)
+                    .setEmoji(emoji_ticket_stale),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Close with comment")
+                    .setValue("ticket-menu-close")
+                    .setDescription("Close with a comment")
+                    .setEmoji(emoji_ticket_close)
+            );
+
+        const labelMenu = new StringSelectMenuBuilder()
+            .setCustomId("ticket-label-menu")
+            .setPlaceholder("Select labels for this ticket")
+            .setMinValues(1)
+            .addOptions(
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Bug")
+                    .setValue("label-bug")
+                    .setEmoji(emoji_bugLabel),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Reward")
+                    .setValue("label-reward")
+                    .setEmoji(emoji_rewardLabel),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Question")
+                    .setValue("label-question")
+                    .setEmoji(emoji_questionLabel),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Discussion")
+                    .setValue("label-discussion")
+                    .setEmoji(emoji_discussionLabel),
+                new StringSelectMenuOptionBuilder()
+                    .setLabel("Help")
+                    .setValue("label-help")
+                    .setEmoji(emoji_helpLabel)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
+        const labelMenuRow = new ActionRowBuilder().addComponents(labelMenu);
 
         let thread = await interaction.channel.threads.create({
             name: `${ticketTitle}`,
@@ -117,7 +159,7 @@ export default {
         let pinMessage = await thread.send({
             content: `${roleMention(staffRoleId)}`,
             embeds: [embed],
-            components: [menuRow, lockButton],
+            components: [menuRow, labelMenuRow, lockButton],
         });
 
         await thread.members.add(interaction.user);

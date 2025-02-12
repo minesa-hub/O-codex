@@ -26,6 +26,13 @@ export const emoji_redirect = "<:redirect:1331668579770306692>";
 export const emoji_avatar = "<:avatar:1331654153558167666>";
 export const emoji_banner = "<:banner:1331654167315349535>";
 
+// label
+export const emoji_bugLabel = "<:Bug:1338967370319790193>";
+export const emoji_rewardLabel = "<:Reward:1338967398199328850>";
+export const emoji_questionLabel = "<:Question:1338967382990913657>";
+export const emoji_discussionLabel = "<:Discussion:1338967413177454714>";
+export const emoji_helpLabel = "<:Help:1338967433142079558>";
+
 // other
 export const emoji_button = "<:button_press:1331655705039474772>";
 export const emoji_giftCard = "<:gift:1331654256691777657>";
