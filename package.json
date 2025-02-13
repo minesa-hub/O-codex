@@ -1,0 +1,33 @@
+{
+  "name": "kaeru",
+  "version": "3.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/index.ts",
+    "start:prod": "node dist/index.js",
+    "lint": "eslint . --ext .ts"
+  },
+  "keywords": [
+    "ticket",
+    "system",
+    "kaeru",
+    "minesa"
+  ],
+  "author": "İbrahim Güneş",
+  "license": "ISC",
+  "description": "A Discord bot handles tickets very well.",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.2",
+    "@types/ws": "^8.5.14",
+    "@typescript-eslint/eslint-plugin": "^8.24.0",
+    "@typescript-eslint/parser": "^8.24.0",
+    "eslint": "^9.20.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
