@@ -1,4 +1,5 @@
-import { ActivityType, PresenceData, PresenceUpdateStatus } from "discord.js";
+import { ActivityType, PresenceUpdateStatus } from "discord.js";
+import type { PresenceData } from "discord.js";
 
 export const botPresence: PresenceData = {
     status: PresenceUpdateStatus.Online,

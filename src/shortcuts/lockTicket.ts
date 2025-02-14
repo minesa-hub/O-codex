@@ -5,8 +5,8 @@ import {
     ButtonInteraction,
     ThreadChannel,
 } from "discord.js";
-import { emojis } from "./emojis";
-import { defaultPermissionErrorForBot } from "./permissionErrors";
+import { emojis } from "./emojis.ts";
+import { defaultPermissionErrorForBot } from "./permissionErrors.ts";
 
 export async function setLockedAndUpdateMessage(
     interaction: ButtonInteraction,

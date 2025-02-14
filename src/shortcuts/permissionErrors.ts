@@ -1,14 +1,12 @@
-import {
-    MessageFlags,
-    PermissionFlagsBits,
-    bold,
+import { MessageFlags, PermissionFlagsBits, bold } from "discord.js";
+import type {
     ChatInputCommandInteraction,
     ButtonInteraction,
     ModalSubmitInteraction,
     AnySelectMenuInteraction,
     MessageContextMenuCommandInteraction,
 } from "discord.js";
-import { emojis } from "./emojis";
+import { emojis } from "./emojis.ts";
 
 // For bot
 export const defaultPermissionErrorForBot = (

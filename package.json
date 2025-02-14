@@ -2,9 +2,10 @@
   "name": "kaeru",
   "version": "3.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
+    "start": "node --no-warnings src/index.ts",
     "start:prod": "node dist/index.js",
     "lint": "eslint . --ext .ts"
   },

@@ -1,14 +1,30 @@
-import { Events, Interaction, InteractionType, Client } from "discord.js";
+import { Events, InteractionType, Client } from "discord.js";
+import type {
+    CommandInteraction,
+    ButtonInteraction,
+    AnySelectMenuInteraction,
+    ModalSubmitInteraction,
+    ContextMenuCommandInteraction,
+    AutocompleteInteraction,
+    Interaction,
+} from "discord.js";
+
+interface ExtendedClient extends Client {
+    commands: Map<string, any>;
+    buttons: Map<string, any>;
+    selectMenus: Map<string, any>;
+    modals: Map<string, any>;
+}
 
 export default {
     name: Events.InteractionCreate,
     once: false,
-    execute: async (interaction: Interaction, client: Client) => {
+    execute: async (interaction: Interaction, client: ExtendedClient) => {
+        // Check if interaction is a chat input command
         if (interaction.isChatInputCommand()) {
-            const { commands } = client as unknown as {
-                commands: Map<string, any>;
-            };
-            const { commandName } = interaction;
+            // Reverting back to .isChatInputCommand() method
+            const { commands } = client;
+            const { commandName } = interaction as CommandInteraction;
             const command = commands.get(commandName);
 
             if (!command) return;
@@ -18,53 +34,54 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-        } else if (interaction.isButton()) {
-            const { buttons } = client as unknown as {
-                buttons: Map<string, any>;
-            };
-            const { customId } = interaction;
+        }
+        // Check if interaction is a button
+        else if (interaction.isButton()) {
+            const { buttons } = client;
+            const { customId } = interaction as ButtonInteraction;
             const button = buttons.get(customId);
 
-            if (!button) throw new Error("Button not found.");
+            if (!button) return new Error("Button not found.");
 
             try {
                 await button.execute({ interaction, client });
             } catch (error) {
                 console.error(error);
             }
-        } else if (interaction.isStringSelectMenu()) {
-            const { selectMenus } = client as unknown as {
-                selectMenus: Map<string, any>;
-            };
-            const { customId } = interaction;
+        }
+        // Check if interaction is a select menu
+        else if (interaction.isStringSelectMenu()) {
+            const { selectMenus } = client;
+            const { customId } = interaction as AnySelectMenuInteraction;
             const selectMenu = selectMenus.get(customId);
 
-            if (!selectMenu) throw new Error("Select menu not found.");
+            if (!selectMenu) return new Error("Select menu not found.");
 
             try {
                 await selectMenu.execute({ interaction, client });
             } catch (error) {
                 console.error(error);
             }
-        } else if (interaction.type === InteractionType.ModalSubmit) {
-            const { modals } = client as unknown as {
-                modals: Map<string, any>;
-            };
-            const { customId } = interaction;
+        }
+        // Check if interaction is a modal submit
+        else if (interaction.type == InteractionType.ModalSubmit) {
+            const { modals } = client;
+            const { customId } = interaction as ModalSubmitInteraction;
             const modal = modals.get(customId);
 
-            if (!modal) throw new Error("Modal not found.");
+            if (!modal) return new Error("Modal not found.");
 
             try {
                 await modal.execute({ interaction, client });
             } catch (error) {
                 console.error(error);
             }
-        } else if (interaction.isContextMenuCommand()) {
-            const { commands } = client as unknown as {
-                commands: Map<string, any>;
-            };
-            const { commandName } = interaction;
+        }
+        // Check if interaction is a context menu command
+        else if (interaction.isContextMenuCommand()) {
+            const { commands } = client;
+            const { commandName } =
+                interaction as ContextMenuCommandInteraction;
             const contextCommand = commands.get(commandName);
 
             if (!contextCommand) return;
@@ -74,13 +91,13 @@ export default {
             } catch (error) {
                 console.error(error);
             }
-        } else if (
-            interaction.type === InteractionType.ApplicationCommandAutocomplete
+        }
+        // Check if interaction is an application command autocomplete
+        else if (
+            interaction.type == InteractionType.ApplicationCommandAutocomplete
         ) {
-            const { commands } = client as unknown as {
-                commands: Map<string, any>;
-            };
-            const { commandName } = interaction;
+            const { commands } = client;
+            const { commandName } = interaction as AutocompleteInteraction;
             const autocompleteCommand = commands.get(commandName);
 
             if (!autocompleteCommand) return;

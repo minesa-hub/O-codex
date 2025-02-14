@@ -1,5 +1,5 @@
 import { Events, Client } from "discord.js";
-import { botPresence } from "../config/botPresence";
+import { botPresence } from "../config/botPresence.ts";
 
 export default {
     name: Events.ClientReady,

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { Client } from "discord.js";
 
-const currentDirPath = __dirname;
+const currentDirPath = new URL(".", import.meta.url).pathname;
 const dataDirectory = path.resolve(currentDirPath, "../../data");
 
 if (!fs.existsSync(dataDirectory)) {
@@ -19,7 +19,6 @@ interface GuildData {
     [key: string]: any;
 }
 
-// Utility function to read JSON files safely
 function readJsonFile<T>(file: string): T | null {
     try {
         const data = fs.readFileSync(file, "utf8");
@@ -32,7 +31,6 @@ function readJsonFile<T>(file: string): T | null {
     }
 }
 
-// Utility function to write JSON files safely
 function writeJsonFile<T>(file: string, data: T): void {
     try {
         fs.writeFileSync(file, JSON.stringify(data, null, 2));

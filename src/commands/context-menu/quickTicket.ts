@@ -13,9 +13,9 @@ import {
     TextChannel,
 } from "discord.js";
 
-import { emojis } from "../../shortcuts/emojis";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors";
-import { lockButton } from "../../components/modals/create-ticket-title";
+import { emojis } from "../../shortcuts/emojis.ts";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
+import { lockButton } from "../../components/modals/create-ticket-title.ts";
 
 export default {
     data: new ContextMenuCommandBuilder()

@@ -12,9 +12,9 @@ import {
     ModalSubmitInteraction,
     TextChannel,
 } from "discord.js";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { getStaffRoleId } from "../../shortcuts/database";
+import { emojis } from "../../shortcuts/emojis.ts";
+import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
+import { getStaffRoleId } from "../../shortcuts/database.ts";
 
 const lockButton = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
