@@ -4,13 +4,20 @@ import {
     bold,
     ChatInputCommandInteraction,
     ButtonInteraction,
-    Interaction,
+    ModalSubmitInteraction,
+    AnySelectMenuInteraction,
+    MessageContextMenuCommandInteraction,
 } from "discord.js";
 import { emojis } from "./emojis";
 
 // For bot
 export const defaultPermissionErrorForBot = (
-    interaction: ChatInputCommandInteraction | ButtonInteraction, // Chat & Button interactions supported
+    interaction:
+        | MessageContextMenuCommandInteraction
+        | ChatInputCommandInteraction
+        | ButtonInteraction
+        | ModalSubmitInteraction
+        | AnySelectMenuInteraction,
     permission: bigint,
     additionalText: string = ""
 ): boolean => {
