@@ -1,4 +1,9 @@
-import { Events, InteractionType, Client } from "discord.js";
+import {
+    Events,
+    InteractionType,
+    Client,
+    ApplicationCommandType,
+} from "discord.js";
 import type {
     CommandInteraction,
     ButtonInteraction,
@@ -20,23 +25,58 @@ export default {
     name: Events.InteractionCreate,
     once: false,
     execute: async (interaction: Interaction, client: ExtendedClient) => {
-        // Check if interaction is a chat input command
-        if (interaction.isChatInputCommand()) {
-            // Reverting back to .isChatInputCommand() method
+        if (interaction.type === InteractionType.ApplicationCommand) {
             const { commands } = client;
-            const { commandName } = interaction as CommandInteraction;
-            const command = commands.get(commandName);
 
-            if (!command) return;
+            // Context Menu Commands
+            if (
+                interaction.commandType === ApplicationCommandType.User ||
+                interaction.commandType === ApplicationCommandType.Message
+            ) {
+                const command = commands.get(interaction.commandName);
+                if (!command) {
+                    console.log(
+                        `Command not found: ${interaction.commandName}`
+                    );
+                    return;
+                }
 
-            try {
-                await command.execute({ interaction, client });
-            } catch (error) {
-                console.error(error);
+                try {
+                    await command.execute({
+                        interaction:
+                            interaction as ContextMenuCommandInteraction,
+                        client,
+                    });
+                } catch (error) {
+                    console.error(
+                        `Error executing command ${interaction.commandName}:`,
+                        error
+                    );
+                }
+            }
+            // Slash Commands
+            else if (
+                interaction.commandType === ApplicationCommandType.ChatInput
+            ) {
+                const command = commands.get(interaction.commandName);
+                if (!command) return;
+
+                try {
+                    await command.execute({
+                        interaction: interaction as CommandInteraction,
+                        client,
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
             }
         }
-        // Check if interaction is a button
-        else if (interaction.isButton()) {
+        // Buttons
+        else if (
+            interaction.type === InteractionType.MessageComponent &&
+            (interaction as ButtonInteraction).componentType === 2
+        ) {
+            // 2 is BUTTON
             const { buttons } = client;
             const { customId } = interaction as ButtonInteraction;
             const button = buttons.get(customId);
@@ -49,8 +89,12 @@ export default {
                 console.error(error);
             }
         }
-        // Check if interaction is a select menu
-        else if (interaction.isStringSelectMenu()) {
+        // Select Menus
+        else if (
+            interaction.type === InteractionType.MessageComponent &&
+            (interaction as AnySelectMenuInteraction).componentType === 3
+        ) {
+            // 3 is SELECT_MENU
             const { selectMenus } = client;
             const { customId } = interaction as AnySelectMenuInteraction;
             const selectMenu = selectMenus.get(customId);
@@ -73,21 +117,6 @@ export default {
 
             try {
                 await modal.execute({ interaction, client });
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        // Check if interaction is a context menu command
-        else if (interaction.isContextMenuCommand()) {
-            const { commands } = client;
-            const { commandName } =
-                interaction as ContextMenuCommandInteraction;
-            const contextCommand = commands.get(commandName);
-
-            if (!contextCommand) return;
-
-            try {
-                await contextCommand.execute({ interaction, client });
             } catch (error) {
                 console.error(error);
             }

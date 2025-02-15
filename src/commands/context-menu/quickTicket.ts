@@ -4,18 +4,55 @@ import {
     ApplicationIntegrationType,
     InteractionContextType,
     ChannelType,
-    MessageFlags,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ActionRowBuilder,
     PermissionFlagsBits,
     MessageContextMenuCommandInteraction,
     TextChannel,
+    MessageFlags,
 } from "discord.js";
 
 import { emojis } from "../../shortcuts/emojis.ts";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
 import { lockButton } from "../../components/modals/create-ticket-title.ts";
+
+interface PermissionCheck {
+    permission: bigint;
+    errorMessage?: string;
+}
+
+const requiredPermissions: PermissionCheck[] = [
+    { permission: PermissionFlagsBits.ViewChannel },
+    { permission: PermissionFlagsBits.UseExternalEmojis },
+    { permission: PermissionFlagsBits.SendMessages },
+    { permission: PermissionFlagsBits.EmbedLinks },
+    {
+        permission: PermissionFlagsBits.CreatePrivateThreads,
+        errorMessage:
+            'Lütfen yetkililere "Kaeru özel thread oluşturma iznine sahip değil" mesajını iletin.',
+    },
+    {
+        permission: PermissionFlagsBits.SendMessagesInThreads,
+        errorMessage: `${emojis.danger} Kaeru thread oluşturamıyor ve sizi ekleyemiyor. Lütfen yetkililere bildirin.`,
+    },
+];
+
+const ticketMenuOptions = [
+    {
+        label: "Close as completed",
+        value: "ticket-menu-close",
+        description: "Done, closed, fixed, resolved",
+        emoji: emojis.ticketDone,
+        default: false,
+    },
+    {
+        label: "Close as not planned",
+        value: "ticket-menu-duplicate",
+        description: "Won't fix, can't repo, duplicate, stale",
+        emoji: emojis.ticketStale,
+    },
+];
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -32,111 +69,110 @@ export default {
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild]),
 
-    execute: async (interaction: MessageContextMenuCommandInteraction) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.CreatePrivateThreads,
-                `Please contact a staff member saying "Kaeru can't create a private thread due to missing permissions".`
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessagesInThreads,
-                `${emojis.danger} Kaeru can't create the thread and add you to it. Please contact a staff member to fix this issue.`
-            )
-        ) {
-            return;
-        }
-
-        const message = await interaction.channel?.messages.fetch(
-            interaction.targetId
-        );
-        if (!message) {
-            return interaction.reply({
-                content: `${emojis.info} Unable to find the message.`,
-                flags: MessageFlags.Ephemeral,
-            });
-        }
-
-        if (message.channel.isThread()) {
-            return interaction.reply({
-                content: `${emojis.info} You can't create a ticket inside another ticket thread.`,
-                flags: MessageFlags.Ephemeral,
-            });
-        }
-
+    execute: async ({
+        interaction,
+    }: {
+        interaction: MessageContextMenuCommandInteraction;
+    }) => {
+        // İlk olarak defer edelim
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-        const menu = new StringSelectMenuBuilder()
-            .setCustomId("ticket-select-menu")
-            .setDisabled(false)
-            .setMaxValues(1)
-            .setPlaceholder("Action to close ticket")
-            .addOptions(
-                new StringSelectMenuOptionBuilder()
-                    .setLabel("Close as completed")
-                    .setValue("ticket-menu-close")
-                    .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji(emojis.ticketDone)
-                    .setDefault(false),
-                new StringSelectMenuOptionBuilder()
-                    .setLabel("Close as not planned")
-                    .setValue("ticket-menu-duplicate")
-                    .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(emojis.ticketStale)
+        try {
+            // İzin kontrolleri
+            for (const { permission, errorMessage } of requiredPermissions) {
+                const hasError = await defaultPermissionErrorForBot(
+                    interaction,
+                    permission,
+                    errorMessage
+                );
+                if (hasError) return;
+            }
+
+            // Mesaj kontrolü
+            const message = await interaction.channel?.messages.fetch(
+                interaction.targetId
             );
 
-        const menuRow =
-            new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(menu);
+            if (!message) {
+                return await interaction.editReply({
+                    content: `${emojis.info} Mesaj bulunamadı.`,
+                });
+            }
 
-        if (
-            !interaction.channel ||
-            !(interaction.channel instanceof TextChannel)
-        ) {
-            await interaction.reply({
-                content: `${emojis.danger} Failed to create a ticket: Invalid channel.`,
-                flags: MessageFlags.Ephemeral,
+            if (message.channel.isThread()) {
+                return await interaction.editReply({
+                    content: `${emojis.info} Başka bir bilet threadi içinde bilet oluşturamazsınız.`,
+                });
+            }
+
+            // Kanal kontrolü
+            if (
+                !interaction.channel ||
+                !(interaction.channel instanceof TextChannel)
+            ) {
+                return await interaction.editReply({
+                    content: `${emojis.danger} Bilet oluşturulamadı: Geçersiz kanal.`,
+                });
+            }
+
+            // Menü oluşturma
+            const menu = new StringSelectMenuBuilder()
+                .setCustomId("ticket-select-menu")
+                .setDisabled(false)
+                .setMaxValues(1)
+                .setPlaceholder("Bileti kapatma işlemi");
+
+            ticketMenuOptions.forEach((option) => {
+                menu.addOptions(
+                    new StringSelectMenuOptionBuilder()
+                        .setLabel(option.label)
+                        .setValue(option.value)
+                        .setDescription(option.description)
+                        .setEmoji(option.emoji)
+                        .setDefault(option.default || false)
+                );
             });
-            return;
-        }
 
-        const thread = await interaction.channel?.threads.create({
-            name: `— Quick-ticket by ${interaction.user.username}`,
-            autoArchiveDuration: 60,
-            type: ChannelType.PrivateThread,
-            reason: `${interaction.user.username} opened a thread for support`,
-            invitable: true,
-        });
+            const menuRow =
+                new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(
+                    menu
+                );
 
-        if (!thread) {
-            return interaction.editReply({
-                content: `${emojis.danger} Failed to create a support thread.`,
+            try {
+                // Thread oluşturma
+                const thread = await interaction.channel.threads.create({
+                    name: `— ${interaction.user.username}'nin hızlı bileti`,
+                    autoArchiveDuration: 60,
+                    type: ChannelType.PrivateThread,
+                    reason: `${interaction.user.username} destek için bir thread açtı`,
+                    invitable: true,
+                });
+
+                await thread.send({
+                    content: [
+                        `## ${emojis.ticket} <@${interaction.user.id}>, bu mesaj için hızlı destek bileti açtınız`,
+                        `> ${message.content}`,
+                        `> -# [Mesaja git](${message.url})`,
+                        `> -# ———————————————`,
+                        `- Mesaj gönderen: __@${message.author.username}__`,
+                    ].join("\n"),
+                    components: [menuRow, lockButton],
+                });
+
+                return await interaction.editReply({
+                    content: `# ${emojis.ticketCreated} <#${thread.id}> oluşturuldu\nŞimdi ekip üyeleriyle sorununuzu tartışabilirsiniz.`,
+                });
+            } catch (error) {
+                console.error("[Thread Creation Error]:", error);
+                return await interaction.editReply({
+                    content: `${emojis.danger} Thread oluşturulurken bir hata oluştu.`,
+                });
+            }
+        } catch (error) {
+            console.error("[QuickTicket Error]:", error);
+            return await interaction.editReply({
+                content: `${emojis.danger} Bilet oluşturulurken bir hata oluştu.`,
             });
         }
-
-        await thread.send({
-            content: `## ${emojis.ticket} <@${interaction.user.id}>, you have opened a quick-support ticket for this message\n> ${message.content}\n> -# Jump to [message](${message.url})\n> -# ———————————————\n- Message sent by __@${message.author.username}__`,
-            components: [menuRow, lockButton],
-        });
-
-        await interaction.editReply({
-            content: `# ${emojis.ticketCreated} Created <#${thread.id}>\nNow, you can discuss your issue with our staff members.`,
-        });
     },
 } as const;

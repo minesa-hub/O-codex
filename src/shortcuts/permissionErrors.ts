@@ -1,45 +1,148 @@
-import { MessageFlags, PermissionFlagsBits, bold } from "discord.js";
-import type {
+import {
+    MessageFlags,
+    PermissionsBitField,
+    BaseInteraction,
     ChatInputCommandInteraction,
-    ButtonInteraction,
-    ModalSubmitInteraction,
-    AnySelectMenuInteraction,
     MessageContextMenuCommandInteraction,
+    UserContextMenuCommandInteraction,
+    ApplicationCommandType,
 } from "discord.js";
 import { emojis } from "./emojis.ts";
 
-// For bot
-export const defaultPermissionErrorForBot = (
-    interaction:
-        | MessageContextMenuCommandInteraction
-        | ChatInputCommandInteraction
-        | ButtonInteraction
-        | ModalSubmitInteraction
-        | AnySelectMenuInteraction,
+type CommandInteraction =
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction;
+
+// Debug yardımcı fonksiyonu
+function debugInteraction(interaction: BaseInteraction) {
+    console.log("Debug Interaction:", {
+        type: interaction.type,
+        id: interaction.id,
+        isCommand: "commandType" in interaction,
+        commandType:
+            "commandType" in interaction
+                ? (interaction as any).commandType
+                : undefined,
+        hasReply: "reply" in interaction,
+        replyType:
+            "reply" in interaction
+                ? typeof (interaction as any).reply
+                : undefined,
+        properties: Object.keys(interaction),
+    });
+}
+
+// İnteraksiyon tipi için tip koruması
+function isRepliableInteraction(
+    interaction: BaseInteraction
+): interaction is CommandInteraction {
+    // Debug bilgilerini logla
+    debugInteraction(interaction);
+
+    if (!interaction) return false;
+
+    // Temel özellik kontrolleri
+    const hasBasicProperties =
+        interaction.type !== undefined && interaction.id !== undefined;
+
+    if (!hasBasicProperties) {
+        console.error("[Debug] Temel özellikler eksik");
+        return false;
+    }
+
+    // ApplicationCommand tipi kontrolü
+    const isApplicationCommand =
+        "commandType" in interaction &&
+        (interaction.commandType === ApplicationCommandType.ChatInput ||
+            interaction.commandType === ApplicationCommandType.Message ||
+            interaction.commandType === ApplicationCommandType.User);
+
+    if (!isApplicationCommand) {
+        console.error("[Debug] ApplicationCommand tipi kontrolü başarısız");
+        return false;
+    }
+
+    // Reply metodu kontrolü
+    const hasReplyMethod =
+        "reply" in interaction &&
+        typeof (interaction as any).reply === "function";
+
+    if (!hasReplyMethod) {
+        console.error("[Debug] Reply metodu kontrolü başarısız");
+        return false;
+    }
+
+    return true;
+}
+
+// İzin kontrolü için yardımcı fonksiyon
+function hasRequiredPermissions(
+    interaction: CommandInteraction,
+    permission: bigint
+): boolean {
+    if (!interaction.guild) return false;
+
+    const botMember = interaction.guild.members.cache.get(
+        interaction.client.user.id
+    );
+
+    return botMember?.permissions.has(permission) ?? false;
+}
+
+export const defaultPermissionErrorForBot = async (
+    interaction: BaseInteraction,
     permission: bigint,
-    additionalText: string = ""
-): boolean => {
-    const PERMISSION_NAME =
-        Object.keys(PermissionFlagsBits).find(
-            (key) =>
-                PermissionFlagsBits[key as keyof typeof PermissionFlagsBits] ===
-                permission
-        ) ?? "Unknown Permission";
+    customMessage?: string
+): Promise<boolean> => {
+    try {
+        // Tip kontrolü
+        if (!isRepliableInteraction(interaction)) {
+            console.error(
+                "[Permission Error] Etkileşim yanıtlanabilir değil:",
+                {
+                    type: interaction.type || "Tanımsız",
+                    id: interaction.id || "Tanımsız",
+                    constructor: interaction.constructor.name,
+                }
+            );
+            return true;
+        }
 
-    const hasPermission =
-        interaction.guild?.members.me?.permissions.has(permission) ?? false;
+        // Guild kontrolü
+        if (!interaction.guild) {
+            await interaction.reply({
+                content: `${emojis.danger} Bu komut sadece sunucularda kullanılabilir.`,
+                flags: MessageFlags.Ephemeral,
+            });
+            return true;
+        }
 
-    if (!hasPermission) {
-        interaction.reply({
-            content: `${emojis.important} I don't have ${bold(
-                PERMISSION_NAME
-            )} permission to perform this action, <@${interaction.user.id}>.${
-                additionalText ? `\n>>> ${additionalText}` : ""
-            }`,
-            flags: MessageFlags.Ephemeral,
+        // İzin kontrolü
+        if (!hasRequiredPermissions(interaction, permission)) {
+            await interaction.reply({
+                content:
+                    customMessage ||
+                    `${
+                        emojis.danger
+                    } Bu işlem için gerekli izinlere sahip değilim:\n\`${new PermissionsBitField(
+                        permission
+                    )
+                        .toArray()
+                        .join(", ")}\``,
+                flags: MessageFlags.Ephemeral,
+            });
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.error("[Permission Error] Beklenmeyen hata:", {
+            error: error instanceof Error ? error.message : error,
+            stack: error instanceof Error ? error.stack : undefined,
+            interactionType: interaction.type || "Tanımsız",
+            interactionId: interaction.id || "Tanımsız",
         });
         return true;
     }
-
-    return false;
 };

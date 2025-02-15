@@ -25,6 +25,27 @@ const lockButton = new ActionRowBuilder<ButtonBuilder>().addComponents(
         .setEmoji(emojis.ticketLock)
 );
 
+interface PermissionCheck {
+    permission: bigint;
+    errorMessage?: string;
+}
+
+const requiredPermissions: PermissionCheck[] = [
+    { permission: PermissionFlagsBits.ViewChannel },
+    { permission: PermissionFlagsBits.UseExternalEmojis },
+    { permission: PermissionFlagsBits.SendMessages },
+    { permission: PermissionFlagsBits.EmbedLinks },
+    {
+        permission: PermissionFlagsBits.CreatePrivateThreads,
+        errorMessage:
+            'Please contact a staff member and say: "Kaeru can\'t create a private thread due to missing permissions."',
+    },
+    {
+        permission: PermissionFlagsBits.SendMessagesInThreads,
+        errorMessage: `${emojis.danger} Kaeru can't create the thread and add you to it. Please contact a staff member. This must be fixed.`,
+    },
+];
+
 export default {
     data: {
         customId: "create-ticket-modal",
@@ -35,35 +56,14 @@ export default {
     }: {
         interaction: ModalSubmitInteraction;
     }): Promise<void> => {
-        if (
-            defaultPermissionErrorForBot(
+        // Checking permissions
+        for (const { permission, errorMessage } of requiredPermissions) {
+            const hasError = await defaultPermissionErrorForBot(
                 interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.CreatePrivateThreads,
-                `Please contact a staff member and say: "Kaeru can't create a private thread due to missing permissions."`
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessagesInThreads,
-                `${emojis.danger} Kaeru can't create the thread and add you to it. Please contact a staff member. This must be fixed.`
-            )
-        ) {
-            return;
+                permission,
+                errorMessage
+            );
+            if (hasError) return;
         }
 
         const ticketTitle =

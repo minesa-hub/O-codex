@@ -14,7 +14,6 @@ export const loadEvents = (client: Client) => {
     console.log(`Loading ${eventFiles.length} events...`);
 
     for (const file of eventFiles) {
-        // Use dynamic import instead of require
         import(join(eventsPath, file))
             .then((module) => {
                 const event = module.default;
@@ -25,13 +24,13 @@ export const loadEvents = (client: Client) => {
                 }
 
                 if (event.once) {
-                    client.once(event.name, (...args) =>
-                        event.execute(client, ...args)
-                    );
+                    client.once(event.name, (...args) => {
+                        event.execute(...args, client); // Sırayı değiştirdik
+                    });
                 } else {
-                    client.on(event.name, (...args) =>
-                        event.execute(client, ...args)
-                    );
+                    client.on(event.name, (...args) => {
+                        event.execute(...args, client); // Sırayı değiştirdik
+                    });
                 }
 
                 console.log(`✅ | [Events] Loaded event: ${event.name}`);
