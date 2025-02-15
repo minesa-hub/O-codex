@@ -26,4 +26,9 @@ export const defaultMessagePermissions: PermissionCheck[] = [
     { permission: PermissionFlagsBits.ViewChannel },
     { permission: PermissionFlagsBits.UseExternalEmojis },
     { permission: PermissionFlagsBits.SendMessages },
+    { permission: PermissionFlagsBits.EmbedLinks },
+    {
+        permission: PermissionFlagsBits.AttachFiles,
+        errorMessage: "Kaeru can't attach files.",
+    },
 ];
