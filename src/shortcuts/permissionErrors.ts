@@ -14,32 +14,10 @@ type CommandInteraction =
     | MessageContextMenuCommandInteraction
     | UserContextMenuCommandInteraction;
 
-// Debug yardımcı fonksiyonu
-function debugInteraction(interaction: BaseInteraction) {
-    console.log("Debug Interaction:", {
-        type: interaction.type,
-        id: interaction.id,
-        isCommand: "commandType" in interaction,
-        commandType:
-            "commandType" in interaction
-                ? (interaction as any).commandType
-                : undefined,
-        hasReply: "reply" in interaction,
-        replyType:
-            "reply" in interaction
-                ? typeof (interaction as any).reply
-                : undefined,
-        properties: Object.keys(interaction),
-    });
-}
-
 // İnteraksiyon tipi için tip koruması
 function isRepliableInteraction(
     interaction: BaseInteraction
 ): interaction is CommandInteraction {
-    // Debug bilgilerini logla
-    debugInteraction(interaction);
-
     if (!interaction) return false;
 
     // Temel özellik kontrolleri

@@ -15,6 +15,7 @@ import {
 import { emojis } from "../../shortcuts/emojis.ts";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
 import { getStaffRoleId } from "../../shortcuts/database.ts";
+import { defaultTicketPermissions } from "../../interfaces/BotPermissions.ts";
 
 const lockButton = new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
@@ -24,27 +25,6 @@ const lockButton = new ActionRowBuilder<ButtonBuilder>().addComponents(
         .setDisabled(false)
         .setEmoji(emojis.ticketLock)
 );
-
-interface PermissionCheck {
-    permission: bigint;
-    errorMessage?: string;
-}
-
-const requiredPermissions: PermissionCheck[] = [
-    { permission: PermissionFlagsBits.ViewChannel },
-    { permission: PermissionFlagsBits.UseExternalEmojis },
-    { permission: PermissionFlagsBits.SendMessages },
-    { permission: PermissionFlagsBits.EmbedLinks },
-    {
-        permission: PermissionFlagsBits.CreatePrivateThreads,
-        errorMessage:
-            'Please contact a staff member and say: "Kaeru can\'t create a private thread due to missing permissions."',
-    },
-    {
-        permission: PermissionFlagsBits.SendMessagesInThreads,
-        errorMessage: `${emojis.danger} Kaeru can't create the thread and add you to it. Please contact a staff member. This must be fixed.`,
-    },
-];
 
 export default {
     data: {
@@ -56,8 +36,7 @@ export default {
     }: {
         interaction: ModalSubmitInteraction;
     }): Promise<void> => {
-        // Checking permissions
-        for (const { permission, errorMessage } of requiredPermissions) {
+        for (const { permission, errorMessage } of defaultTicketPermissions) {
             const hasError = await defaultPermissionErrorForBot(
                 interaction,
                 permission,
@@ -65,9 +44,6 @@ export default {
             );
             if (hasError) return;
         }
-
-        const ticketTitle =
-            interaction.fields.getTextInputValue("ticket-title");
 
         const embed = new EmbedBuilder()
             .setTitle(`${emojis.doorEnter} Now, we did it. Here we are!`)
@@ -78,7 +54,6 @@ export default {
                 "https://cdn.discordapp.com/attachments/736571695170584576/1327617435418755185/23679.png"
             );
 
-        // Ticket close menu
         const menu = new StringSelectMenuBuilder()
             .setCustomId("ticket-select-menu")
             .setDisabled(false)
@@ -104,7 +79,6 @@ export default {
                     .setEmoji(emojis.ticketClose)
             );
 
-        // Ticket label menu
         const labelMenu = new StringSelectMenuBuilder()
             .setCustomId("ticket-label-menu")
             .setPlaceholder("Select labels for this ticket")
