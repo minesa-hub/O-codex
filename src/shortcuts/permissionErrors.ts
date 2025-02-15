@@ -2,25 +2,16 @@ import {
     MessageFlags,
     PermissionsBitField,
     BaseInteraction,
-    ChatInputCommandInteraction,
-    MessageContextMenuCommandInteraction,
-    UserContextMenuCommandInteraction,
     ApplicationCommandType,
 } from "discord.js";
+import type { CommandInteraction } from "../interfaces/BotPermissions.ts";
 import { emojis } from "./emojis.ts";
 
-type CommandInteraction =
-    | ChatInputCommandInteraction
-    | MessageContextMenuCommandInteraction
-    | UserContextMenuCommandInteraction;
-
-// İnteraksiyon tipi için tip koruması
 function isRepliableInteraction(
     interaction: BaseInteraction
 ): interaction is CommandInteraction {
     if (!interaction) return false;
 
-    // Temel özellik kontrolleri
     const hasBasicProperties =
         interaction.type !== undefined && interaction.id !== undefined;
 
@@ -29,7 +20,6 @@ function isRepliableInteraction(
         return false;
     }
 
-    // ApplicationCommand tipi kontrolü
     const isApplicationCommand =
         "commandType" in interaction &&
         (interaction.commandType === ApplicationCommandType.ChatInput ||
@@ -41,7 +31,6 @@ function isRepliableInteraction(
         return false;
     }
 
-    // Reply metodu kontrolü
     const hasReplyMethod =
         "reply" in interaction &&
         typeof (interaction as any).reply === "function";
@@ -54,7 +43,6 @@ function isRepliableInteraction(
     return true;
 }
 
-// İzin kontrolü için yardımcı fonksiyon
 function hasRequiredPermissions(
     interaction: CommandInteraction,
     permission: bigint
@@ -74,7 +62,6 @@ export const defaultPermissionErrorForBot = async (
     customMessage?: string
 ): Promise<boolean> => {
     try {
-        // Tip kontrolü
         if (!isRepliableInteraction(interaction)) {
             console.error(
                 "[Permission Error] Etkileşim yanıtlanabilir değil:",
@@ -87,7 +74,6 @@ export const defaultPermissionErrorForBot = async (
             return true;
         }
 
-        // Guild kontrolü
         if (!interaction.guild) {
             await interaction.reply({
                 content: `${emojis.danger} Bu komut sadece sunucularda kullanılabilir.`,
@@ -96,7 +82,6 @@ export const defaultPermissionErrorForBot = async (
             return true;
         }
 
-        // İzin kontrolü
         if (!hasRequiredPermissions(interaction, permission)) {
             await interaction.reply({
                 content:

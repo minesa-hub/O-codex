@@ -11,6 +11,8 @@ import {
 import translate from "@iamtraction/google-translate";
 import { emojis } from "../../shortcuts/emojis.ts";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
+import { defaultMessagePermissions } from "../../interfaces/BotPermissions.ts";
+import { checkIfUserInstalledCommand } from "../../shortcuts/checkGuild-UserCommand.ts";
 
 interface ExecuteParams {
     interaction: MessageContextMenuCommandInteraction;
@@ -38,39 +40,9 @@ export default {
             InteractionContextType.Guild,
         ]),
     execute: async ({ interaction }: ExecuteParams): Promise<void> => {
-        // Eğer komut Guild ortamındaysa izinleri kontrol et
-        if (interaction.inGuild()) {
-            if (
-                (await defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.ViewChannel
-                )) ||
-                (await defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.UseExternalEmojis
-                )) ||
-                (await defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.SendMessages
-                ))
-            ) {
-                return;
-            }
-        }
+        // Checking if the command ran in a guild and if the user has the required permissions
+        await checkIfUserInstalledCommand(interaction);
 
-        // Eğer bot UserInstall ise ephemeral yanıt ver, aksi halde normal reply
-        if (
-            Object.keys(interaction.authorizingIntegrationOwners).every(
-                (key) =>
-                    key === ApplicationIntegrationType.UserInstall.toString()
-            )
-        ) {
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        } else {
-            await interaction.deferReply();
-        }
-
-        // Hedef mesajı al; Message Context komutlarında targetMessage kullanılır.
         const message: Message =
             (interaction.targetMessage as Message) ||
             (interaction.options?.getMessage("message") as Message);

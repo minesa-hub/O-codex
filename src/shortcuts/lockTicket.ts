@@ -1,40 +1,19 @@
-import {
-    time,
-    bold,
-    PermissionFlagsBits,
-    ButtonInteraction,
-    ThreadChannel,
-} from "discord.js";
+import { time, bold, ButtonInteraction, ThreadChannel } from "discord.js";
 import { emojis } from "./emojis.ts";
 import { defaultPermissionErrorForBot } from "./permissionErrors.ts";
+import { defaultTicketPermissions } from "../interfaces/BotPermissions.ts";
 
 export async function setLockedAndUpdateMessage(
     interaction: ButtonInteraction,
     reason: string = ""
 ): Promise<void> {
-    if (
-        defaultPermissionErrorForBot(
+    for (const { permission, errorMessage } of defaultTicketPermissions) {
+        const hasError = await defaultPermissionErrorForBot(
             interaction,
-            PermissionFlagsBits.ViewChannel
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.UseExternalEmojis
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.SendMessages
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.ManageThreads
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.ViewAuditLog
-        )
-    ) {
-        return;
+            permission,
+            errorMessage
+        );
+        if (hasError) return;
     }
 
     const formattedTime = time(new Date(), "R");

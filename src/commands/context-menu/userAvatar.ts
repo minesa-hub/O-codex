@@ -10,8 +10,7 @@ import {
 } from "discord.js";
 import type { ColorResolvable } from "discord.js";
 import { emojis } from "../../shortcuts/emojis.ts";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
-import { defaultMessagePermissions } from "../../interfaces/BotPermissions.ts";
+import { checkIfUserInstalledCommand } from "../../shortcuts/checkGuild-UserCommand.ts";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -41,30 +40,8 @@ export default {
         interaction: UserContextMenuCommandInteraction;
         client: Client;
     }): Promise<void> => {
-        if (interaction.inGuild()) {
-            for (const {
-                permission,
-                errorMessage,
-            } of defaultMessagePermissions) {
-                const hasError = await defaultPermissionErrorForBot(
-                    interaction,
-                    permission,
-                    errorMessage
-                );
-                if (hasError) return;
-            }
-        }
-
-        if (
-            Object.keys(interaction.authorizingIntegrationOwners).every(
-                (key) =>
-                    key === ApplicationIntegrationType.UserInstall.toString()
-            )
-        ) {
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        } else {
-            await interaction.deferReply();
-        }
+        // Checking if the command ran in a guild and if the user has the required permissions
+        await checkIfUserInstalledCommand(interaction);
 
         try {
             const userId = interaction.targetId;

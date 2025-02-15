@@ -11,7 +11,7 @@ import {
 } from "discord.js";
 import type { ColorResolvable } from "discord.js";
 import { emojis } from "../../shortcuts/emojis.ts";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
+import { checkIfUserInstalledCommand } from "../../shortcuts/checkGuild-UserCommand.ts";
 
 interface ExecuteParams {
     interaction: UserContextMenuCommandInteraction;
@@ -40,31 +40,8 @@ export default {
             InteractionContextType.Guild,
         ]),
     execute: async ({ interaction, client }: ExecuteParams): Promise<void> => {
-        if (interaction.inGuild()) {
-            if (
-                (await defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.UseExternalEmojis
-                )) ||
-                (await defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.EmbedLinks
-                ))
-            ) {
-                return;
-            }
-        }
-
-        if (
-            Object.keys(interaction.authorizingIntegrationOwners).every(
-                (key) =>
-                    key === ApplicationIntegrationType.UserInstall.toString()
-            )
-        ) {
-            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-        } else {
-            await interaction.deferReply();
-        }
+        // Checking if the command ran in a guild and if the user has the required permissions
+        await checkIfUserInstalledCommand(interaction);
 
         try {
             const user = await client.users.fetch(interaction.targetId, {

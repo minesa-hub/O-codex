@@ -7,7 +7,6 @@ import {
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ActionRowBuilder,
-    PermissionFlagsBits,
     MessageContextMenuCommandInteraction,
     TextChannel,
     MessageFlags,
@@ -16,27 +15,7 @@ import {
 import { emojis } from "../../shortcuts/emojis.ts";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
 import { lockButton } from "../../components/modals/create-ticket-title.ts";
-
-interface PermissionCheck {
-    permission: bigint;
-    errorMessage?: string;
-}
-
-const requiredPermissions: PermissionCheck[] = [
-    { permission: PermissionFlagsBits.ViewChannel },
-    { permission: PermissionFlagsBits.UseExternalEmojis },
-    { permission: PermissionFlagsBits.SendMessages },
-    { permission: PermissionFlagsBits.EmbedLinks },
-    {
-        permission: PermissionFlagsBits.CreatePrivateThreads,
-        errorMessage:
-            'Lütfen yetkililere "Kaeru özel thread oluşturma iznine sahip değil" mesajını iletin.',
-    },
-    {
-        permission: PermissionFlagsBits.SendMessagesInThreads,
-        errorMessage: `${emojis.danger} Kaeru thread oluşturamıyor ve sizi ekleyemiyor. Lütfen yetkililere bildirin.`,
-    },
-];
+import { defaultTicketPermissions } from "../../interfaces/BotPermissions.ts";
 
 const ticketMenuOptions = [
     {
@@ -74,12 +53,13 @@ export default {
     }: {
         interaction: MessageContextMenuCommandInteraction;
     }) => {
-        // İlk olarak defer edelim
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         try {
-            // İzin kontrolleri
-            for (const { permission, errorMessage } of requiredPermissions) {
+            for (const {
+                permission,
+                errorMessage,
+            } of defaultTicketPermissions) {
                 const hasError = await defaultPermissionErrorForBot(
                     interaction,
                     permission,
@@ -88,7 +68,6 @@ export default {
                 if (hasError) return;
             }
 
-            // Mesaj kontrolü
             const message = await interaction.channel?.messages.fetch(
                 interaction.targetId
             );
@@ -105,7 +84,6 @@ export default {
                 });
             }
 
-            // Kanal kontrolü
             if (
                 !interaction.channel ||
                 !(interaction.channel instanceof TextChannel)
@@ -115,7 +93,6 @@ export default {
                 });
             }
 
-            // Menü oluşturma
             const menu = new StringSelectMenuBuilder()
                 .setCustomId("ticket-select-menu")
                 .setDisabled(false)
@@ -139,7 +116,6 @@ export default {
                 );
 
             try {
-                // Thread oluşturma
                 const thread = await interaction.channel.threads.create({
                     name: `— ${interaction.user.username}'nin hızlı bileti`,
                     autoArchiveDuration: 60,

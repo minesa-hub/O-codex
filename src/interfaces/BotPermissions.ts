@@ -1,34 +1,68 @@
-import { PermissionFlagsBits } from "discord.js";
+import {
+    PermissionFlagsBits,
+    ChatInputCommandInteraction,
+    MessageContextMenuCommandInteraction,
+    UserContextMenuCommandInteraction,
+} from "discord.js";
 
-export interface PermissionCheck {
+interface PermissionCheck {
     permission: bigint;
     errorMessage?: string;
 }
 
-export const defaultTicketPermissions: PermissionCheck[] = [
+type CommandInteraction =
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction;
+
+const basePermissions: PermissionCheck[] = [
     { permission: PermissionFlagsBits.ViewChannel },
-    { permission: PermissionFlagsBits.UseExternalEmojis },
     { permission: PermissionFlagsBits.SendMessages },
-    { permission: PermissionFlagsBits.EmbedLinks },
+    {
+        permission: PermissionFlagsBits.UseExternalEmojis,
+        errorMessage:
+            "Please notify the staff that Kaeru can't use external emojis.",
+    },
+    {
+        permission: PermissionFlagsBits.EmbedLinks,
+        errorMessage: "Please notify the staff that Kaeru can't embed links.",
+    },
+    {
+        permission: PermissionFlagsBits.AttachFiles,
+        errorMessage: "Please notify the staff that Kaeru can't attach files.",
+    },
+];
+
+const defaultTicketPermissions: PermissionCheck[] = [
+    ...basePermissions,
     {
         permission: PermissionFlagsBits.CreatePrivateThreads,
         errorMessage:
-            'Lütfen yetkililere "Kaeru özel thread oluşturma iznine sahip değil" mesajını iletin.',
+            'Please forward "Kaeru can\'t create private thread" message to staff of the server.',
     },
     {
         permission: PermissionFlagsBits.SendMessagesInThreads,
         errorMessage:
-            "Kaeru thread oluşturamıyor ve sizi ekleyemiyor. Lütfen yetkililere bildirin.",
+            "Please notify the staff that Kaeru cannot create threads and add you.",
     },
 ];
 
-export const defaultMessagePermissions: PermissionCheck[] = [
-    { permission: PermissionFlagsBits.ViewChannel },
-    { permission: PermissionFlagsBits.UseExternalEmojis },
-    { permission: PermissionFlagsBits.SendMessages },
-    { permission: PermissionFlagsBits.EmbedLinks },
+const defaultLockTicketPermissions: PermissionCheck[] = [
+    ...basePermissions,
     {
-        permission: PermissionFlagsBits.AttachFiles,
-        errorMessage: "Kaeru can't attach files.",
+        permission: PermissionFlagsBits.ManageThreads,
+        errorMessage:
+            "Kaeru can't manage threads, so Kaeru can't lock tickets. 🥹",
+    },
+    {
+        permission: PermissionFlagsBits.ViewAuditLog,
+        errorMessage: "Kaeru can't view audit logs to receive information.",
     },
 ];
+
+export {
+    basePermissions,
+    defaultTicketPermissions,
+    defaultLockTicketPermissions,
+    CommandInteraction,
+};
