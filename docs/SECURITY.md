@@ -1,21 +1,31 @@
 # Security Policy
 
-## Supported Versions
-
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
-
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you discover a security vulnerability in our Discord bot, please follow these steps:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+1. **Do not disclose it publicly.**
+2. **Report it privately** by creating a ticket us at our Discord server (Displayed on organization's URL phase) or via a direct message to a project maintainer.
+3. Provide as much detail as possible, including steps to reproduce the vulnerability.
+4. We will acknowledge receipt of your report within 48 hours and investigate the issue.
+5. Once resolved, we will notify you and credit you for the discovery if you wish.
+
+## Supported Versions
+
+We actively maintain and apply security patches to the following versions:
+
+| Version  | Supported          |
+| -------- | ------------------ |
+| Latest   | ✅                 |
+| Previous | ⚠️ Limited Support |
+| Older    | ❌ Not Supported   |
+
+## Security Best Practices
+
+To keep your bot instance secure:
+
+-   Keep dependencies updated.
+-   Use strong authentication for access.
+-   Follow best coding practices to prevent injection attacks.
+
+Thank you for helping us keep our community safe!
