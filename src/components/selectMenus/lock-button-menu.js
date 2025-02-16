@@ -1,35 +1,13 @@
-import { PermissionFlagsBits } from "discord.js";
-import { setLockedAndUpdateMessage } from "../../shortcuts/setLockedAndUpdateMessage.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { setLockedAndUpdateMessage } from "../../functions/lockTicket.js";
+import { defaultLockTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: {
         customId: "ticket-lock-reason",
     },
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageThreads
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewAuditLog
-            )
-        )
-            return;
+        checkPermissions(interaction, defaultLockTicketPermissions);
 
         let value = interaction.values[0];
 

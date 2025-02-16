@@ -1,6 +1,5 @@
 import {
     ActionRowBuilder,
-    PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ModalBuilder,
@@ -10,15 +9,10 @@ import {
     MessageFlags,
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
-import {
-    emoji_ticket_close,
-    emoji_ticket_done,
-    emoji_ticket_reopen,
-    emoji_ticket_stale,
-} from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../resources/emojis.js";
+import { defaultLockTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
-// Ana select menu: Tüm seçeneklerde emoji eklenmiş durumda
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("ticket-select-menu")
     .setDisabled(false)
@@ -29,19 +23,19 @@ const menu3 = new StringSelectMenuBuilder()
             .setLabel("Close as completed")
             .setValue("ticket-menu-done")
             .setDescription("Done, closed, fixed, resolved")
-            .setEmoji(emoji_ticket_done)
+            .setEmoji(emojis.ticketDone)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close as not planned")
             .setValue("ticket-menu-duplicate")
             .setDescription("Won’t fix, can’t repo, duplicate, stale")
-            .setEmoji(emoji_ticket_stale)
+            .setEmoji(emojis.ticketStale)
             .setDefault(false),
         new StringSelectMenuOptionBuilder()
             .setLabel("Close with comment")
             .setValue("ticket-menu-close")
             .setDescription("Close with a comment")
-            .setEmoji(emoji_ticket_close)
+            .setEmoji(emojis.ticketClose)
             .setDefault(false)
     );
 
@@ -53,30 +47,7 @@ export default {
     },
 
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageThreads
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewAuditLog,
-                `It is needed to check last state of thread.`
-            )
-        )
-            return;
+        checkPermissions(interaction, defaultLockTicketPermissions);
 
         const selectedValue = interaction.values[0];
         const formattedTime = time(new Date(), "R");
@@ -102,12 +73,12 @@ export default {
 
             case "ticket-menu-done": {
                 await interaction.channel.send({
-                    content: `${emoji_ticket_done} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
+                    content: `${emojis.ticketDone} **${interaction.user.username}** __closed__ this as completed ${formattedTime}`,
                 });
 
                 await interaction.reply({
                     content: `Ticket closed as completed ${formattedTime}`,
-                    flags: MessageFlags.Ephemeral
+                    flags: MessageFlags.Ephemeral,
                 });
 
                 await interaction.channel.setLocked(true);
@@ -119,7 +90,6 @@ export default {
             }
 
             case "ticket-menu-duplicate": {
-                // Yeni select menü: Her seçenek emoji ile gösteriliyor
                 const menu2 = new StringSelectMenuBuilder()
                     .setCustomId("ticket-select-menu")
                     .setDisabled(false)
@@ -129,19 +99,19 @@ export default {
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Re-open ticket")
                             .setValue("ticket-menu-reopen")
-                            .setEmoji(emoji_ticket_reopen)
+                            .setEmoji(emojis.ticketReopen)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close as completed")
                             .setValue("ticket-menu-done")
                             .setDescription("Done, closed, fixed, resolved")
-                            .setEmoji(emoji_ticket_done)
+                            .setEmoji(emojis.ticketDone)
                             .setDefault(false),
                         new StringSelectMenuOptionBuilder()
                             .setLabel("Close with comment")
                             .setValue("ticket-menu-close")
                             .setDescription("Close with a comment")
-                            .setEmoji(emoji_ticket_close)
+                            .setEmoji(emojis.ticketClose)
                     );
 
                 const row2 = new ActionRowBuilder().addComponents(menu2);
@@ -149,7 +119,7 @@ export default {
                 await interaction.update({ components: [row2, lockButton] });
 
                 await interaction.channel.send({
-                    content: `${emoji_ticket_stale} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
+                    content: `${emojis.ticketStale} **${interaction.user.username}** __closed__ this as not planned ${formattedTime}`,
                 });
 
                 await interaction.channel.setArchived(

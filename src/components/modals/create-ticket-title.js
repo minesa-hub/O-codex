@@ -10,24 +10,10 @@ import {
     roleMention,
     MessageFlags,
 } from "discord.js";
-import {
-    emoji_ticket_lock,
-    emoji_doorEnter,
-    emoji_ticket_done,
-    emoji_ticket_stale,
-    emoji_ticket_close,
-    emoji_ticketCreated,
-    emoji_danger,
-} from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { getStaffRoleId } from "../../shortcuts/database.js";
-import {
-    emoji_bugLabel,
-    emoji_rewardLabel,
-    emoji_questionLabel,
-    emoji_discussionLabel,
-    emoji_helpLabel,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../resources/emojis.js";
+import { getStaffRoleId } from "../../functions/database.js";
+import { defaultTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -35,7 +21,7 @@ let lockButton = new ActionRowBuilder().addComponents(
         .setLabel("Lock Ticket")
         .setStyle(ButtonStyle.Secondary)
         .setDisabled(false)
-        .setEmoji(emoji_ticket_lock)
+        .setEmoji(emojis.ticketLock)
 );
 
 export default {
@@ -44,41 +30,13 @@ export default {
     },
 
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.CreatePrivateThreads,
-                `Please contact with a staff member saying "Kaeru can't create private thread due permission is missing".`
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessagesInThreads,
-                `${emoji_danger} Kaeru can't create the thread and add you to thread to send message to there. Please contact with a staff member. This has to be fixed.`
-            )
-        )
-            return;
+        checkPermissions(interaction, defaultTicketPermissions);
 
         const ticketTitle =
             interaction.fields.getTextInputValue("ticket-title");
 
         const embed = new EmbedBuilder()
-            .setTitle(`${emoji_doorEnter} Now, we did it. Here we are!`)
+            .setTitle(`${emojis.doorEnter} Now, we did it. Here we are!`)
             .setDescription(
                 "Our staff member(s) will take care of this thread sooner. While they are on their way, why don’t you talk about your ticket?"
             )
@@ -95,20 +53,20 @@ export default {
             .addOptions(
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as completed")
-                    .setValue("ticket-menu-done") // Changed from "ticket-menu-close" to "ticket-menu-done"
+                    .setValue("ticket-menu-done")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji(emoji_ticket_done)
+                    .setEmoji(emojis.ticketDone)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(emoji_ticket_stale),
+                    .setEmoji(emojis.ticketStale),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close with comment")
                     .setValue("ticket-menu-close")
                     .setDescription("Close with a comment")
-                    .setEmoji(emoji_ticket_close)
+                    .setEmoji(emojis.ticketClose)
             );
 
         const labelMenu = new StringSelectMenuBuilder()
@@ -119,23 +77,23 @@ export default {
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Bug")
                     .setValue("label-bug")
-                    .setEmoji(emoji_bugLabel),
+                    .setEmoji(emojis.label.bugLabel),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Reward")
                     .setValue("label-reward")
-                    .setEmoji(emoji_rewardLabel),
+                    .setEmoji(emojis.label.rewardLabel),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Question")
                     .setValue("label-question")
-                    .setEmoji(emoji_questionLabel),
+                    .setEmoji(emojis.label.questionLabel),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Discussion")
                     .setValue("label-discussion")
-                    .setEmoji(emoji_discussionLabel),
+                    .setEmoji(emojis.label.discussionLabel),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Help")
                     .setValue("label-help")
-                    .setEmoji(emoji_helpLabel)
+                    .setEmoji(emojis.label.helpLabel)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -150,7 +108,7 @@ export default {
         });
 
         await interaction.reply({
-            content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
+            content: `# ${emojis.ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
             flags: MessageFlags.Ephemeral,
         });
 

@@ -7,8 +7,10 @@ import {
     StringSelectMenuOptionBuilder,
     bold,
 } from "discord.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { emoji_important } from "../../shortcuts/emojis.js";
+
+import { defaultLockTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
+import { emojis } from "../../resources/emojis.js";
 
 export default {
     data: {
@@ -21,31 +23,13 @@ export default {
             )
         )
             return interaction.reply({
-                content: `${emoji_important} You don't have ${bold(
+                content: `${emojis.important} You don't have ${bold(
                     "Manage Threads"
                 )} permission to do this action, <@${interaction.user.id}>.`,
                 flags: MessageFlags.Ephemeral,
             });
 
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageThreads
-            )
-        )
-            return;
+        await checkPermissions(interaction, defaultLockTicketPermissions);
 
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this ticket")

@@ -1,20 +1,14 @@
 import {
     ApplicationCommandType,
     ContextMenuCommandBuilder,
-    PermissionFlagsBits,
     ApplicationIntegrationType,
     InteractionContextType,
     MessageFlags,
 } from "discord.js";
 import translate from "@iamtraction/google-translate";
-import {
-    emoji_danger,
-    emoji_info,
-    emoji_translate,
-    emoji_swap,
-    emoji_globe,
-} from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../resources/emojis.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -39,21 +33,7 @@ export default {
         ]),
     execute: async ({ interaction }) => {
         if (InteractionContextType.Guild) {
-            if (
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.ViewChannel
-                ) ||
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.UseExternalEmojis
-                ) ||
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.SendMessages
-                )
-            )
-                return;
+            if (await checkPermissions(interaction, basePermissions)) return;
         }
 
         if (
@@ -71,7 +51,7 @@ export default {
         try {
             if (!message.content)
                 return interaction.editReply({
-                    content: `${emoji_info} This message seems to hold no content—nothing to translate across the threads of time.`,
+                    content: `${emojis.info} This message seems to hold no content—nothing to translate across the threads of time.`,
                 });
 
             const locale = !["zh-CN", "zh-TW"].includes(interaction.locale)
@@ -84,7 +64,7 @@ export default {
             );
 
             await interaction.editReply({
-                content: `# ${emoji_translate} Translation\n-# ————————————————————\n### ${emoji_globe} Original Message\n${message.content}\n\n### ${emoji_swap} Translated Message (${locale})\n${translated.text}\n\n-# I sent it on below if you need to copy the message.`,
+                content: `# ${emojis.translate} Translation\n-# ————————————————————\n### ${emojis.globe} Original Message\n${message.content}\n\n### ${emojis.swap} Translated Message (${locale})\n${translated.text}\n\n-# I sent it on below if you need to copy the message.`,
             });
 
             return interaction.followUp({
@@ -94,7 +74,7 @@ export default {
         } catch (error) {
             console.log(error);
             await interaction.editReply({
-                content: `${emoji_danger} Oh no! A temporal anomaly occurred while translating. Let’s try again later, shall we?`,
+                content: `${emojis.danger} Oh no! A temporal anomaly occurred while translating. Let’s try again later, shall we?`,
             });
         }
     },

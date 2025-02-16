@@ -1,5 +1,5 @@
 import { time, MessageFlags, EmbedBuilder } from "discord.js";
-import { emoji_ticket_close } from "../../shortcuts/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 
 export default {
     data: {
@@ -7,18 +7,27 @@ export default {
     },
 
     execute: async ({ interaction }) => {
-        const closeReason = interaction.fields.getTextInputValue("close-reason");
+        const closeReason =
+            interaction.fields.getTextInputValue("close-reason");
 
         const formattedTime = time(new Date(), "R");
 
         await interaction.channel.send({
-            content: `${emoji_ticket_close} **${interaction.user.username}** __closed__ this ticket as completed at ${formattedTime}`,
-            embeds: [new EmbedBuilder().setAuthor({ name: `${interaction.user.username} commented`, iconURL: interaction.user.displayAvatarURL() }).setColor(0x388bfd).setDescription(closeReason)],
+            content: `${emojis.ticketClose} **${interaction.user.username}** __closed__ this ticket as completed at ${formattedTime}`,
+            embeds: [
+                new EmbedBuilder()
+                    .setAuthor({
+                        name: `${interaction.user.username} commented`,
+                        iconURL: interaction.user.displayAvatarURL(),
+                    })
+                    .setColor(0x388bfd)
+                    .setDescription(closeReason),
+            ],
         });
 
         await interaction.reply({
             content: `Ticket has been successfully closed with the reason: "${closeReason}".`,
-            flags: MessageFlags.Ephemeral
+            flags: MessageFlags.Ephemeral,
         });
 
         await interaction.channel.setLocked(true);

@@ -1,23 +1,24 @@
 {
     "name": "kaeru",
-    "version": "2.2.2",
+    "version": "2.3.0",
     "description": "A Discord bot is doing unique things.",
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "test": "echo Hi mom!",
-        "start": "npm install && npm update && node src/index.js",
-        "dev": "node src/index.js",
-        "deploy": "node src/applications/register.js && node src/applications/server.js",
-        "server": "node src/applications/server.js",
-        "register": "node src/applications/register.js"
+        "start": "npm install && npm update && node index.js",
+        "dev": "node index.js"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/minesa-time/kaeru.git"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "Kaeru",
+        "discordjs",
+        "discord-bot",
+        "moderation"
+    ],
+    "author": "İbrahim Güneş",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/minesa-time/kaeru/issues"
@@ -26,9 +27,10 @@
     "dependencies": {
         "@google/generative-ai": "^0.2.1",
         "@iamtraction/google-translate": "^2.0.1",
-        "chalk": "^5.2.0",
+        "chalk": "^5.4.1",
         "cookie-parser": "^1.4.7",
         "discord.js": "^14.17.3",
+        "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "fs": "^0.0.1-security",
         "moment-timezone": "^0.5.43",
