@@ -10,12 +10,7 @@ import {
     PermissionFlagsBits,
     SlashCommandBuilder,
 } from "discord.js";
-import {
-    emoji_brain,
-    emoji_important,
-    emoji_redirect,
-    emoji_senstive,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 
 export default {
@@ -156,7 +151,7 @@ export default {
                     const RESPONSE = await API.json();
 
                     await interaction.editReply({
-                        content: `# ${emoji_brain} ${RESPONSE.data.title}\n> ${RESPONSE.data.image}`,
+                        content: `# ${emojis.brain} ${RESPONSE.data.title}\n> ${RESPONSE.data.image}`,
                     });
                     break;
                 }
@@ -186,7 +181,7 @@ export default {
                         .setLabel("View Through the Time Portal")
                         .setURL(IMAGE_URL)
                         .setStyle(ButtonStyle.Link)
-                        .setEmoji(emoji_redirect);
+                        .setEmoji(emojis.redirect);
 
                     const row = new ActionRowBuilder().addComponents(
                         displayOnBrowser
@@ -198,7 +193,7 @@ export default {
                     });
 
                     await interaction.editReply({
-                        content: `# ${emoji_senstive} Sensitive Content\n\n> If you are a young person attempting to view NSFW images, I recommend refraining for your own good.`,
+                        content: `# ${emojis.sensitive} Sensitive Content\n\n> If you are a young person attempting to view NSFW images, I recommend refraining for your own good.`,
                         components: [row],
                         files: [file],
                     });
@@ -208,7 +203,7 @@ export default {
         } catch (error) {
             console.error(error);
             await interaction.editReply({
-                content: `${emoji_important} An error occurred. Please try again later.`,
+                content: `${emojis.important} An error occurred. Please try again later.`,
             });
         }
     },

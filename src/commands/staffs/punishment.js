@@ -13,12 +13,7 @@ import {
     checkLoggingChannel,
     checkWarnings,
 } from "../../shortcuts/database.js";
-import {
-    emoji_timeout,
-    emoji_important,
-    emoji_info,
-    emoji_danger,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -281,7 +276,7 @@ export default {
         let customReason =
             interaction.options.getString("additional_reason") ||
             "No extra information provided.";
-        let duration = interaction.options.getNumber("duration") || 60; // 1 hour
+        let duration = interaction.options.getNumber("duration") || 60;
         const guild = interaction.guild;
         const guildMember = guild.members.cache.get(target.id);
         const author = interaction.user;
@@ -352,7 +347,7 @@ export default {
                 await channel.send({
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle(`${emoji_timeout} Timed-out`)
+                            .setTitle(`${emojis.timeout} Timed-out`)
                             .setThumbnail(
                                 target.displayAvatarURL({
                                     format: "png",
@@ -466,19 +461,23 @@ export default {
                         .catch(console.error);
 
                     await interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
                             guild.id,
                             target.id
-                        )} warnings.\n\n> _${emoji_important} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
+                        )} warnings.\n\n> _${
+                            emojis.important
+                        } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
                     });
 
                     try {
                         await guildMember.send({
-                            content: `## ${emoji_timeout} You have been timeouted.`,
+                            content: `## ${emojis.timeout} You have been timeouted.`,
                             embeds: [
                                 new EmbedBuilder()
                                     .setFields(
@@ -499,7 +498,7 @@ export default {
                     } catch (error) {
                         console.error(`Could not send a DM to ${target.name}.`);
                         return interaction.followUp({
-                            content: `${emoji_info} Could not send a DM to ${target}.`,
+                            content: `${emojis.info} Could not send a DM to ${target}.`,
                             flags: MessageFlags.Ephemeral,
                         });
                     }
@@ -520,19 +519,23 @@ export default {
                         .catch(console.error);
 
                     await interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
                             guild.id,
                             target.id
-                        )} warnings.\n\n> _${emoji_important} Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
+                        )} warnings.\n\n> _${
+                            emojis.important
+                        } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
                     });
 
                     try {
                         await guildMember.send({
-                            content: `## ${emoji_timeout} You have been timeouted.`,
+                            content: `## ${emojis.timeout} You have been timeouted.`,
                             embeds: [
                                 new EmbedBuilder()
                                     .setFields(
@@ -553,7 +556,7 @@ export default {
                     } catch (error) {
                         console.error(`Could not send a DM to ${target.name}.`);
                         return interaction.followUp({
-                            content: `${emoji_info} Could not send a DM to ${target}.`,
+                            content: `${emojis.info} Could not send a DM to ${target}.`,
                             flags: MessageFlags.Ephemeral,
                         });
                     }
@@ -563,7 +566,7 @@ export default {
             console.log(err);
 
             return interaction.editReply({
-                content: `${emoji_danger} Are we sure they are not timeouted already?\n-# If you think something is not right, please contact with **@neodevils**.`,
+                content: `${emojis.danger} Are we sure they are not timeouted already?\n-# If you think something is not right, please contact with **@neodevils**.`,
                 flags: MessageFlags.Ephemeral,
             });
         }

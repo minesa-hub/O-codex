@@ -9,18 +9,10 @@ import {
     underline,
     bold,
     MessageFlags,
-    ApplicationCommandType,
     ApplicationIntegrationType,
     InteractionContextType,
 } from "discord.js";
-import {
-    emoji_button,
-    emoji_ticket,
-    emoji_ticketCreated,
-    emoji_important,
-    emoji_info,
-} from "../../shortcuts/emojis.js";
-import { EMBED_COLOR } from "../../config.js";
+import { emojis } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import {
     saveStaffRoleId,
@@ -515,9 +507,9 @@ export default {
                 .setDescription(
                     embedDescription
                         ? embedDescription
-                        : `# ${emoji_button} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
+                        : `# ${emojis.button} Create a Ticket\nIf you're experiencing an ticket with our product or service, please use the "Create ticket" button to report it. This includes any server-related tickets you may be encountering in our Discord server.`
                 )
-                .setColor(embedColor ? embedColor : EMBED_COLOR)
+                .setColor(embedColor ? embedColor : process.env.EMBED_COLOR)
                 .setImage(
                     banner
                         ? banner.url
@@ -532,14 +524,14 @@ export default {
                 .setCustomId(`create-ticket`)
                 .setLabel("Create ticket")
                 .setStyle(ButtonStyle.Secondary)
-                .setEmoji(emoji_ticket);
+                .setEmoji(emojis.ticket);
 
             const row = new ActionRowBuilder().addComponents(
                 createticketButton
             );
 
             await interaction.reply({
-                content: `${emoji_ticketCreated} Created the ticket system succesfully!`,
+                content: `${emojis.ticketCreated} Created the ticket system succesfully!`,
                 flags: MessageFlags.Ephemeral,
             });
 
@@ -557,10 +549,11 @@ export default {
                 )
             )
                 return interaction.followUp({
-                    content: `## ${emoji_important + " " + underline("Recommending")
-                        }\nIf Kaeru has ${bold(
-                            "Manage Messages"
-                        )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
+                    content: `## ${
+                        emojis.important + " " + underline("Recommending")
+                    }\nIf Kaeru has ${bold(
+                        "Manage Messages"
+                    )} permission, it will be very easy to reach at first message with pinned messages for staff members.`,
                     flags: MessageFlags.Ephemeral,
                 });
         }
@@ -574,11 +567,11 @@ export default {
             setupLoggingChannel(guild.id, logginChannel.id);
 
             await logginChannel.send({
-                content: `${emoji_info} Successfully setup the loggin channel.`,
+                content: `${emojis.info} Successfully setup the loggin channel.`,
             });
 
             return interaction.editReply({
-                content: `### ${emoji_info} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
+                content: `### ${emojis.info} Done!\nI will log stuffs in there, so you see them instead going to Audit Logs! Easy, peasy! ☕️`,
             });
         }
     },

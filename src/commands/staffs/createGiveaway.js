@@ -16,7 +16,7 @@ import {
     timeChecking,
 } from "../../shortcuts/timeChecking.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { emoji_giftCard } from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -361,7 +361,9 @@ export default {
                                 shuffleSubscribers(subscriberUsernames);
 
                             winner = shuffledUsernames[0];
-                            description = `a winner! ${emoji_giftCard}\n${userMention(
+                            description = `a winner! ${
+                                emojis.giftCard
+                            }\n${userMention(
                                 winner.id
                             )} please create a ticket to contact with us! <:ita_happy:1170847735008739408>`;
                         } else {

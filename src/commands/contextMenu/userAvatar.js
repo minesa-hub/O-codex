@@ -7,8 +7,7 @@ import {
     PermissionFlagsBits,
     MessageFlags,
 } from "discord.js";
-import { emoji_important, emoji_avatar } from "../../shortcuts/emojis.js";
-import { EMBED_COLOR } from "../../config.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -65,10 +64,10 @@ export default {
 
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `# ${emoji_avatar} Hey there!\nYou're checking out @${user.username}'s profile picture. Pretty cool, right?`
+                    `# ${emojis.avatar} Hey there!\nYou're checking out @${user.username}'s profile picture. Pretty cool, right?`
                 )
                 .setImage(avatar)
-                .setColor(EMBED_COLOR);
+                .setColor(process.env.EMBED_COLOR);
 
             await interaction.editReply({
                 embeds: [embed],
@@ -77,7 +76,7 @@ export default {
             console.error("Error fetching user or avatar:", error);
 
             return interaction.editReply({
-                content: `${emoji_important} Hmm, looks like this person’s gone missing in action. Are you sure they’re around?`,
+                content: `${emojis.important} Hmm, looks like this person’s gone missing in action. Are you sure they’re around?`,
             });
         }
     },

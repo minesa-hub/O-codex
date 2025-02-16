@@ -7,13 +7,8 @@ import {
     InteractionContextType,
     MessageFlags,
 } from "discord.js";
-import {
-    emoji_banner,
-    emoji_danger,
-    emoji_important,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { EMBED_COLOR } from "../../config.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -71,15 +66,15 @@ export default {
 
                 if (imageURI === null) {
                     await interaction.editReply({
-                        content: `${emoji_important} Hmm, looks like this user doesn’t have a banner set. Maybe it’s lost in the folds of time?`,
+                        content: `${emojis.important} Hmm, looks like this user doesn’t have a banner set. Maybe it’s lost in the folds of time?`,
                     });
                 } else {
                     const embed = new EmbedBuilder()
                         .setDescription(
-                            `# ${emoji_banner} Hey there!\nYou're checking out @${resolved.username}'s banner. Pretty neat, right?`
+                            `# ${emojis.banner} Hey there!\nYou're checking out @${resolved.username}'s banner. Pretty neat, right?`
                         )
                         .setImage(imageURI)
-                        .setColor(EMBED_COLOR);
+                        .setColor(process.env.EMBED_COLOR);
 
                     await interaction.editReply({
                         embeds: [embed],
@@ -90,7 +85,7 @@ export default {
             console.error(error);
 
             return interaction.editReply({
-                content: `${emoji_danger} Oops! Something went wrong. Maybe a glitch in the timeline?`,
+                content: `${emojis.danger} Oops! Something went wrong. Maybe a glitch in the timeline?`,
             });
         }
     },

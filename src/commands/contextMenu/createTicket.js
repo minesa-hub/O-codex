@@ -10,15 +10,7 @@ import {
     ActionRowBuilder,
     PermissionFlagsBits,
 } from "discord.js";
-
-import {
-    emoji_ticketCreated,
-    emoji_ticket_done,
-    emoji_ticket_stale,
-    emoji_ticket,
-    emoji_info,
-    emoji_danger,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
 import { lockButton } from "../../components/modals/create-ticket-title.js";
 
@@ -71,7 +63,7 @@ export default {
 
         if (message.channel.isThread()) {
             return interaction.reply({
-                content: `${emoji_info} You can't create ticket inside ticket. Huh?`,
+                content: `${emojis.info} You can't create ticket inside ticket. Huh?`,
                 flags: MessageFlags.Ephemeral,
             });
         }
@@ -90,13 +82,13 @@ export default {
                     .setLabel("Close as completed")
                     .setValue("ticket-menu-close")
                     .setDescription("Done, closed, fixed, resolved")
-                    .setEmoji(emoji_ticket_done)
+                    .setEmoji(emojis.ticketDone)
                     .setDefault(false),
                 new StringSelectMenuOptionBuilder()
                     .setLabel("Close as not planned")
                     .setValue("ticket-menu-duplicate")
                     .setDescription("Won’t fix, can’t repo, duplicate, stale")
-                    .setEmoji(emoji_ticket_stale)
+                    .setEmoji(emojis.ticketStale)
             );
 
         const menuRow = new ActionRowBuilder().addComponents(menu);
@@ -110,13 +102,13 @@ export default {
         });
 
         await thread.send({
-            content: `## ${emoji_ticket} <@${interaction.user.id}>, you have opened a quick-support for this message\n> ${message.content}\n> -# Jump to [message](${message.url})\n> -# ———————————————\n- Message sent by __@${message.author.username}__`,
+            content: `## ${emojis.ticket} <@${interaction.user.id}>, you have opened a quick-support for this message\n> ${message.content}\n> -# Jump to [message](${message.url})\n> -# ———————————————\n- Message sent by __@${message.author.username}__`,
             components: [menuRow, lockButton],
             flags: MessageFlags.HasThread,
         });
 
         await interaction.editReply({
-            content: `# ${emoji_ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
+            content: `# ${emojis.ticketCreated} Created <#${thread.id}>\nNow, you can talk about your issue with our staff members.`,
         });
     },
 };
