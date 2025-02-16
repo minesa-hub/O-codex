@@ -10,7 +10,7 @@ import {
     MessageFlags,
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 
 const menu3 = new StringSelectMenuBuilder()

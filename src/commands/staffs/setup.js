@@ -12,7 +12,7 @@ import {
     ApplicationIntegrationType,
     InteractionContextType,
 } from "discord.js";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 import {
     saveStaffRoleId,

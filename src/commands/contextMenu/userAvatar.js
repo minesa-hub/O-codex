@@ -7,7 +7,7 @@ import {
     PermissionFlagsBits,
     MessageFlags,
 } from "discord.js";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 
 export default {
     data: new ContextMenuCommandBuilder()

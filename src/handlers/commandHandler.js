@@ -66,7 +66,6 @@ export const commandHandler = async (client) => {
 
         // Log the client ID and check if it's loaded correctly
         const clientId = process.env.CLIENT_ID;
-        console.log("Client ID from environment:", clientId);
         if (!clientId) {
             console.error(
                 chalk.red(

@@ -1,5 +1,5 @@
 import { time, bold, PermissionFlagsBits } from "discord.js";
-import { emojis } from "./emojis.js";
+import { emojis } from "../resources/emojis.js";
 import { defaultPermissionErrorForBot } from "./permissionErrors.js";
 
 export async function setLockedAndUpdateMessage(interaction, reason = "") {

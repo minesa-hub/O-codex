@@ -7,7 +7,7 @@ import {
     MessageFlags,
 } from "discord.js";
 import translate from "@iamtraction/google-translate";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 
 export default {

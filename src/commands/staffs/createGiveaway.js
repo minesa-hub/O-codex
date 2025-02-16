@@ -16,7 +16,7 @@ import {
     timeChecking,
 } from "../../functions/timeChecking.js";
 import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()

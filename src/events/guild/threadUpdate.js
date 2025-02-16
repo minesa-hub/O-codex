@@ -1,7 +1,7 @@
 import { AuditLogEvent, Events, time } from "discord.js";
 import { row3 } from "../../components/selectMenus/ticket-select-menu-states.js";
 import { lockButton } from "../../components/modals/create-ticket-title.js";
-import { emojis } from "../../functions/emojis.js";
+import { emojis } from "../../resources/emojis.js";
 
 export default {
     name: Events.ThreadUpdate,
