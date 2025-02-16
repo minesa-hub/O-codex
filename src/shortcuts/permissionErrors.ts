@@ -3,9 +3,16 @@ import {
     PermissionsBitField,
     BaseInteraction,
     ApplicationCommandType,
+    ChatInputCommandInteraction,
+    MessageContextMenuCommandInteraction,
+    UserContextMenuCommandInteraction,
 } from "discord.js";
-import type { CommandInteraction } from "../interfaces/BotPermissions.ts";
 import { emojis } from "./emojis.ts";
+
+export type CommandInteraction =
+    | ChatInputCommandInteraction
+    | MessageContextMenuCommandInteraction
+    | UserContextMenuCommandInteraction;
 
 function isRepliableInteraction(
     interaction: BaseInteraction

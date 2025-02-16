@@ -10,8 +10,6 @@ import {
 } from "discord.js";
 import translate from "@iamtraction/google-translate";
 import { emojis } from "../../shortcuts/emojis.ts";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.ts";
-import { defaultMessagePermissions } from "../../interfaces/BotPermissions.ts";
 import { checkIfUserInstalledCommand } from "../../shortcuts/checkGuild-UserCommand.ts";
 
 interface ExecuteParams {

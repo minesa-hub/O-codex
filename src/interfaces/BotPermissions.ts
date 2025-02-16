@@ -1,19 +1,9 @@
-import {
-    PermissionFlagsBits,
-    ChatInputCommandInteraction,
-    MessageContextMenuCommandInteraction,
-    UserContextMenuCommandInteraction,
-} from "discord.js";
+import { PermissionFlagsBits } from "discord.js";
 
-interface PermissionCheck {
+export interface PermissionCheck {
     permission: bigint;
     errorMessage?: string;
 }
-
-type CommandInteraction =
-    | ChatInputCommandInteraction
-    | MessageContextMenuCommandInteraction
-    | UserContextMenuCommandInteraction;
 
 const basePermissions: PermissionCheck[] = [
     { permission: PermissionFlagsBits.ViewChannel },
@@ -64,5 +54,4 @@ export {
     basePermissions,
     defaultTicketPermissions,
     defaultLockTicketPermissions,
-    CommandInteraction,
 };
