@@ -4,6 +4,8 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -35,6 +37,8 @@ export default {
             InteractionContextType.Guild,
         ]),
     execute: async ({ interaction }) => {
+        await checkPermissions(interaction, basePermissions);
+
         await interaction.deferReply();
         const API = await fetch("https://apis.duncte123.me/meme", {
             method: "GET",

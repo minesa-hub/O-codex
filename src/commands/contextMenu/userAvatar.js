@@ -4,10 +4,11 @@ import {
     EmbedBuilder,
     ContextMenuCommandBuilder,
     InteractionContextType,
-    PermissionFlagsBits,
     MessageFlags,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -32,17 +33,7 @@ export default {
         ]),
     execute: async ({ interaction, client }) => {
         if (InteractionContextType.Guild) {
-            if (
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.UseExternalEmojis
-                ) ||
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.EmbedLinks
-                )
-            )
-                return;
+            if (await checkPermissions(interaction, basePermissions)) return;
         }
 
         if (

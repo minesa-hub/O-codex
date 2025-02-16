@@ -13,7 +13,8 @@ import {
     InteractionContextType,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 import {
     saveStaffRoleId,
     saveStaffs,
@@ -472,25 +473,7 @@ export default {
                 )
         ),
     execute: async ({ interaction, client }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            )
-        )
-            return;
+        await checkPermissions(interaction, basePermissions);
 
         const guild = interaction.guild;
 

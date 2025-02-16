@@ -15,7 +15,8 @@ import {
     timezoneChecking,
     timeChecking,
 } from "../../functions/timeChecking.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { defaultGiveawayPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 import { emojis } from "../../resources/emojis.js";
 
 export default {
@@ -276,28 +277,7 @@ export default {
                 .setRequired(false)
         ),
     execute: async ({ client, interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageEvents
-            )
-        )
+        if (await checkPermissions(interaction, defaultGiveawayPermissions))
             return;
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
@@ -382,10 +362,12 @@ export default {
                 }, scheduledStartTime.diff(moment(), "milliseconds"));
 
                 interaction.editReply({
-                    content: emoji_giftCard + " Creating the giveaway...",
+                    content: emojis.giftCard + " Creating the giveaway...",
                 });
                 interaction.editReply({
-                    content: `# ${emoji_giftCard} Oh, what a moment in time! I've just created a **giveaway** for you all! ${underline(
+                    content: `# ${
+                        emojis.giftCard
+                    } Oh, what a moment in time! I've just created a **giveaway** for you all! ${underline(
                         giveawayName
                     )}\nGiveaway's winner ${bold(
                         "will be shown"

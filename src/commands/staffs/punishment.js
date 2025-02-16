@@ -14,6 +14,8 @@ import {
     checkWarnings,
 } from "../../functions/database.js";
 import { emojis } from "../../resources/emojis.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -269,6 +271,7 @@ export default {
                 .setRequired(false)
         ),
     execute: async ({ client, interaction }) => {
+        await checkPermissions(interaction, basePermissions);
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
         const target = interaction.options.getUser("target");

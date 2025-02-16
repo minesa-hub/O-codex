@@ -1,6 +1,5 @@
 import {
     ActionRowBuilder,
-    PermissionFlagsBits,
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ModalBuilder,
@@ -11,7 +10,8 @@ import {
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
 import { emojis } from "../../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { defaultLockTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("ticket-select-menu")
@@ -47,30 +47,7 @@ export default {
     },
 
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageThreads
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewAuditLog,
-                `It is needed to check last state of thread.`
-            )
-        )
-            return;
+        checkPermissions(interaction, defaultLockTicketPermissions);
 
         const selectedValue = interaction.values[0];
         const formattedTime = time(new Date(), "R");

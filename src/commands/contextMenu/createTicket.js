@@ -8,10 +8,10 @@ import {
     StringSelectMenuBuilder,
     StringSelectMenuOptionBuilder,
     ActionRowBuilder,
-    PermissionFlagsBits,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { defaultTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 import { lockButton } from "../../components/modals/create-ticket-title.js";
 
 export default {
@@ -29,35 +29,7 @@ export default {
         .setIntegrationTypes([ApplicationIntegrationType.GuildInstall])
         .setContexts([InteractionContextType.Guild]),
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.CreatePrivateThreads,
-                `Please contact with a staff member saying "Kaeru can't create private thread due permission is missing".`
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessagesInThreads,
-                `${emoji_danger} Kaeru can't create the thread and add you to thread to send message to there. Please contact with a staff member. This has to be fixed.`
-            )
-        )
-            return;
+        await checkPermissions(interaction, defaultTicketPermissions);
 
         const message = interaction.options.getMessage("message");
 

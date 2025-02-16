@@ -7,6 +7,8 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new SlashCommandBuilder()
@@ -44,6 +46,8 @@ export default {
         ),
 
     execute: async ({ interaction }) => {
+        await checkPermissions(interaction, basePermissions);
+
         let IMAGE_URL = null;
         try {
             const category = interaction.options.getString("category");

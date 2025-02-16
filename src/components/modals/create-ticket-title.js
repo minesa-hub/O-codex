@@ -11,8 +11,9 @@ import {
     MessageFlags,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 import { getStaffRoleId } from "../../functions/database.js";
+import { defaultTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
@@ -29,35 +30,7 @@ export default {
     },
 
     execute: async ({ interaction }) => {
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.EmbedLinks
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.CreatePrivateThreads,
-                `Please contact with a staff member saying "Kaeru can't create private thread due permission is missing".`
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessagesInThreads,
-                `${emojis.danger} Kaeru can't create the thread and add you to thread to send message to there. Please contact with a staff member. This has to be fixed.`
-            )
-        )
-            return;
+        checkPermissions(interaction, defaultTicketPermissions);
 
         const ticketTitle =
             interaction.fields.getTextInputValue("ticket-title");

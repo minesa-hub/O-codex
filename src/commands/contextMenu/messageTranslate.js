@@ -1,14 +1,14 @@
 import {
     ApplicationCommandType,
     ContextMenuCommandBuilder,
-    PermissionFlagsBits,
     ApplicationIntegrationType,
     InteractionContextType,
     MessageFlags,
 } from "discord.js";
 import translate from "@iamtraction/google-translate";
 import { emojis } from "../../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { basePermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 
 export default {
     data: new ContextMenuCommandBuilder()
@@ -33,21 +33,7 @@ export default {
         ]),
     execute: async ({ interaction }) => {
         if (InteractionContextType.Guild) {
-            if (
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.ViewChannel
-                ) ||
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.UseExternalEmojis
-                ) ||
-                defaultPermissionErrorForBot(
-                    interaction,
-                    PermissionFlagsBits.SendMessages
-                )
-            )
-                return;
+            if (await checkPermissions(interaction, basePermissions)) return;
         }
 
         if (

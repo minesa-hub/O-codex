@@ -44,3 +44,13 @@ export const defaultLockTicketPermissions = [
         errorMessage: "Kaeru can't view audit logs to receive information.",
     },
 ];
+
+export const defaultGiveawayPermissions = [
+    ...basePermissions,
+    {
+        permission: PermissionFlagsBits.ManageEvents,
+    },
+    {
+        permission: PermissionFlagsBits.CreateEvents,
+    },
+];

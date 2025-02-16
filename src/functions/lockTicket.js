@@ -1,31 +1,10 @@
-import { time, bold, PermissionFlagsBits } from "discord.js";
+import { time, bold } from "discord.js";
 import { emojis } from "../resources/emojis.js";
-import { defaultPermissionErrorForBot } from "./permissionErrors.js";
+import { defaultLockTicketPermissions } from "../resources/BotPermissions.js";
+import { checkPermissions } from "./checkPermissions.js";
 
 export async function setLockedAndUpdateMessage(interaction, reason = "") {
-    if (
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.ViewChannel
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.UseExternalEmojis
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.SendMessages
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.ManageThreads
-        ) ||
-        defaultPermissionErrorForBot(
-            interaction,
-            PermissionFlagsBits.ViewAuditLog
-        )
-    )
-        return;
+    checkPermissions(interaction, defaultLockTicketPermissions);
 
     const formattedTime = time(new Date(), "R");
 

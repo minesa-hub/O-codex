@@ -7,7 +7,9 @@ import {
     StringSelectMenuOptionBuilder,
     bold,
 } from "discord.js";
-import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+
+import { defaultLockTicketPermissions } from "../../resources/BotPermissions.js";
+import { checkPermissions } from "../../functions/checkPermissions.js";
 import { emojis } from "../../resources/emojis.js";
 
 export default {
@@ -27,25 +29,7 @@ export default {
                 flags: MessageFlags.Ephemeral,
             });
 
-        if (
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ViewChannel
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.UseExternalEmojis
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.SendMessages
-            ) ||
-            defaultPermissionErrorForBot(
-                interaction,
-                PermissionFlagsBits.ManageThreads
-            )
-        )
-            return;
+        await checkPermissions(interaction, defaultLockTicketPermissions);
 
         const lockButtonExplanation = new EmbedBuilder()
             .setTitle("Lock conversation on this ticket")
