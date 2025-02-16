@@ -2,7 +2,6 @@ import {
     ApplicationIntegrationType,
     InteractionContextType,
     SlashCommandBuilder,
-    InteractionContextType,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
 import { basePermissions } from "../../resources/BotPermissions.js";
