@@ -1,5 +1,5 @@
 import { time, MessageFlags, EmbedBuilder } from "discord.js";
-import { emoji_ticket_close } from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -12,7 +12,7 @@ export default {
         const formattedTime = time(new Date(), "R");
 
         await interaction.channel.send({
-            content: `${emoji_ticket_close} **${interaction.user.username}** __closed__ this ticket as completed at ${formattedTime}`,
+            content: `${emojis.ticketClose} **${interaction.user.username}** __closed__ this ticket as completed at ${formattedTime}`,
             embeds: [new EmbedBuilder().setAuthor({ name: `${interaction.user.username} commented`, iconURL: interaction.user.displayAvatarURL() }).setColor(0x388bfd).setDescription(closeReason)],
         });
 

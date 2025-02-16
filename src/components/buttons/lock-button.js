@@ -8,7 +8,7 @@ import {
     bold,
 } from "discord.js";
 import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { emoji_important } from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     data: {
@@ -21,7 +21,7 @@ export default {
             )
         )
             return interaction.reply({
-                content: `${emoji_important} You don't have ${bold(
+                content: `${emojis.important} You don't have ${bold(
                     "Manage Threads"
                 )} permission to do this action, <@${interaction.user.id}>.`,
                 flags: MessageFlags.Ephemeral,
