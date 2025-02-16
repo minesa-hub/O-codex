@@ -1,11 +1,7 @@
 import { AuditLogEvent, Events, time } from "discord.js";
 import { row3 } from "../../components/selectMenus/ticket-select-menu-states.js";
 import { lockButton } from "../../components/modals/create-ticket-title.js";
-import {
-    emoji_ticket_lock,
-    emoji_ticket_lockOpen,
-    emoji_ticket_reopen,
-} from "../../shortcuts/emojis.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     name: Events.ThreadUpdate,
@@ -28,13 +24,13 @@ export default {
             if (executor.id === newThread.client.user.id) return;
 
             await newThread.send({
-                content: `${emoji_ticket_lockOpen} **${executor.username}** have __unlocked__ the ticket, but it is **staffs only** ${formattedTime}`,
+                content: `${emojis.ticketLockOpen} **${executor.username}** has __unlocked__ the ticket, but it is **staffs only** ${formattedTime}`,
             });
         } else if (oldThread.archived && !newThread.archived) {
             if (executor.id === newThread.client.user.id) return;
 
             await newThread.send({
-                content: `${emoji_ticket_reopen} **${executor.username}** __re-opened__ this ticket ${formattedTime}`,
+                content: `${emojis.ticketReopen} **${executor.username}** __re-opened__ this ticket ${formattedTime}`,
             });
 
             const pinnedMessages = await newThread.messages.fetchPinned();
@@ -59,14 +55,14 @@ export default {
 
         if (oldThread.locked && !newThread.locked) {
             await newThread.send({
-                content: `${emoji_ticket_lockOpen} **${executor.username}** __unlocked__ this ticket ${formattedTime}`,
+                content: `${emojis.ticketLockOpen} **${executor.username}** __unlocked__ this ticket ${formattedTime}`,
             });
         } else if (!oldThread.locked && newThread.locked) {
             if (executor.id === newThread.client.user.id) return;
             if (oldThread.archived && !newThread.archived) return;
 
             await newThread.send({
-                content: `${emoji_ticket_lock} **${executor.username}** __locked__ this ticket ${formattedTime}`,
+                content: `${emojis.ticketLock} **${executor.username}** __locked__ this ticket ${formattedTime}`,
             });
         }
     },

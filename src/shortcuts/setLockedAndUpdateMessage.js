@@ -1,5 +1,5 @@
 import { time, bold, PermissionFlagsBits } from "discord.js";
-import { emoji_ticket_lock } from "./emojis.js";
+import { emojis } from "./emojis.js";
 import { defaultPermissionErrorForBot } from "./permissionErrors.js";
 
 export async function setLockedAndUpdateMessage(interaction, reason = "") {
@@ -32,13 +32,13 @@ export async function setLockedAndUpdateMessage(interaction, reason = "") {
     await interaction.channel.setLocked(true);
 
     await interaction.update({
-        content: `${emoji_ticket_lock} Locked this ticket successfully. To unlock this ticket, please enable it manually on "unlock" button.`,
+        content: `${emojis.ticketLock} Locked this ticket successfully. To unlock this ticket, please enable it manually on "unlock" button.`,
         embeds: [],
         components: [],
     });
 
     await interaction.channel.send({
-        content: `${emoji_ticket_lock} ${bold(
+        content: `${emojis.ticketLock} ${bold(
             interaction.user.username
         )} locked${
             reason ? ` ${reason}` : ""

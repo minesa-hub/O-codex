@@ -1,5 +1,5 @@
 import { MessageFlags, PermissionFlagsBits, bold } from "discord.js";
-import { emoji_important } from "./emojis.js";
+import { emojis } from "./emojis.js";
 
 // For bot
 export const defaultPermissionErrorForBot = (
@@ -20,10 +20,10 @@ export const defaultPermissionErrorForBot = (
 
     if (!checkingPermission) {
         interaction.reply({
-            content: `${emoji_important} I don't have ${bold(
+            content: `${emojis.important} I don't have ${bold(
                 PERMISSION_NAME
             )} permission to do this action, <@${interaction.user.id}>. ${
-                additionalText == `` ? `` : `\n>>> ${additionalText}`
+                additionalText === "" ? "" : `\n>>> ${additionalText}`
             }`,
             flags: MessageFlags.Ephemeral,
         });
@@ -51,10 +51,10 @@ export const defaultPermissionErrorForMember = async (
 
     if (!checkingPermission) {
         interaction.reply({
-            content: `${emoji_important} You don't have ${bold(
+            content: `${emojis.important} You don't have ${bold(
                 PERMISSION_NAME
             )} permission to do this action, <@${interaction.user.id}>. ${
-                additionalText == `` ? `` : `\n>>> ${additionalText}`
+                additionalText === "" ? "" : `\n>>> ${additionalText}`
             }`,
             flags: MessageFlags.Ephemeral,
         });

@@ -1,7 +1,6 @@
 import { EmbedBuilder, Events } from "discord.js";
 import { checkLoggingChannel } from "../../shortcuts/database.js";
-import { emoji_timeout } from "../../shortcuts/emojis.js";
-import { EMBED_COLOR } from "../../config.js";
+import { emojis } from "../../shortcuts/emojis.js";
 
 export default {
     name: Events.GuildMemberAdd,
@@ -21,23 +20,23 @@ export default {
                     content: `## ${guild.name}`,
                     embeds: [
                         new EmbedBuilder()
-                            .setTitle(`${emoji_timeout} Time outed`)
+                            .setTitle(`${emojis.timeout} Time outed`)
                             .setDescription(
                                 "You might be questioning why are you timeouted...\nWell, since your account is younger than 7 days, I have restricted you temporarily."
                             )
-                            .setColor(EMBED_COLOR)
+                            .setColor(process.env.EMBED_COLOR)
                             .setThumbnail(guild.iconURL())
                             .setTimestamp(),
                     ],
                 });
 
                 const embed = new EmbedBuilder()
-                    .setTitle(`${emoji_timeout} Time outed New Member`)
+                    .setTitle(`${emojis.timeout} Time outed New Member`)
                     .setDescription(
-                        `User <@${member.user.id}> has joined the server. Their account is younger than 7 days. They have been temporarily restricted. Aka they are timeouted for one week.`
+                        `User <@${member.user.id}> (${member.user.username}) has joined the server. Their account is younger than 7 days. They have been temporarily restricted. Aka they are timeouted for one week.`
                     )
                     .setThumbnail(member.user.displayAvatarURL())
-                    .setColor(EMBED_COLOR)
+                    .setColor(process.env.EMBED_COLOR)
                     .setFooter({
                         text: guild.name,
                         iconURL: guild.iconURL(),

@@ -8,7 +8,6 @@ import { promises as fs } from "fs";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
-import { TOKEN } from "../../config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,11 +43,10 @@ export default async (client) => {
                 );
             }
         }
-        const clientId = "736561919292473454";
-        /* Defining the guild id
-        const guildId = '795473336998035486';
-        */
-        const rest = new REST({ version: "10" }).setToken(TOKEN);
+
+        const rest = new REST({ version: "10" }).setToken(
+            process.env.CLIENT_TOKEN
+        );
 
         try {
             console.log(
@@ -57,7 +55,7 @@ export default async (client) => {
                 )
             );
 
-            await rest.put(Routes.applicationCommands(clientId), {
+            await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
                 body: client.commandArray,
             });
 

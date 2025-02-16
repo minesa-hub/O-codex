@@ -26,9 +26,10 @@
     "dependencies": {
         "@google/generative-ai": "^0.2.1",
         "@iamtraction/google-translate": "^2.0.1",
-        "chalk": "^5.2.0",
+        "chalk": "^5.4.1",
         "cookie-parser": "^1.4.7",
         "discord.js": "^14.17.3",
+        "dotenv": "^16.4.7",
         "express": "^4.21.2",
         "fs": "^0.0.1-security",
         "moment-timezone": "^0.5.43",

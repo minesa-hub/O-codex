@@ -6,7 +6,8 @@ import {
     Partials,
 } from "discord.js";
 import fs from "fs";
-import { TOKEN } from "./config.js";
+import { config } from "dotenv";
+config();
 
 const client = new Client({
     intents: [
@@ -58,4 +59,4 @@ client.handleCommands();
 client.handleEvents();
 client.handleComponents();
 
-client.login(TOKEN);
+client.login(process.env.CLIENT_TOKEN);
