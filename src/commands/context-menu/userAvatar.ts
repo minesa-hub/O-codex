@@ -4,7 +4,6 @@ import {
     EmbedBuilder,
     ContextMenuCommandBuilder,
     InteractionContextType,
-    MessageFlags,
     UserContextMenuCommandInteraction,
     Client,
 } from "discord.js";

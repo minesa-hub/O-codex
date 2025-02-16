@@ -1,7 +1,6 @@
 import {
     ApplicationCommandType,
     ContextMenuCommandBuilder,
-    PermissionFlagsBits,
     ApplicationIntegrationType,
     InteractionContextType,
     MessageFlags,

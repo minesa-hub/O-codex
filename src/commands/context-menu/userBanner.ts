@@ -2,10 +2,8 @@ import {
     ContextMenuCommandBuilder,
     ApplicationCommandType,
     EmbedBuilder,
-    PermissionFlagsBits,
     ApplicationIntegrationType,
     InteractionContextType,
-    MessageFlags,
     UserContextMenuCommandInteraction,
     Client,
 } from "discord.js";
