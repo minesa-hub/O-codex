@@ -12,7 +12,7 @@ import chalk from "chalk";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default async (client) => {
+export const loadCommands = async (client) => {
     client.handleCommands = async () => {
         const commandFolders = await fs.readdir(`${__dirname}/../../commands`);
 

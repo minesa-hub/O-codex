@@ -1,7 +1,7 @@
 import fs from "fs";
 import chalk from "chalk";
 
-export default async (client) => {
+export const loadEvents = async (client) => {
     client.handleEvents = async () => {
         const eventFolders = fs.readdirSync("./src/events");
 

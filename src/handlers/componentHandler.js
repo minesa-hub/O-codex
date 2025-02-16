@@ -1,7 +1,7 @@
 import fs from "fs";
 import chalk from "chalk";
 
-export default (client) => {
+export const loadComponents = async (client) => {
     client.handleComponents = async () => {
         const componentFolders = fs.readdirSync("./src/components");
 
@@ -22,8 +22,8 @@ export default (client) => {
 
                         console.log(
                             chalk.green(
-                                `[Buttons]: Loaded ${button.data.customId} button.`,
-                            ),
+                                `[Buttons]: Loaded ${button.data.customId} button.`
+                            )
                         );
                     }
                     break;
@@ -37,8 +37,8 @@ export default (client) => {
 
                         console.log(
                             chalk.green(
-                                `[Select Menus]: Loaded ${selectMenu.data.customId} select menu.`,
-                            ),
+                                `[Select Menus]: Loaded ${selectMenu.data.customId} select menu.`
+                            )
                         );
                     }
                     break;
@@ -53,8 +53,8 @@ export default (client) => {
 
                         console.log(
                             chalk.green(
-                                `[Modals]: Loaded ${modal.data.customId} modal.`,
-                            ),
+                                `[Modals]: Loaded ${modal.data.customId} modal.`
+                            )
                         );
                     }
 
