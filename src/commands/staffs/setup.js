@@ -12,13 +12,13 @@ import {
     ApplicationIntegrationType,
     InteractionContextType,
 } from "discord.js";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 import {
     saveStaffRoleId,
     saveStaffs,
     setupLoggingChannel,
-} from "../../shortcuts/database.js";
+} from "../../functions/database.js";
 
 export default {
     data: new SlashCommandBuilder()

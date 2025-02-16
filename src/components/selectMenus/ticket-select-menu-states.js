@@ -10,8 +10,8 @@ import {
     MessageFlags,
 } from "discord.js";
 import { lockButton } from "../modals/create-ticket-title.js";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 
 const menu3 = new StringSelectMenuBuilder()
     .setCustomId("ticket-select-menu")

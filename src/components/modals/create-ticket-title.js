@@ -10,9 +10,9 @@ import {
     roleMention,
     MessageFlags,
 } from "discord.js";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { getStaffRoleId } from "../../shortcuts/database.js";
+import { emojis } from "../../functions/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { getStaffRoleId } from "../../functions/database.js";
 
 let lockButton = new ActionRowBuilder().addComponents(
     new ButtonBuilder()

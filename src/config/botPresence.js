@@ -1,5 +1,8 @@
 import { ActivityType, PresenceUpdateStatus } from "discord.js";
 
+/**
+ * Bot is presence.
+ */
 export const botPresence = {
     status: PresenceUpdateStatus.Idle,
     activities: [

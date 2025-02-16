@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Partials } from "discord.js";
+import { Client, Collection, GatewayIntentBits, Partials } from "discord.js";
 
 export const client = new Client({
     intents: [
@@ -10,3 +10,9 @@ export const client = new Client({
     ],
     partials: [Partials.GuildMember, Partials.Message, Partials.Channel],
 });
+
+client.commands = new Collection();
+client.buttons = new Collection();
+client.selectMenus = new Collection();
+client.modals = new Collection();
+client.commandArray = [];

@@ -1,6 +1,6 @@
 import { PermissionFlagsBits } from "discord.js";
-import { setLockedAndUpdateMessage } from "../../shortcuts/lockTicket.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { setLockedAndUpdateMessage } from "../../functions/lockTicket.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 
 export default {
     data: {

@@ -7,8 +7,8 @@ import {
     StringSelectMenuOptionBuilder,
     bold,
 } from "discord.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { emojis } from "../../shortcuts/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
 
 export default {
     data: {

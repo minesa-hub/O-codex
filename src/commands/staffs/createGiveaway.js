@@ -14,9 +14,9 @@ import {
 import {
     timezoneChecking,
     timeChecking,
-} from "../../shortcuts/timeChecking.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
-import { emojis } from "../../shortcuts/emojis.js";
+} from "../../functions/timeChecking.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()

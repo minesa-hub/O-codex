@@ -7,8 +7,8 @@ import {
     MessageFlags,
 } from "discord.js";
 import translate from "@iamtraction/google-translate";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 
 export default {
     data: new ContextMenuCommandBuilder()

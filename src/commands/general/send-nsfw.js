@@ -6,7 +6,7 @@ import {
     MessageFlags,
     SlashCommandBuilder,
 } from "discord.js";
-import { emojis } from "../../shortcuts/emojis.js";
+import { emojis } from "../../functions/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()

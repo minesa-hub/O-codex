@@ -1,6 +1,6 @@
 import { EmbedBuilder, Events } from "discord.js";
-import { checkLoggingChannel } from "../../shortcuts/database.js";
-import { emojis } from "../../shortcuts/emojis.js";
+import { checkLoggingChannel } from "../../functions/database.js";
+import { emojis } from "../../functions/emojis.js";
 
 export default {
     name: Events.GuildMemberAdd,

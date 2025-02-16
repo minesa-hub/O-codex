@@ -1,4 +1,3 @@
-// Exporting the functions from the handlers
-export { loadEvents } from "./eventHandler.js";
-export { loadCommands } from "./commandHandler.js";
-export { loadComponents } from "./componentHandler.js";
+export { eventHandler } from "./eventHandler.js";
+export { commandHandler } from "./commandHandler.js";
+export { componentHandler } from "./componentHandler.js";

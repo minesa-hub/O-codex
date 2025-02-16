@@ -10,8 +10,8 @@ import {
     ActionRowBuilder,
     PermissionFlagsBits,
 } from "discord.js";
-import { emojis } from "../../shortcuts/emojis.js";
-import { defaultPermissionErrorForBot } from "../../shortcuts/permissionErrors.js";
+import { emojis } from "../../functions/emojis.js";
+import { defaultPermissionErrorForBot } from "../../functions/permissionErrors.js";
 import { lockButton } from "../../components/modals/create-ticket-title.js";
 
 export default {

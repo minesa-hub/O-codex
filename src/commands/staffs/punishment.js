@@ -12,8 +12,8 @@ import {
     addWarning,
     checkLoggingChannel,
     checkWarnings,
-} from "../../shortcuts/database.js";
-import { emojis } from "../../shortcuts/emojis.js";
+} from "../../functions/database.js";
+import { emojis } from "../../functions/emojis.js";
 
 export default {
     data: new SlashCommandBuilder()
