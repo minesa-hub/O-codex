@@ -5,6 +5,7 @@ import {
     ButtonStyle,
     MessageFlags,
     SlashCommandBuilder,
+    InteractionContextType,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
 import { basePermissions } from "../../resources/BotPermissions.js";
@@ -46,7 +47,9 @@ export default {
         ),
 
     execute: async ({ interaction }) => {
-        await checkPermissions(interaction, basePermissions);
+        if (InteractionContextType.Guild) {
+            if (await checkPermissions(interaction, basePermissions)) return;
+        }
 
         let IMAGE_URL = null;
         try {

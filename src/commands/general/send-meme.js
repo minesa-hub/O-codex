@@ -2,6 +2,7 @@ import {
     ApplicationIntegrationType,
     InteractionContextType,
     SlashCommandBuilder,
+    InteractionContextType,
 } from "discord.js";
 import { emojis } from "../../resources/emojis.js";
 import { basePermissions } from "../../resources/BotPermissions.js";
@@ -37,7 +38,9 @@ export default {
             InteractionContextType.Guild,
         ]),
     execute: async ({ interaction }) => {
-        await checkPermissions(interaction, basePermissions);
+        if (InteractionContextType.Guild) {
+            if (await checkPermissions(interaction, basePermissions)) return;
+        }
 
         await interaction.deferReply();
         const API = await fetch("https://apis.duncte123.me/meme", {
