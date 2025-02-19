@@ -37,7 +37,9 @@ export default {
             InteractionContextType.Guild,
         ]),
     execute: async ({ interaction }) => {
-        await checkPermissions(interaction, basePermissions);
+        if (InteractionContextType.Guild) {
+            if (await checkPermissions(interaction, basePermissions)) return;
+        }
 
         await interaction.deferReply();
         const API = await fetch("https://apis.duncte123.me/meme", {
