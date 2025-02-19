@@ -277,8 +277,7 @@ export default {
                 .setRequired(false)
         ),
     execute: async ({ client, interaction }) => {
-        if (await checkPermissions(interaction, defaultGiveawayPermissions))
-            return;
+        await checkPermissions(interaction, defaultGiveawayPermissions);
 
         await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 

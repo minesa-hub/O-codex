@@ -334,10 +334,10 @@ export default {
             reason = mainReason;
         }
 
-        addWarning(guild.id, target.id);
+        await addWarning(guild.id, target.id);
 
-        const warnings = checkWarnings(guild.id, target.id);
-
+        const warnings = await checkWarnings(guild.id, target.id);
+        console.log(`Warnings for ${target.id}:`, warnings);
         const expiryTime = new Date(Date.now() + duration * 60 * 1000);
 
         await interaction.guild.members.fetch(guildMember);
@@ -398,7 +398,7 @@ export default {
                         reason: "Exceeded warning limit",
                     });
                     return interaction.editReply({
-                        content: `${emoji_info} Member got ban because they received 4 warnings. They better be cool.`,
+                        content: `${emojis.info} Member got ban because they received 4 warnings. They better be cool.`,
                     });
                 }
 
@@ -415,7 +415,9 @@ export default {
                         .catch(console.error);
 
                     await interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
@@ -440,7 +442,9 @@ export default {
                         .catch(console.error);
 
                     return interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
                         )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(

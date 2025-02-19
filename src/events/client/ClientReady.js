@@ -8,5 +8,7 @@ export default {
     execute: async (client) => {
         client.user.setPresence(botPresence);
         console.log(chalk.green(`[READY] Logged in as ${client.user.tag}!`));
+
+        client.emit("mongoConnect");
     },
 };
