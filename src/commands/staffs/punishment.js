@@ -334,10 +334,9 @@ export default {
             reason = mainReason;
         }
 
-        addWarning(guild.id, target.id);
+        await addWarning(guild.id, target.id);
 
-        const warnings = checkWarnings(guild.id, target.id);
-
+        const warnings = await checkWarnings(guild.id, target.id);
         const expiryTime = new Date(Date.now() + duration * 60 * 1000);
 
         await interaction.guild.members.fetch(guildMember);
@@ -376,10 +375,7 @@ export default {
                                 },
                                 {
                                     name: "Warnings",
-                                    value: `**${checkWarnings(
-                                        guild.id,
-                                        target.id
-                                    )} warnings** / 4 warnings`,
+                                    value: `**${warnings} warnings** / 4 warnings`,
                                     inline: false,
                                 },
                                 {
@@ -398,7 +394,7 @@ export default {
                         reason: "Exceeded warning limit",
                     });
                     return interaction.editReply({
-                        content: `${emoji_info} Member got ban because they received 4 warnings. They better be cool.`,
+                        content: `${emojis.info} Member got ban because they received 4 warnings. They better be cool.`,
                     });
                 }
 
@@ -415,13 +411,12 @@ export default {
                         .catch(console.error);
 
                     await interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.`,
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.`,
                     });
                 } else {
                     if (warnings == 1) {
@@ -440,13 +435,12 @@ export default {
                         .catch(console.error);
 
                     return interaction.editReply({
-                        content: `## ${emoji_timeout} Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
+                        content: `## ${
+                            emojis.timeout
+                        } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(
-                            guild.id,
-                            target.id
-                        )}** warnings.`,
+                        )}\n> "${reason}" reason.\n\n-# Now they have **${warnings}** warnings.`,
                         flags: MessageFlags.Ephemeral,
                     });
                 }
@@ -469,10 +463,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.\n\n> _${
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.\n\n> _${
                             emojis.important
                         } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
@@ -527,10 +518,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.\n\n> _${
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.\n\n> _${
                             emojis.important
                         } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,

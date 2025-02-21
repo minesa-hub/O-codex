@@ -17,7 +17,6 @@ import { basePermissions } from "../../resources/BotPermissions.js";
 import { checkPermissions } from "../../functions/checkPermissions.js";
 import {
     saveStaffRoleId,
-    saveStaffs,
     setupLoggingChannel,
 } from "../../functions/database.js";
 
@@ -472,19 +471,31 @@ export default {
                         .setRequired(true)
                 )
         ),
-    execute: async ({ interaction, client }) => {
+    execute: async ({ interaction }) => {
         await checkPermissions(interaction, basePermissions);
 
         const guild = interaction.guild;
 
         // ticket system
         if (interaction.options.getSubcommand() == "ticket") {
+            await interaction.deferReply({ flags: MessageFlags.Ephemeral });
+
             const embedDescription =
                 interaction.options.getString("description");
             const embedColor = interaction.options.getString("color");
             const staffRole = interaction.options.getRole("staff_role").id;
             const banner = interaction.options.getAttachment("image");
             const sendingChannel = interaction.options.getChannel("channel");
+
+            if (
+                !sendingChannel
+                    .permissionsFor(interaction.guild.members.me)
+                    .has(PermissionFlagsBits.SendMessages)
+            ) {
+                return interaction.editReply({
+                    content: `${emojis.important} I don't have permission to send messages in ${sendingChannel}!`,
+                });
+            }
 
             const embed = new EmbedBuilder()
                 .setDescription(
@@ -513,13 +524,12 @@ export default {
                 createticketButton
             );
 
-            await interaction.reply({
+            await interaction.editReply({
                 content: `${emojis.ticketCreated} Created the ticket system succesfully!`,
                 flags: MessageFlags.Ephemeral,
             });
 
-            saveStaffRoleId(guild.id, staffRole);
-            await saveStaffs(client, guild.id, staffRole);
+            await saveStaffRoleId(guild.id, staffRole);
 
             await sendingChannel.send({
                 embeds: [embed],
@@ -545,11 +555,21 @@ export default {
         if (interaction.options.getSubcommand() == "logs") {
             await interaction.deferReply({ flags: MessageFlags.Ephemeral });
 
-            const logginChannel = interaction.options.getChannel("channel");
+            const loggingChannel = interaction.options.getChannel("channel");
 
-            setupLoggingChannel(guild.id, logginChannel.id);
+            if (
+                !loggingChannel
+                    .permissionsFor(interaction.guild.members.me)
+                    .has(PermissionFlagsBits.SendMessages)
+            ) {
+                return interaction.editReply({
+                    content: `${emojis.important} I don't have permission to send messages in ${loggingChannel}!`,
+                });
+            }
 
-            await logginChannel.send({
+            await setupLoggingChannel(guild.id, loggingChannel.id);
+
+            await loggingChannel.send({
                 content: `${emojis.info} Successfully setup the loggin channel.`,
             });
 

@@ -34,6 +34,7 @@
         "express": "^4.21.2",
         "fs": "^0.0.1-security",
         "moment-timezone": "^0.5.43",
+        "mongoose": "^8.10.1",
         "node-fetch": "^3.3.2"
     }
 }
