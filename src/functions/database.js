@@ -37,11 +37,14 @@ export async function addWarning(guildId, userId) {
 }
 
 export async function checkWarnings(guildId, userId) {
-    const guild = await Guild.findOne({ guildId });
-
-    if (!guild || !guild.warnings) return 0;
-
-    return guild.warnings[userId] || 0;
+    try {
+        const guild = await Guild.findOne({ guildId });
+        if (!guild || !guild.warnings) return 0;
+        return guild.warnings.get(userId) || 0;
+    } catch (error) {
+        console.error("Error checking warnings:", error);
+        return 0;
+    }
 }
 
 // Logging Channel

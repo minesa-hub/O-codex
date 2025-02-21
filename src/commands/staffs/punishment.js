@@ -337,7 +337,6 @@ export default {
         await addWarning(guild.id, target.id);
 
         const warnings = await checkWarnings(guild.id, target.id);
-        console.log(`Warnings for ${target.id}:`, warnings);
         const expiryTime = new Date(Date.now() + duration * 60 * 1000);
 
         await interaction.guild.members.fetch(guildMember);
@@ -376,10 +375,7 @@ export default {
                                 },
                                 {
                                     name: "Warnings",
-                                    value: `**${checkWarnings(
-                                        guild.id,
-                                        target.id
-                                    )} warnings** / 4 warnings`,
+                                    value: `**${warnings} warnings** / 4 warnings`,
                                     inline: false,
                                 },
                                 {
@@ -420,10 +416,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.`,
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.`,
                     });
                 } else {
                     if (warnings == 1) {
@@ -447,10 +440,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\n-# Now they have **${checkWarnings(
-                            guild.id,
-                            target.id
-                        )}** warnings.`,
+                        )}\n> "${reason}" reason.\n\n-# Now they have **${warnings}** warnings.`,
                         flags: MessageFlags.Ephemeral,
                     });
                 }
@@ -473,10 +463,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.\n\n> _${
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.\n\n> _${
                             emojis.important
                         } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
@@ -531,10 +518,7 @@ export default {
                         } Time-outed\n> **Target:** ${target}\n> **Duration:** ${time(
                             expiryTime,
                             "R"
-                        )}\n> "${reason}" reason.\n\nNow they have ${checkWarnings(
-                            guild.id,
-                            target.id
-                        )} warnings.\n\n> _${
+                        )}\n> "${reason}" reason.\n\nNow they have ${warnings} warnings.\n\n> _${
                             emojis.important
                         } Logs channel has not been settled. Please use </setup logs:1223975368138952826> command._`,
                         flags: MessageFlags.Ephemeral,
