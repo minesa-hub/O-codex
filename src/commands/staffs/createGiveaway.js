@@ -302,7 +302,7 @@ export default {
             description: giveawayDescription,
             image: giveawayImage
                 ? giveawayImage.url
-                : "https://cdn.discordapp.com/attachments/736571695170584576/1328119344957362296/Kaeru-giveaway-card.png?ex=67921147&is=6790bfc7&hm=44075978ac96b682cdbbdb38b481045b90d5637b6d8f4c6303f9521f980289c9&",
+                : "https://media.discordapp.net/attachments/736571695170584576/1328119344957362296/Kaeru-giveaway-card.png?ex=67cac1c7&is=67c97047&hm=e2feba077bb975475ba5d0d92f7189c28b1738c9d813b64233aadd36623754b1&=&width=2148&height=974",
             scheduledStartTime: scheduledStartTime.format(),
             scheduledEndTime: scheduledEndTime.format(),
             privacyLevel: GuildScheduledEventPrivacyLevel.GuildOnly,
